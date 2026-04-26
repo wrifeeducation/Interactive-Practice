@@ -222,3 +222,33 @@ export interface CommonMistake {
   wrongCount: number
   lastAttempted: string
 }
+
+// ── Session Store State ───────────────────────────────────────
+
+export interface AnswerRecord {
+  activityId: string
+  isCorrect: boolean
+  xpAwarded: number
+}
+
+export interface SessionState {
+  livesRemaining: number
+  xpThisSession: number
+  currentIndex: number
+  answersGiven: AnswerRecord[]
+  xpLocked: boolean
+  loseLife: () => void
+  addXP: (amount: number) => void
+  nextActivity: () => void
+  resetSession: () => void
+  recordAnswer: (record: AnswerRecord) => void
+}
+
+// ── Progress Helper Types ─────────────────────────────────────
+
+export interface ProgressInput {
+  pupilId: string
+  lessonId: string
+  level: ActivityLevel
+  answers: AnswerRecord[]
+}
