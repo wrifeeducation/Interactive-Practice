@@ -8,19 +8,25 @@
 ## 🎨 Brand & Mascot (MANDATORY)
 
 **Before building any UI, read `docs/brand-mascots.md`.** It contains:
-- The canonical WriFe colour palette (sourced directly from the SVG graphics)
-- The 6 mascot characters and exactly where each one appears in the app
-- World-to-mascot colour mappings (world tokens tied to mascot brand colours)
-- React implementation patterns for mascots
+- The canonical WriFe colour palette (sourced from real UI design screenshots)
+- The real WriFe mascot system — one yellow pencil character, 16 PNG variants
+- Placement rules for every pose and expression in the app
+- React implementation patterns
 
 **Critical colour rules (never break these):**
-- Text colour: `#2C3E50` via `var(--color-text)` — the single most-used colour across all WriFe SVG assets
-- XP/stars gold: `#FFD54F` via `var(--color-xp)` / `var(--color-gold)`
-- Page background: `#F5F7FA` via `var(--color-background)`
-- Brand blue: `#4A90E2` via `var(--color-brand-primary)`
-- Each world has its own mascot and colour token `--color-world-N` — always use the token, never the hex
+- Brand primary: `#6C5CE7` (purple) via `var(--color-brand-primary)` — nav, headers, logo
+- CTA buttons: `#F5A623` (orange) via `var(--color-brand-secondary)` — all primary buttons
+- XP/stars gold: `#F5C500` via `var(--color-xp)` / `var(--color-gold)`
+- Main background: `#FDF8EE` (warm cream) via `var(--color-background)`
+- Auth page background: `#D4EBF8` (light blue) via `var(--color-background-auth)`
+- Text: `#2D3436` via `var(--color-text)`
+- Always use CSS variable tokens — never hardcode hex in components
 
-**Mascots live at `public/mascots/`** — 9 SVG files, transparent background, scalable to any size.
+**Mascot:** ONE yellow pencil character. 16 PNG files in `public/mascots/`.
+- **No** named human characters (Penny Pencil, Booksy etc. were incorrect — do not use)
+- Tier badges: `badge-foundation.png` (Bronze) / `badge-application.png` (Silver) / `badge-mastery.png` (Gold)
+- Full poses: `pencil-waving`, `pencil-celebrating`, `pencil-thinking`, `pencil-reading`
+- Expressions: `face-happy`, `face-thumbsup`, `face-writing`, `face-worried`
 
 ---
 

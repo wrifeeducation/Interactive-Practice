@@ -1,101 +1,105 @@
 # WriFe Brand & Mascot Guide
 ## Instructions for all Claude Code agents — read before touching any UI
 
+> ⚠️ IMPORTANT CORRECTION (April 2026): The previous version of this file described
+> 6 AI-generated character mascots (Penny Pencil, Booksy, etc.). Those were incorrect.
+> The real WriFe mascot is a single yellow pencil character with multiple poses and
+> expressions. This file now reflects the real WriFe brand assets.
+
 ---
 
-## Colour Palette (canonical — sourced from WriFe SVG graphics)
+## Colour Palette (canonical — sourced from real WriFe UI design screenshots)
 
-All tokens live in `src/index.css` as CSS custom properties.
-**Never hardcode hex values in component files. Always use the variable.**
+All tokens live in `src/index.css`. **Never hardcode hex values in component files.**
 
 ### Core Brand Colours
 
 | Token | Hex | Source | Use |
 |---|---|---|---|
-| `--color-brand-primary` | `#4A90E2` | Feature icon backgrounds | Buttons, links, headers |
-| `--color-brand-secondary` | `#FF6B9D` | Penny Pencil (pink) | CTA, warmth, welcome |
-| `--color-brand-accent` | `#FFD54F` | Most-used WriFe SVG accent | Stars, XP, highlights |
-| `--color-text` | `#2C3E50` | 109 uses across ALL SVGs | All body text |
-| `--color-text-muted` | `#666666` | SVG label text | Secondary text |
-| `--color-background` | `#F5F7FA` | Feature sheet background | Page background |
-| `--color-surface` | `#FFFFFF` | Cards, modals |
-| `--color-border` | `#E3F2FD` | Soft blue-tinted | Card borders |
+| `--color-brand-primary` | `#6C5CE7` | Purple header in landing page + pupil dashboard | Nav, headers, logo background, active states |
+| `--color-brand-secondary` | `#F5A623` | Orange CTA button on all WriFe screens | Primary buttons (Log In, Start, Play) |
+| `--color-brand-accent` | `#F5C500` | Gold/yellow from mascot badges | Stars, XP counter, highlights |
+| `--color-text` | `#2D3436` | Body text across all UI designs | All body text, headings |
+| `--color-text-muted` | `#636E72` | Secondary labels | Subtitles, captions |
+| `--color-background` | `#FDF8EE` | Warm cream — main app background | Page background |
+| `--color-background-auth` | `#D4EBF8` | Light blue — login/signup pages | Auth page background only |
+| `--color-surface` | `#FFFFFF` | Cards, modals, form inputs |
+| `--color-border` | `#E8E0D5` | Warm grey | Card borders, input borders |
 
-### World Colours (each tied to its mascot character)
+### World Colours (distinct, harmonious palette — not tied to individual mascots)
 
-| World | Name | Mascot | Token | Hex | Light BG Token |
-|---|---|---|---|---|---|
-| 1 | Story Seeds | Booksy 📚 | `--color-world-1` | `#1976D2` | `--color-world-1-bg: #E3F2FD` |
-| 2 | Grammar Toolkit | Grammar Guru 🦉 | `--color-world-2` | `#4CAF50` | `--color-world-2-bg: #E8F5E9` |
-| 3 | Sentence Builders | Word Wizard 🧙 | `--color-world-3` | `#7E57C2` | `--color-world-3-bg: #EDE7F6` |
-| 4 | Writer's Craft | Creative Kai 🎨 | `--color-world-4` | `#9C27B0` | `--color-world-4-bg: #F3E5F5` |
-| 5 | Flow & Finish | Practice Pat 🏃 | `--color-world-5` | `#FF5722` | `--color-world-5-bg: #FBE9E7` |
-| 6 | Genre Arena | Penny Pencil ✏️ | `--color-world-6` | `#FF6B9D` | `--color-world-6-bg: #FCE4EC` |
+| World | Name | Token | Hex |
+|---|---|---|---|
+| 1 | Story Seeds | `--color-world-1` | `#6C5CE7` (Purple) |
+| 2 | Grammar Toolkit | `--color-world-2` | `#00B894` (Teal) |
+| 3 | Sentence Builders | `--color-world-3` | `#0984E3` (Blue) |
+| 4 | Writer's Craft | `--color-world-4` | `#E17055` (Coral) |
+| 5 | Flow & Finish | `--color-world-5` | `#FDCB6E` (Amber) |
+| 6 | Genre Arena | `--color-world-6` | `#A29BFE` (Lavender) |
+
+Each world also has a light background token: `--color-world-N-bg`
 
 ### Gamification Colours
 
 | Token | Hex | Use |
 |---|---|---|
-| `--color-xp` | `#FFD54F` | XP counter, star fills, level indicator |
-| `--color-lives` | `#FF5252` | Lives hearts |
-| `--color-streak` | `#FF9800` | Flame emoji, streak counter |
-| `--color-bronze` | `#CD7F32` | Bronze tier badge/label |
-| `--color-silver` | `#A8A9AD` | Silver tier badge/label |
-| `--color-gold` | `#FFD54F` | Gold tier badge/label (same as XP gold) |
-| `--color-correct` | `#4CAF50` | Correct answer flash/bg |
-| `--color-incorrect` | `#FF5252` | Wrong answer flash/bg |
+| `--color-xp` | `#F5C500` | XP counter, floating XP text |
+| `--color-streak` | `#F5A623` | Flame, streak counter |
+| `--color-lives` | `#E74C3C` | Lives hearts |
+| `--color-bronze` | `#CD7F32` | Foundation/Bronze tier |
+| `--color-silver` | `#A8A9AD` | Application/Silver tier |
+| `--color-gold` | `#F5C500` | Mastery/Gold tier |
 
 ---
 
-## The 6 Mascots
+## The WriFe Mascot — One Yellow Pencil Character
 
-All mascot SVGs are in `public/mascots/`. They are scalable vectors with transparent backgrounds — use at any size.
+WriFe has **one mascot**: a friendly yellow pencil character. It appears in 16 variants
+across `public/mascots/`. All files are PNG with white/cream backgrounds.
 
-### Quick Reference
+There is no set of named human characters. The AI-generated SVGs (Penny Pencil,
+Booksy, Grammar Guru, etc.) have been removed. Do not recreate or reference them.
 
-| File | Name | Hex | Personality | World |
-|---|---|---|---|---|
-| `penny-pencil.svg` | Penny Pencil ✏️ | `#FF6B9D` | Enthusiastic main guide, cheerleader | 6 + cross-platform |
-| `booksy.svg` | Booksy 📚 | `#1976D2` | Story keeper, inclusive reader | 1 (Story Seeds) |
-| `grammar-guru.svg` | Grammar Guru 🦉 | `#4CAF50` | Wise owl teacher, makes rules fun | 2 (Grammar Toolkit) |
-| `word-wizard.svg` | Word Wizard 🧙 | `#7E57C2` | Vocabulary magician, loves language | 3 (Sentence Builders) |
-| `creative-kai.svg` | Creative Kai 🎨 | `#9C27B0` | Imaginative artist, "no wrong way" | 4 (Writer's Craft) |
-| `practice-pat.svg` | Practice Pat 🏃 | `#FF5722` | Energetic, "practice makes perfect" | 5 (Flow & Finish) |
+### Achievement Badges
 
-### Character Details
+These map directly to the app's difficulty tiers:
 
-**Penny Pencil** — `public/mascots/penny-pencil.svg`
-- Pink/rose scheme (`#FF6B9D`), pencil dress, holds giant pencil + notebook with heart
-- Voice: *"You can do this!"*, *"I'm so proud of you!"*
-- Use for: Login welcome, sign-up page, progress celebrations, lesson complete screen, encouragement modals
-- This is the **main face of WriFe** — Penny appears wherever a warm, encouraging presence is needed
+| File | Label | App Use |
+|---|---|---|
+| `badge-foundation.png` | FOUNDATION | **Bronze tier** badge — displayed on lesson complete, tier buttons |
+| `badge-application.png` | APPLICATION | **Silver tier** badge — displayed on lesson complete, tier buttons |
+| `badge-mastery.png` | MASTERY | **Gold tier** badge — displayed on lesson complete, tier buttons |
+| `badge-achievement.png` | (wreath badge) | General achievement — world boss completion, special milestones |
 
-**Booksy** — `public/mascots/booksy.svg`
-- Blue scheme (`#1976D2`), glasses, holds open book
-- Voice: *"Every story is special!"*, *"What will you write today?"*
-- Use for: World 1 map card, story-type lessons (L1–L9), reading comprehension activities
-- Also suits: Login page background (friendly, non-threatening)
+### Full-Body Pencil Poses (character illustrations)
 
-**Grammar Guru** — `public/mascots/grammar-guru.svg`
-- Owl with graduation cap, brown/gold tones, holds chalkboard
-- Voice: *"Grammar is your friend!"*, *"Let me show you a trick!"*
-- Use for: World 2 map card, grammar lessons (L10–L19), error-correction feedback
-- Tip: Appears in the corner looking curious when a pupil gets something wrong (not judgemental)
+| File | Pose | When to Use |
+|---|---|---|
+| `pencil-waving.png` | Waving, smiling — welcoming | Login page, sign-up page, empty states, first visit |
+| `pencil-celebrating.png` | Jumping with arms up — excited | Lesson complete (3 stars), badge unlock, world boss beaten |
+| `pencil-thinking.png` | Finger on chin, thumbs up | Hint modal, question intro, "take your time" messages |
+| `pencil-reading.png` | Holding and reading a paper | Lesson introduction, instructions, write activity prompt |
 
-**Word Wizard** — `public/mascots/word-wizard.svg`
-- Purple/blue (`#7E57C2`), wizard hat, wand, spell book, floating words
-- Voice: *"Words are magical!"*, *"The perfect word makes all the difference!"*
-- Use for: World 3 map card, sentence/phrase lessons (L20–L31), vocabulary focus activities
+### Reaction Expressions (face close-ups — use at 48–64px)
 
-**Creative Kai** — `public/mascots/creative-kai.svg`
-- Purple (`#9C27B0`), paint-splattered smock, beret, palette + brush
-- Voice: *"Imagine and create!"*, *"There are no mistakes, just happy accidents!"*
-- Use for: World 4 map card, creative/craft lessons (L32–L45), brainstorming activities, show-don't-tell
+| File | Expression | When to Use |
+|---|---|---|
+| `face-happy.png` | Big happy smile | Correct answer feedback |
+| `face-thumbsup.png` | Smiling with thumbs up | Lesson level complete, well done messages |
+| `face-writing.png` | Winking, pencil writing | Activity in progress, writing prompt |
+| `face-worried.png` | Worried, wide eyes | Wrong answer, 0 lives Rest screen |
 
-**Practice Pat** — `public/mascots/practice-pat.svg`
-- Orange-red (`#FF5722`), athletic wear, #1 shirt, stopwatch + checklist
-- Voice: *"Let's do this!"*, *"10 minutes today = awesome tomorrow!"*
-- Use for: World 5 map card, daily practice encouragement, streak celebrations, boss challenge intro
+### UI Icons (not the mascot character — standalone graphic icons)
+
+| File | Icon | When to Use |
+|---|---|---|
+| `icon-document-check.png` | Blue document with gold checkmark | Completed lesson node on world map |
+| `icon-clipboard.png` | Clipboard with gold checkmark | Progress tracker, worksheets reference |
+| `icon-practice.png` | Pencil + coloured grid | Practice activities, interactive session |
+| `icon-reading.png` | Pencil inside open book | Lesson guide, reading comprehension |
+
+### Sprite Sheet
+`sprite-sheet.png` — all 16 variants in a 4×4 grid. Use for reference only.
 
 ---
 
@@ -103,101 +107,114 @@ All mascot SVGs are in `public/mascots/`. They are scalable vectors with transpa
 
 ### Always
 
-| Location | Mascot | Size | Notes |
+| Location | Asset | Size | Notes |
 |---|---|---|---|
-| Login page | Penny Pencil | 180px | Right side of auth card on desktop, above form on mobile |
-| Sign-up page | Penny Pencil | 140px | Friendly welcome at top |
-| World Map — World N card header | World N's mascot | 80px | Top-right corner of each world card |
-| Boss Challenge intro | World N's mascot | 200px | Centre stage, "I'm the boss!" framing |
-| Lesson Complete — 3 stars | Penny Pencil | 120px | Celebrating pose below stars |
-| Badge unlock modal | Relevant mascot | 96px | Left of badge info; use world mascot for world badges |
-| Rest screen (0 lives) | Practice Pat | 100px | Sympathetic but encouraging pose |
+| Login page | `pencil-waving.png` | 160px | Right of form on desktop, above on mobile |
+| Sign-up page | `pencil-waving.png` | 120px | Above form |
+| Lesson complete — any | Tier badge (foundation/application/mastery) | 80px | Below star rating |
+| Lesson complete — 3 stars | `pencil-celebrating.png` | 140px | Beside confetti |
+| Badge unlock modal | `badge-mastery.png` or `badge-achievement.png` | 96px | Centre of modal |
+| Rest screen (0 lives) | `face-worried.png` | 80px | Above encouraging message |
+| Correct answer feedback | `face-happy.png` | 56px | Bottom corner of QuestionCard |
+| Wrong answer feedback | `face-worried.png` | 56px | Bottom corner of QuestionCard |
+| Write activity prompt | `pencil-reading.png` | 80px | Beside instructions |
+| World Boss intro | `pencil-thinking.png` | 160px | Centre, "Are you ready?" framing |
+| Join class success | `pencil-celebrating.png` | 120px | Celebrating |
+| Empty state / no data | `pencil-waving.png` | 100px | Friendly empty state |
 
-### Activity Session (small companion)
-- Show the world's mascot as a small (48–64px) companion in the bottom-left corner of the QuestionCard
-- On correct answer: mascot does a subtle bounce (CSS `@keyframes bounce`) 
-- On wrong answer: mascot tilts head sympathetically (CSS `transform: rotate(-15deg)`)
-- Never animate during question reading — only after the answer is checked
-
-### World Map — Boss Node
-- When boss is `available`: Practice Pat (energy/challenge) overlaid on the 🐉 node
-- When boss is `completed`: World mascot holding the world badge
+### Difficulty Tier Buttons (LessonCard)
+Replace emoji labels with the real badge images:
+- Bronze button → show `badge-foundation.png` (32px) + "Foundation"
+- Silver button → show `badge-application.png` (32px) + "Application"
+- Gold button → show `badge-mastery.png` (32px) + "Mastery"
 
 ### Do NOT
-- Do not use mascots in the teacher dashboard (professional context)
-- Do not show more than 2 mascots on screen at once
-- Do not resize below 48px (detail lost at small sizes)
-- Do not apply CSS filters or colour overlays to the SVGs (they have their own colours)
-- Do not animate mascots during activity questions — only on feedback/celebration screens
+- Do not use mascot images in the **teacher dashboard** — professional context
+- Do not show more than one full-body pose at a time
+- Do not resize below 48px (detail lost)
+- Do not apply CSS colour filters or overlays to the PNGs
+- Do not reference any of the removed SVG character names in new code
 
 ---
 
 ## React Implementation Pattern
 
 ```tsx
-// ✅ Correct — use as <img> with role="presentation"
+// ✅ Correct — all mascot refs as URL strings
 <img
-  src="/mascots/penny-pencil.svg"
+  src="/mascots/pencil-waving.png"
   alt=""
   role="presentation"
-  width={120}
-  height={150}
-  className="mascot-penny"
+  width={160}
+  height={160}
+  loading="lazy"
+  className="mascot-waving"
 />
 
-// ✅ Correct — world mascot mapped from worldId
-const WORLD_MASCOTS: Record<number, string> = {
-  1: '/mascots/booksy.svg',
-  2: '/mascots/grammar-guru.svg',
-  3: '/mascots/word-wizard.svg',
-  4: '/mascots/creative-kai.svg',
-  5: '/mascots/practice-pat.svg',
-  6: '/mascots/penny-pencil.svg',
+// ✅ Correct — tier badge mapped from level
+const TIER_BADGE: Record<ActivityLevel, string> = {
+  bronze: '/mascots/badge-foundation.png',
+  silver: '/mascots/badge-application.png',
+  gold:   '/mascots/badge-mastery.png',
 }
 
-// ✅ Correct — CSS bounce on correct answer
-// @keyframes mascotBounce defined in index.css, applied via class
+// ✅ Correct — reaction face based on answer result
+const reactionFace = isCorrect ? '/mascots/face-happy.png' : '/mascots/face-worried.png'
+
+// ❌ Wrong — never import as module
+import pencilWaving from '/mascots/pencil-waving.png'
 ```
 
-Add to `src/index.css`:
+### Animation classes (defined in `src/index.css`)
 ```css
-@keyframes mascotBounce {
-  0%, 100% { transform: translateY(0); }
-  40%       { transform: translateY(-12px); }
-  60%       { transform: translateY(-6px); }
-}
-@keyframes mascotTilt {
-  0%, 100% { transform: rotate(0deg); }
-  50%       { transform: rotate(-15deg); }
-}
 .mascot-correct { animation: mascotBounce 0.6s ease; }
 .mascot-wrong   { animation: mascotTilt 0.5s ease; }
 ```
+Apply `mascot-correct` on correct answer, `mascot-wrong` on wrong answer — clears after animation via `onAnimationEnd`.
 
 ---
 
-## Colour Usage Rules (absolute)
+## WriFe Logo & UI Pattern
 
-1. **World N always uses `--color-world-N`** — never substitute another colour for a world accent
-2. **`#2C3E50` is the only text colour** for headings and body — no other dark tones
-3. **`#FFD54F` is the only gold/star/XP colour** — not `#FFD700`, not `#F7C948`
-4. **Penny Pencil pink (`#FF6B9D`) is for warmth/CTA only** — not for error states
-5. **`#F5F7FA` is the page background** — not white, not blue-tinted
-6. When referencing a mascot's personal colour in UI (e.g., world card), use the world token (`--color-world-N`), not the hardcoded hex
+From the real UI design screenshots:
+- **Logo**: Book icon (open book, blue) + bold "WriFe" text. Not a custom font — standard bold sans-serif.
+- **Header/nav background**: `var(--color-brand-primary)` (#6C5CE7 purple) with white text
+- **CTA buttons**: `var(--color-brand-secondary)` (#F5A623 orange) with white text, rounded corners (~8px)
+- **Auth page background**: `var(--color-background-auth)` (#D4EBF8 light blue)
+- **Main app background**: `var(--color-background)` (#FDF8EE warm cream)
+- **Cards**: White surface with subtle warm border, 8–12px border radius
+- **Tab navigation** (from Tab Layout.rtf): Teacher Guide | Presentation | Practice Activities | Worksheets | Progress Tracker | Assessment
 
 ---
 
-## Files Available
+## Files Available in `public/mascots/`
 
 ```
 public/mascots/
-  penny-pencil.svg      ← Main guide, pink #FF6B9D
-  booksy.svg            ← Story keeper, blue #1976D2
-  grammar-guru.svg      ← Wise owl, green #4CAF50
-  word-wizard.svg       ← Wizard, purple #7E57C2
-  creative-kai.svg      ← Artist, deep purple #9C27B0
-  practice-pat.svg      ← Energy star, orange #FF5722
-  team-reference.svg    ← All 6 together (team overview page)
-  hero-journey.svg      ← "Your Writing Journey Starts Here!" banner
-  wrife-mascot.svg      ← Standalone WriFe mascot character
+  # Achievement badges (map to difficulty tiers)
+  badge-foundation.png    ← Bronze / Foundation tier
+  badge-application.png   ← Silver / Application tier
+  badge-mastery.png       ← Gold / Mastery tier
+  badge-achievement.png   ← General achievement / World boss
+
+  # Full-body character poses
+  pencil-waving.png       ← Welcome / Login / Greeting
+  pencil-celebrating.png  ← 3 stars / Badge unlock / Boss beaten
+  pencil-thinking.png     ← Hint / Question / Boss intro
+  pencil-reading.png      ← Instructions / Write activity / Lesson intro
+
+  # Reaction expressions (face close-ups, 48–64px)
+  face-happy.png          ← Correct answer
+  face-thumbsup.png       ← Well done / Level complete
+  face-writing.png        ← In progress / Writing activity
+  face-worried.png        ← Wrong answer / 0 lives
+
+  # UI icons (standalone graphics, not the character)
+  icon-document-check.png ← Completed lesson
+  icon-clipboard.png      ← Progress / Worksheets
+  icon-practice.png       ← Practice activities
+  icon-reading.png        ← Reading / Lesson guide
+
+  # Reference
+  sprite-sheet.png        ← All 16 variants in 4×4 grid
 ```

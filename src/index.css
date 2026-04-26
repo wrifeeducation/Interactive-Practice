@@ -1,50 +1,46 @@
 @import "tailwindcss";
 
 :root {
-  /* ── World colours — tied to mascot characters ──────────────── */
-  /* World 1: Story Seeds      → Booksy (blue)         #1976D2  */
-  /* World 2: Grammar Toolkit  → Grammar Guru (green)  #4CAF50  */
-  /* World 3: Sentence Builders→ Word Wizard (purple)  #7E57C2  */
-  /* World 4: Writer's Craft   → Creative Kai (violet) #9C27B0  */
-  /* World 5: Flow & Finish    → Practice Pat (orange) #FF5722  */
-  /* World 6: Genre Arena      → Penny Pencil (pink)   #FF6B9D  */
-  --color-world-1: #1976D2;
-  --color-world-2: #4CAF50;
-  --color-world-3: #7E57C2;
-  --color-world-4: #9C27B0;
-  --color-world-5: #FF5722;
-  --color-world-6: #FF6B9D;
+  /* ── World colours — distinct palette for 6 skill worlds ───── */
+  /* Sourced from real WriFe UI designs — varied but harmonious  */
+  --color-world-1: #6C5CE7;   /* Purple    — Story Seeds         */
+  --color-world-2: #00B894;   /* Teal      — Grammar Toolkit     */
+  --color-world-3: #0984E3;   /* Blue      — Sentence Builders   */
+  --color-world-4: #E17055;   /* Coral     — Writer's Craft      */
+  --color-world-5: #FDCB6E;   /* Amber     — Flow & Finish       */
+  --color-world-6: #A29BFE;   /* Lavender  — Genre Arena         */
 
-  /* World light backgrounds (for cards, tooltips) */
-  --color-world-1-bg: #E3F2FD;
-  --color-world-2-bg: #E8F5E9;
-  --color-world-3-bg: #EDE7F6;
-  --color-world-4-bg: #F3E5F5;
-  --color-world-5-bg: #FBE9E7;
-  --color-world-6-bg: #FCE4EC;
+  /* World light backgrounds (cards, tooltips) */
+  --color-world-1-bg: #F0EEFF;
+  --color-world-2-bg: #E0FAF4;
+  --color-world-3-bg: #E3F2FD;
+  --color-world-4-bg: #FDF0ED;
+  --color-world-5-bg: #FFF8E7;
+  --color-world-6-bg: #F0EEFF;
 
-  /* ── Gamification — from WriFe SVG palette ──────────────────── */
-  --color-xp:        #FFD54F;   /* golden yellow — most-used WriFe accent */
-  --color-lives:     #FF5252;   /* red (Creative Kai palette)             */
-  --color-streak:    #FF9800;   /* orange — Practice Pat energy           */
-  --color-bronze:    #CD7F32;
-  --color-silver:    #A8A9AD;
-  --color-gold:      #FFD54F;   /* matches XP gold                        */
+  /* ── Gamification — from real WriFe mascot badge colours ────── */
+  --color-xp:        #F5C500;   /* golden yellow — mascot badge gold      */
+  --color-lives:     #E74C3C;   /* red                                    */
+  --color-streak:    #F5A623;   /* warm orange — WriFe CTA orange         */
+  --color-bronze:    #CD7F32;   /* Foundation badge tier                  */
+  --color-silver:    #A8A9AD;   /* Application badge tier                 */
+  --color-gold:      #F5C500;   /* Mastery badge tier                     */
 
-  /* ── WriFe Brand — extracted from feature icons & hero SVG ──── */
-  --color-brand-primary:   #4A90E2;   /* WriFe blue — feature icon bg    */
-  --color-brand-secondary: #FF6B9D;   /* Penny Pencil pink — warmth/CTA  */
-  --color-brand-accent:    #FFD54F;   /* Golden yellow — stars/XP/energy  */
+  /* ── WriFe Brand — sourced from real UI design screenshots ──── */
+  --color-brand-primary:   #6C5CE7;   /* Purple — headers, nav, logo      */
+  --color-brand-secondary: #F5A623;   /* Orange — CTA buttons throughout  */
+  --color-brand-accent:    #F5C500;   /* Gold   — stars, XP, highlights   */
 
   /* ── Surfaces ────────────────────────────────────────────────── */
-  --color-background: #F5F7FA;   /* WriFe light grey — from feature sheet */
-  --color-surface:    #FFFFFF;
-  --color-border:     #E3F2FD;   /* soft blue-tinted border               */
-  --color-overlay:    rgba(44, 62, 80, 0.6);
+  --color-background:      #FDF8EE;   /* Warm cream — main app background */
+  --color-background-auth: #D4EBF8;   /* Light blue — login/auth pages    */
+  --color-surface:         #FFFFFF;
+  --color-border:          #E8E0D5;   /* Warm grey border                 */
+  --color-overlay:         rgba(44, 38, 62, 0.6);
 
-  /* ── Text — #2C3E50 is the dominant colour across ALL WriFe SVGs */
-  --color-text:         #2C3E50;   /* WriFe dark navy — 109 uses in SVGs   */
-  --color-text-muted:   #666666;   /* muted grey — from SVG labels          */
+  /* ── Text — dark charcoal from WriFe UI designs ─────────────── */
+  --color-text:         #2D3436;   /* near-black — WriFe body text         */
+  --color-text-muted:   #636E72;   /* muted grey                           */
   --color-text-on-dark: #FFFFFF;
 
   /* ── Feedback ────────────────────────────────────────────────── */
