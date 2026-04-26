@@ -217,6 +217,12 @@ export default function WorldMap() {
           <Link to="/pupil/badges" data-testid="nav-badges" aria-label="View badges" style={{ fontSize: '22px', textDecoration: 'none', minWidth: '44px', minHeight: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             🏅
           </Link>
+          <Link to="/pupil/leaderboard" data-testid="nav-leaderboard" aria-label="Class leaderboard" style={{ fontSize: '22px', textDecoration: 'none', minWidth: '44px', minHeight: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            🏆
+          </Link>
+          <Link to="/pupil/join" data-testid="nav-join-class" aria-label="Join class" style={{ fontSize: '12px', fontWeight: 600, color: 'var(--color-brand-primary)', textDecoration: 'none', padding: '6px 10px', border: '1px solid var(--color-brand-primary)', borderRadius: 'var(--radius-sm)', minHeight: '44px', display: 'flex', alignItems: 'center', whiteSpace: 'nowrap' }}>
+            Join Class
+          </Link>
         </div>
       </nav>
 

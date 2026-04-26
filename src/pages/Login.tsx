@@ -46,6 +46,17 @@ export default function Login() {
 
   return (
     <div style={styles.page}>
+      {/* Penny Pencil — right side on desktop, above form on mobile (brand-mascots.md) */}
+      <img
+        src="/mascots/penny-pencil.svg"
+        alt=""
+        role="presentation"
+        width={180}
+        height={225}
+        loading="lazy"
+        style={styles.mascot}
+        className="login-mascot"
+      />
       <div style={styles.card}>
         {/* Brand gradient header */}
         <div style={styles.header}>
@@ -119,6 +130,11 @@ const styles: Record<string, React.CSSProperties> = {
     justifyContent: 'center',
     background: 'var(--color-background)',
     padding: '16px',
+    gap: '24px',
+  },
+  mascot: {
+    flexShrink: 0,
+    order: 2,
   },
   card: {
     width: '100%',

@@ -122,11 +122,90 @@ body {
   margin: 0;
 }
 
+/* ── Spacing tokens ────────────────────────────────────────── */
+--space-1: 4px;
+--space-2: 8px;
+--space-3: 12px;
+--space-4: 16px;
+--space-5: 24px;
+--space-6: 32px;
+--space-7: 48px;
+--space-8: 64px;
+
+/* ── Border radius ─────────────────────────────────────────── */
+--radius-sm:   8px;
+--radius-md:   12px;
+--radius-lg:   20px;
+--radius-xl:   32px;
+--radius-full: 9999px;
+
+/* ── Shadows ───────────────────────────────────────────────── */
+--shadow-sm: 0 1px 4px rgba(0,0,0,0.08);
+--shadow-md: 0 4px 16px rgba(0,0,0,0.12);
+--shadow-lg: 0 8px 32px rgba(0,0,0,0.16);
+
+/* ── Transitions ───────────────────────────────────────────── */
+--transition-fast:   150ms ease;
+--transition-normal: 250ms ease;
+--transition-slow:   400ms ease;
+
+/* ── Feedback bg ───────────────────────────────────────────── */
+--color-correct-bg:   #E8F5E9;
+--color-incorrect-bg: #FFEBEE;
+
 /* ── Confetti burst animation (LessonComplete) ─────────────── */
 @keyframes confettiFall {
   0%   { transform: translateY(0) rotate(0deg); opacity: 1; }
   80%  { opacity: 1; }
   100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
+
+/* ── Skeleton shimmer animation (TICKET-048) ───────────────── */
+@keyframes shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--color-border) 25%,
+    #f0f0f0 50%,
+    var(--color-border) 75%
+  );
+  background-size: 800px 100%;
+  animation: shimmer 1.4s infinite;
+}
+
+/* ── Mascot animations (brand-mascots.md) ──────────────────── */
+@keyframes mascotBounce {
+  0%, 100% { transform: translateY(0); }
+  40%       { transform: translateY(-12px); }
+  60%       { transform: translateY(-6px); }
+}
+@keyframes mascotTilt {
+  0%, 100% { transform: rotate(0deg); }
+  50%       { transform: rotate(-15deg); }
+}
+.mascot-correct { animation: mascotBounce 0.6s ease; }
+.mascot-wrong   { animation: mascotTilt 0.5s ease; }
+
+/* ── Mobile responsive — teacher sidebar (TICKET-046) ─────── */
+@media (max-width: 768px) {
+  .teacher-sidebar {
+    position: fixed !important;
+    left: -240px;
+    top: 0;
+    height: 100vh;
+    z-index: 50;
+    transition: left 250ms ease;
+  }
+  .teacher-sidebar.open {
+    left: 0;
+  }
+  .teacher-hamburger {
+    display: flex !important;
+  }
 }
 
 /* ── WriFe app root override ───────────────────────────────── */

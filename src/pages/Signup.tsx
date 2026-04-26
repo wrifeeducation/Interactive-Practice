@@ -85,6 +85,17 @@ export default function Signup() {
         </div>
 
         <div style={styles.body}>
+          {/* Penny Pencil — above form on signup page (brand-mascots.md: 140px) */}
+          <div style={{ textAlign: 'center', marginBottom: '16px' }}>
+            <img
+              src="/mascots/penny-pencil.svg"
+              alt=""
+              role="presentation"
+              width={140}
+              height={175}
+              loading="lazy"
+            />
+          </div>
           <form onSubmit={handleSubmit} noValidate>
             <div style={styles.field}>
               <label htmlFor="signup-name" style={styles.label}>Full Name</label>

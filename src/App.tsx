@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { supabase } from './lib/supabase'
 import { useAuthStore } from './stores/authStore'
 import RoleRedirect from './components/RoleRedirect'
+import ErrorBoundary from './components/ErrorBoundary'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
 import ActivitySession from './pages/ActivitySession'
@@ -13,7 +14,9 @@ import BossChallenge from './pages/BossChallenge'
 import BadgeShelf from './pages/BadgeShelf'
 
 // Lazy-loaded heavy/teacher pages
-const TeacherDashboard = lazy(() => import('./pages/TeacherDashboard'))
+const TeacherDashboard = lazy(() => import('./pages/teacher/TeacherDashboard'))
+const PupilJoinClass = lazy(() => import('./pages/PupilJoinClass'))
+const PupilLeaderboard = lazy(() => import('./pages/PupilLeaderboard'))
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { staleTime: 1000 * 60 * 5 } },
@@ -48,69 +51,107 @@ function AppRoutes() {
   }, [setSession, fetchProfile])
 
   return (
-    <Routes>
-      {/* Public routes */}
-      <Route path="/login" element={<Login />} />
-      <Route path="/signup" element={<Signup />} />
+    <ErrorBoundary>
+      <Routes>
+        {/* Public routes */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
 
-      {/* Pupil-only routes */}
-      <Route
-        path="/world-map"
-        element={
-          <RoleRedirect allowedRole="pupil">
-            <WorldMap />
-          </RoleRedirect>
-        }
-      />
-      <Route
-        path="/lesson/:lessonId/:level"
-        element={
-          <RoleRedirect allowedRole="pupil">
-            <ActivitySession />
-          </RoleRedirect>
-        }
-      />
-      <Route
-        path="/lesson/:lessonId/complete"
-        element={
-          <RoleRedirect allowedRole="pupil">
-            <LessonComplete />
-          </RoleRedirect>
-        }
-      />
-      <Route
-        path="/boss/:worldId"
-        element={
-          <RoleRedirect allowedRole="pupil">
-            <BossChallenge />
-          </RoleRedirect>
-        }
-      />
-      <Route
-        path="/pupil/badges"
-        element={
-          <RoleRedirect allowedRole="pupil">
-            <BadgeShelf />
-          </RoleRedirect>
-        }
-      />
+        {/* Pupil-only routes */}
+        <Route
+          path="/world-map"
+          element={
+            <RoleRedirect allowedRole="pupil">
+              <ErrorBoundary>
+                <WorldMap />
+              </ErrorBoundary>
+            </RoleRedirect>
+          }
+        />
+        <Route
+          path="/lesson/:lessonId/:level"
+          element={
+            <RoleRedirect allowedRole="pupil">
+              <ErrorBoundary>
+                <ActivitySession />
+              </ErrorBoundary>
+            </RoleRedirect>
+          }
+        />
+        <Route
+          path="/lesson/:lessonId/complete"
+          element={
+            <RoleRedirect allowedRole="pupil">
+              <ErrorBoundary>
+                <LessonComplete />
+              </ErrorBoundary>
+            </RoleRedirect>
+          }
+        />
+        <Route
+          path="/boss/:worldId"
+          element={
+            <RoleRedirect allowedRole="pupil">
+              <ErrorBoundary>
+                <BossChallenge />
+              </ErrorBoundary>
+            </RoleRedirect>
+          }
+        />
+        <Route
+          path="/pupil/badges"
+          element={
+            <RoleRedirect allowedRole="pupil">
+              <ErrorBoundary>
+                <BadgeShelf />
+              </ErrorBoundary>
+            </RoleRedirect>
+          }
+        />
+        <Route
+          path="/pupil/join"
+          element={
+            <RoleRedirect allowedRole="pupil">
+              <Suspense fallback={<FullPageSpinner />}>
+                <ErrorBoundary>
+                  <PupilJoinClass />
+                </ErrorBoundary>
+              </Suspense>
+            </RoleRedirect>
+          }
+        />
+        <Route
+          path="/pupil/leaderboard"
+          element={
+            <RoleRedirect allowedRole="pupil">
+              <Suspense fallback={<FullPageSpinner />}>
+                <ErrorBoundary>
+                  <PupilLeaderboard />
+                </ErrorBoundary>
+              </Suspense>
+            </RoleRedirect>
+          }
+        />
 
-      {/* Teacher-only routes */}
-      <Route
-        path="/teacher"
-        element={
-          <RoleRedirect allowedRole="teacher">
-            <Suspense fallback={<FullPageSpinner />}>
-              <TeacherDashboard />
-            </Suspense>
-          </RoleRedirect>
-        }
-      />
+        {/* Teacher-only routes — nested under /teacher/* */}
+        <Route
+          path="/teacher/*"
+          element={
+            <RoleRedirect allowedRole="teacher">
+              <Suspense fallback={<FullPageSpinner />}>
+                <ErrorBoundary>
+                  <TeacherDashboard />
+                </ErrorBoundary>
+              </Suspense>
+            </RoleRedirect>
+          }
+        />
 
-      {/* Default redirect */}
-      <Route path="/" element={<Navigate to="/world-map" replace />} />
-      <Route path="*" element={<Navigate to="/world-map" replace />} />
-    </Routes>
+        {/* Default redirect */}
+        <Route path="/" element={<Navigate to="/world-map" replace />} />
+        <Route path="*" element={<Navigate to="/world-map" replace />} />
+      </Routes>
+    </ErrorBoundary>
   )
 }
 
