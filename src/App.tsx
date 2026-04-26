@@ -8,6 +8,9 @@ import Login from './pages/Login'
 import Signup from './pages/Signup'
 import ActivitySession from './pages/ActivitySession'
 import LessonComplete from './pages/LessonComplete'
+import WorldMap from './pages/WorldMap'
+import BossChallenge from './pages/BossChallenge'
+import BadgeShelf from './pages/BadgeShelf'
 
 // Lazy-loaded heavy/teacher pages
 const TeacherDashboard = lazy(() => import('./pages/TeacherDashboard'))
@@ -23,15 +26,6 @@ function FullPageSpinner() {
         <div style={{ fontSize: 48, marginBottom: 16 }}>📖</div>
         <p style={{ color: 'var(--color-text-muted)', fontSize: 18 }}>Loading WriFe…</p>
       </div>
-    </div>
-  )
-}
-
-function WorldMapPlaceholder() {
-  return (
-    <div style={{ padding: 32, textAlign: 'center' }}>
-      <h1 style={{ color: 'var(--color-text)' }}>🗺️ World Map</h1>
-      <p style={{ color: 'var(--color-text-muted)', fontSize: 18 }}>Coming in TICKET-021</p>
     </div>
   )
 }
@@ -64,7 +58,7 @@ function AppRoutes() {
         path="/world-map"
         element={
           <RoleRedirect allowedRole="pupil">
-            <WorldMapPlaceholder />
+            <WorldMap />
           </RoleRedirect>
         }
       />
@@ -81,6 +75,22 @@ function AppRoutes() {
         element={
           <RoleRedirect allowedRole="pupil">
             <LessonComplete />
+          </RoleRedirect>
+        }
+      />
+      <Route
+        path="/boss/:worldId"
+        element={
+          <RoleRedirect allowedRole="pupil">
+            <BossChallenge />
+          </RoleRedirect>
+        }
+      />
+      <Route
+        path="/pupil/badges"
+        element={
+          <RoleRedirect allowedRole="pupil">
+            <BadgeShelf />
           </RoleRedirect>
         }
       />

@@ -252,3 +252,34 @@ export interface ProgressInput {
   level: ActivityLevel
   answers: AnswerRecord[]
 }
+
+// ── Auth Store Extra State ────────────────────────────────────
+
+export interface AuthExtras {
+  xpTotal: number
+  streak: number
+  setXpTotal: (xp: number) => void
+  setStreak: (s: number) => void
+}
+
+// ── Badge Earned (with earned_at from join) ───────────────────
+
+export interface EarnedBadge extends Badge {
+  earned_at: string
+}
+
+// ── Boss Challenge Result ─────────────────────────────────────
+
+export interface BossResult {
+  correct: number
+  total: number
+  xpAwarded: number
+}
+
+// ── Streak Update Result ──────────────────────────────────────
+
+export interface StreakUpdateResult {
+  newStreak: number
+  longestStreak: number
+  milestoneReached: number | null
+}
