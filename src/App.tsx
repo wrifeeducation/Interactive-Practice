@@ -5,6 +5,7 @@ import { supabase } from './lib/supabase'
 import { useAuthStore } from './stores/authStore'
 import RoleRedirect from './components/RoleRedirect'
 import ErrorBoundary from './components/ErrorBoundary'
+import Home from './pages/Home'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
 import ActivitySession from './pages/ActivitySession'
@@ -54,6 +55,7 @@ function AppRoutes() {
     <ErrorBoundary>
       <Routes>
         {/* Public routes */}
+        <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
 

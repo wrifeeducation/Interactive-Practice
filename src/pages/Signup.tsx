@@ -1,15 +1,18 @@
 import { useState, type FormEvent } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import type { UserRole } from '../types'
 
 export default function Signup() {
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
 
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [role, setRole] = useState<UserRole>('pupil')
+  const [role, setRole] = useState<UserRole>(
+    searchParams.get('role') === 'teacher' ? 'teacher' : 'pupil'
+  )
   const [inviteCode, setInviteCode] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
