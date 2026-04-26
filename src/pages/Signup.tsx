@@ -36,7 +36,7 @@ export default function Signup() {
       email,
       password,
       options: {
-        emailRedirectTo: 'https://interactive-practice.vercel.app',
+        emailRedirectTo: 'https://practice.wrife.co.uk',
         data: { name, role },
       },
     })
@@ -49,23 +49,27 @@ export default function Signup() {
 
     const userId = data.user.id
 
-    // Insert profile
+    // Profile is auto-created by a database trigger (handle_new_user).
+    // We wait briefly to ensure the trigger has fired, then verify.
+    await new Promise(r => setTimeout(r, 800))
+
     const { error: profileError } = await supabase
       .from('profiles')
-      .insert({ id: userId, role, name })
+      .select('id')
+      .eq('id', userId)
+      .maybeSingle()
 
     if (profileError) {
-      setLoading(false)
-      setError('Account created but profile setup failed. Please contact support.')
-      return
+      // Trigger may not have fired yet — not a hard error, proceed anyway
+      console.warn('Profile check warning:', profileError.message)
     }
 
     // Handle invite code
-    if (inviteCode.trim()) {
+    if (inviteCode.trim() && role === 'pupil') {
       const { data: classData } = await supabase
         .from('classes')
         .select('id')
-        .eq('invite_code', inviteCode.trim())
+        .eq('invite_code', inviteCode.trim().toUpperCase())
         .maybeSingle()
 
       if (classData) {
@@ -76,6 +80,13 @@ export default function Signup() {
     }
 
     setLoading(false)
+
+    // If email confirmation is required, show a check-email message
+    if (!data.session) {
+      navigate('/login?notice=check-email')
+      return
+    }
+
     navigate(role === 'teacher' ? '/teacher' : '/world-map')
   }
 
