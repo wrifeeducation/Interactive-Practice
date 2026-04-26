@@ -1,0 +1,146 @@
+<svg viewBox="0 0 400 500" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle with creative swirls -->
+  <circle cx="200" cy="250" r="180" fill="#F3E5F5" opacity="0.4"/>
+  
+  <!-- Swirly creative lines in background -->
+  <path d="M 60,150 Q 80,120 100,140 Q 120,160 140,140" stroke="#9C27B0" stroke-width="3" fill="none" opacity="0.2" stroke-linecap="round"/>
+  <path d="M 320,280 Q 300,250 280,270 Q 260,290 240,270" stroke="#FF6B9D" stroke-width="3" fill="none" opacity="0.2" stroke-linecap="round"/>
+  
+  <!-- Character body -->
+  <g transform="translate(200, 280)">
+    <!-- Legs -->
+    <rect x="-22" y="75" width="15" height="52" rx="7" fill="#7B1FA2"/>
+    <rect x="7" y="75" width="15" height="52" rx="7" fill="#7B1FA2"/>
+    
+    <!-- Colorful shoes with paint splatters -->
+    <ellipse cx="-14" cy="127" rx="14" ry="8" fill="#FF6B9D"/>
+    <ellipse cx="14" cy="127" rx="14" ry="8" fill="#4CAF50"/>
+    <!-- Paint splatter on shoes -->
+    <circle cx="-14" cy="127" r="3" fill="#FFD54F" opacity="0.8"/>
+    <circle cx="14" cy="127" r="3" fill="#9C27B0" opacity="0.8"/>
+    
+    <!-- Body/smock with paint splatter -->
+    <rect x="-33" y="18" width="66" height="62" rx="8" fill="#9C27B0"/>
+    <!-- Rainbow paint splatters on smock -->
+    <circle cx="-15" cy="35" r="5" fill="#FF5252" opacity="0.7"/>
+    <circle cx="8" cy="45" r="6" fill="#FFD54F" opacity="0.7"/>
+    <circle cx="-8" cy="60" r="4" fill="#4CAF50" opacity="0.7"/>
+    <circle cx="18" cy="30" r="5" fill="#2196F3" opacity="0.7"/>
+    
+    <!-- Pocket on smock -->
+    <rect x="-10" y="50" width="20" height="15" rx="2" fill="#7B1FA2"/>
+    <!-- Paintbrushes sticking out -->
+    <line x1="-5" y1="50" x2="-7" y2="40" stroke="#FFD54F" stroke-width="2"/>
+    <line x1="0" y1="50" x2="0" y2="38" stroke="#FF6B9D" stroke-width="2"/>
+    <line x1="5" y1="50" x2="7" y2="40" stroke="#4CAF50" stroke-width="2"/>
+    
+    <!-- Arms -->
+    <rect x="-48" y="25" width="17" height="48" rx="8" fill="#8D6E63"/>
+    <rect x="31" y="25" width="17" height="48" rx="8" fill="#8D6E63"/>
+    
+    <!-- Hands -->
+    <circle cx="-40" cy="73" r="9" fill="#8D6E63"/>
+    <circle cx="39" cy="73" r="9" fill="#8D6E63"/>
+    
+    <!-- Neck -->
+    <rect x="-11" y="4" width="22" height="16" fill="#8D6E63"/>
+    
+    <!-- Head -->
+    <circle cx="0" cy="-22" r="40" fill="#8D6E63"/>
+    
+    <!-- Hair - wild and creative with paint streak -->
+    <g fill="#2C3E50">
+      <ellipse cx="-25" cy="-48" rx="20" ry="28" transform="rotate(-30 -25 -48)"/>
+      <ellipse cx="-8" cy="-55" rx="18" ry="30" transform="rotate(-10 -8 -55)"/>
+      <ellipse cx="10" cy="-56" rx="16" ry="32" transform="rotate(5 10 -56)"/>
+      <ellipse cx="28" cy="-50" rx="18" ry="26" transform="rotate(35 28 -50)"/>
+      <ellipse cx="0" cy="-60" rx="20" ry="15"/>
+    </g>
+    <!-- Paint streak in hair -->
+    <path d="M -30,-45 Q -10,-35 5,-40" stroke="#FF6B9D" stroke-width="5" stroke-linecap="round"/>
+    
+    <!-- Beret/artist hat -->
+    <ellipse cx="0" cy="-50" rx="38" ry="15" fill="#9C27B0"/>
+    <circle cx="-5" cy="-55" r="4" fill="#FFD54F"/>
+    
+    <!-- Face features -->
+    <!-- Eyes - dreamy and imaginative -->
+    <ellipse cx="-13" cy="-26" rx="7" ry="9" fill="#2C3E50"/>
+    <ellipse cx="13" cy="-26" rx="7" ry="9" fill="#2C3E50"/>
+    <!-- Star reflection (dreaming) -->
+    <polygon points="-13,-28 -12,-26 -10,-26 -11,-24 -11,-22 -13,-23 -15,-22 -15,-24 -16,-26 -14,-26" fill="#ffffff" opacity="0.9"/>
+    <polygon points="13,-28 14,-26 16,-26 15,-24 15,-22 13,-23 11,-22 11,-24 10,-26 12,-26" fill="#ffffff" opacity="0.9"/>
+    
+    <!-- Nose -->
+    <ellipse cx="0" cy="-16" rx="3" ry="5" fill="#6D4C41" opacity="0.3"/>
+    
+    <!-- Creative smile -->
+    <path d="M -15,-6 Q 0,3 15,-6" stroke="#2C3E50" stroke-width="3" fill="none" stroke-linecap="round"/>
+    
+    <!-- Rosy cheeks -->
+    <circle cx="-24" cy="-11" r="8" fill="#9C27B0" opacity="0.3"/>
+    <circle cx="24" cy="-11" r="8" fill="#9C27B0" opacity="0.3"/>
+    
+    <!-- Paint palette in left hand -->
+    <g transform="translate(-40, 73)">
+      <ellipse cx="0" cy="0" rx="18" ry="14" fill="#8D6E63" stroke="#5D4037" stroke-width="2"/>
+      <!-- Thumb hole -->
+      <ellipse cx="-12" cy="0" rx="4" ry="6" fill="none" stroke="#5D4037" stroke-width="2"/>
+      <!-- Paint blobs on palette -->
+      <circle cx="-5" cy="-5" r="3" fill="#FF5252"/>
+      <circle cx="5" cy="-5" r="3" fill="#FFD54F"/>
+      <circle cx="-5" cy="5" r="3" fill="#4CAF50"/>
+      <circle cx="5" cy="5" r="3" fill="#2196F3"/>
+      <circle cx="0" cy="0" r="3" fill="#9C27B0"/>
+    </g>
+    
+    <!-- Paintbrush in right hand -->
+    <g transform="translate(39, 73) rotate(45)">
+      <rect x="-2" y="-25" width="4" height="30" fill="#FFD54F"/>
+      <rect x="-2" y="5" width="4" height="5" fill="#2C3E50"/>
+      <!-- Brush bristles -->
+      <path d="M -4,-25 L -4,-35 L 0,-38 L 4,-35 L 4,-25 Z" fill="#9C27B0"/>
+      <!-- Paint drip -->
+      <ellipse cx="0" cy="-38" rx="2" ry="3" fill="#9C27B0"/>
+    </g>
+  </g>
+  
+  <!-- Speech bubble -->
+  <g transform="translate(320, 160)">
+    <ellipse cx="0" cy="0" rx="62" ry="42" fill="#ffffff" stroke="#9C27B0" stroke-width="3"/>
+    <polygon points="-30,25 -48,45 -22,32" fill="#ffffff"/>
+    <polygon points="-30,25 -48,45 -22,32" fill="none" stroke="#9C27B0" stroke-width="3"/>
+    <text x="0" y="-10" font-family="Arial" font-size="15" font-weight="bold" fill="#9C27B0" text-anchor="middle">
+      Imagine &
+    </text>
+    <text x="0" y="8" font-family="Arial" font-size="15" font-weight="bold" fill="#9C27B0" text-anchor="middle">
+      create!
+    </text>
+  </g>
+  
+  <!-- Floating creative elements -->
+  <g transform="translate(80, 200)">
+    <!-- Cloud -->
+    <ellipse cx="0" cy="0" rx="20" ry="12" fill="#E3F2FD" opacity="0.6"/>
+    <ellipse cx="-12" cy="3" rx="12" ry="10" fill="#E3F2FD" opacity="0.6"/>
+    <ellipse cx="12" cy="3" rx="12" ry="10" fill="#E3F2FD" opacity="0.6"/>
+  </g>
+  
+  <polygon points="340,300 343,308 351,308 345,314 347,322 340,317 333,322 335,314 329,308 337,308" fill="#FFD54F" opacity="0.7"/>
+  
+  <!-- Rainbow arc -->
+  <path d="M 70,360 Q 100,330 130,360" stroke="#FF5252" stroke-width="4" fill="none" opacity="0.3"/>
+  <path d="M 73,363 Q 100,336 127,363" stroke="#FFD54F" stroke-width="4" fill="none" opacity="0.3"/>
+  <path d="M 76,366 Q 100,342 124,366" stroke="#4CAF50" stroke-width="4" fill="none" opacity="0.3"/>
+  
+  <!-- Name label -->
+  <g transform="translate(200, 460)">
+    <rect x="-80" y="-25" width="160" height="50" rx="8" fill="#9C27B0" opacity="0.9"/>
+    <text x="0" y="0" font-family="Arial, sans-serif" font-size="26" font-weight="bold" fill="#ffffff" text-anchor="middle">
+      Creative Kai
+    </text>
+    <text x="0" y="20" font-family="Arial, sans-serif" font-size="14" fill="#ffffff" text-anchor="middle">
+      Imagination Explorer
+    </text>
+  </g>
+</svg>

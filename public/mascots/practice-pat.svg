@@ -1,0 +1,144 @@
+<svg viewBox="0 0 400 500" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle with motion lines -->
+  <circle cx="200" cy="250" r="180" fill="#FFF3E0" opacity="0.4"/>
+  
+  <!-- Motion/speed lines -->
+  <line x1="50" y1="200" x2="80" y2="200" stroke="#FF9800" stroke-width="4" opacity="0.3" stroke-linecap="round"/>
+  <line x1="60" y1="240" x2="95" y2="240" stroke="#FF9800" stroke-width="4" opacity="0.3" stroke-linecap="round"/>
+  <line x1="45" y1="280" x2="75" y2="280" stroke="#FF9800" stroke-width="4" opacity="0.3" stroke-linecap="round"/>
+  
+  <!-- Character body - dynamic pose -->
+  <g transform="translate(200, 260)">
+    <!-- Legs - in running/jumping pose -->
+    <rect x="-25" y="70" width="16" height="55" rx="8" fill="#FF9800" transform="rotate(-15 -17 70)"/>
+    <rect x="9" y="75" width="16" height="50" rx="8" fill="#FF9800" transform="rotate(10 17 75)"/>
+    
+    <!-- Shoes - sporty sneakers -->
+    <g transform="translate(-20, 115) rotate(-15)">
+      <ellipse cx="0" cy="0" rx="16" ry="9" fill="#2C3E50"/>
+      <ellipse cx="0" cy="0" rx="12" ry="7" fill="#FF5722"/>
+      <line x1="-8" y1="-3" x2="8" y2="-3" stroke="#ffffff" stroke-width="2"/>
+    </g>
+    
+    <g transform="translate(20, 120) rotate(10)">
+      <ellipse cx="0" cy="0" rx="16" ry="9" fill="#2C3E50"/>
+      <ellipse cx="0" cy="0" rx="12" ry="7" fill="#FF5722"/>
+      <line x1="-8" y1="-3" x2="8" y2="-3" stroke="#ffffff" stroke-width="2"/>
+    </g>
+    
+    <!-- Body/shirt with number -->
+    <rect x="-30" y="15" width="60" height="60" rx="8" fill="#FF5722"/>
+    <!-- Number "1" on shirt (for #1 practice!) -->
+    <text x="0" y="55" font-family="Arial" font-size="32" font-weight="bold" fill="#FFD54F" text-anchor="middle">1</text>
+    
+    <!-- Arms - raised in celebration -->
+    <rect x="-50" y="20" width="17" height="50" rx="8" fill="#D4A574" transform="rotate(-45 -42 20)"/>
+    <rect x="33" y="20" width="17" height="50" rx="8" fill="#D4A574" transform="rotate(45 42 20)"/>
+    
+    <!-- Hands - fists up! -->
+    <circle cx="-60" cy="5" r="10" fill="#D4A574"/>
+    <circle cx="60" cy="5" r="10" fill="#D4A574"/>
+    
+    <!-- Neck -->
+    <rect x="-10" y="3" width="20" height="15" fill="#D4A574"/>
+    
+    <!-- Head -->
+    <circle cx="0" cy="-25" r="38" fill="#D4A574"/>
+    
+    <!-- Hair - sporty/spiky -->
+    <g fill="#2C3E50">
+      <ellipse cx="-20" cy="-50" rx="15" ry="20" transform="rotate(-25 -20 -50)"/>
+      <ellipse cx="-5" cy="-58" rx="12" ry="22" transform="rotate(-5 -5 -58)"/>
+      <ellipse cx="10" cy="-55" rx="13" ry="20" transform="rotate(10 10 -55)"/>
+      <ellipse cx="25" cy="-48" rx="14" ry="18" transform="rotate(30 25 -48)"/>
+    </g>
+    
+    <!-- Headband - sporty! -->
+    <rect x="-38" y="-35" width="76" height="8" rx="4" fill="#FFD54F"/>
+    <circle cx="0" cy="-31" r="6" fill="#FF5722"/>
+    
+    <!-- Face features -->
+    <!-- Eyes - determined and energetic -->
+    <ellipse cx="-12" cy="-28" rx="6" ry="8" fill="#2C3E50"/>
+    <ellipse cx="12" cy="-28" rx="6" ry="8" fill="#2C3E50"/>
+    <circle cx="-10" cy="-30" r="2.5" fill="#ffffff"/>
+    <circle cx="14" cy="-30" r="2.5" fill="#ffffff"/>
+    
+    <!-- Eyebrows - energetic -->
+    <path d="M -18,-35 L -6,-33" stroke="#2C3E50" stroke-width="3" stroke-linecap="round"/>
+    <path d="M 18,-35 L 6,-33" stroke="#2C3E50" stroke-width="3" stroke-linecap="round"/>
+    
+    <!-- Nose -->
+    <ellipse cx="0" cy="-18" rx="3" ry="4" fill="#B8845F" opacity="0.4"/>
+    
+    <!-- Big excited smile -->
+    <path d="M -16,-8 Q 0,2 16,-8" stroke="#2C3E50" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <!-- Teeth showing (extra energy!) -->
+    <rect x="-10" y="-8" width="20" height="6" fill="#ffffff" rx="2"/>
+    
+    <!-- Rosy cheeks from exercise -->
+    <circle cx="-23" cy="-13" r="8" fill="#FF5722" opacity="0.4"/>
+    <circle cx="23" cy="-13" r="8" fill="#FF5722" opacity="0.4"/>
+    
+    <!-- Whistle on string around neck -->
+    <line x1="0" y1="5" x2="25" y2="25" stroke="#2C3E50" stroke-width="2"/>
+    <ellipse cx="28" cy="27" rx="8" ry="5" fill="#FFD54F" stroke="#2C3E50" stroke-width="2"/>
+    <circle cx="32" cy="27" r="2" fill="#2C3E50"/>
+    
+    <!-- Stopwatch in hand -->
+    <g transform="translate(-60, 5)">
+      <circle cx="0" cy="0" r="10" fill="#2C3E50" stroke="#FFD54F" stroke-width="2"/>
+      <circle cx="0" cy="0" r="8" fill="#ffffff"/>
+      <line x1="0" y1="0" x2="0" y2="-5" stroke="#FF5722" stroke-width="2"/>
+      <line x1="0" y1="0" x2="4" y2="0" stroke="#2C3E50" stroke-width="1.5"/>
+      <rect x="-2" y="-13" width="4" height="3" rx="1" fill="#FFD54F"/>
+    </g>
+    
+    <!-- Practice checklist in other hand -->
+    <g transform="translate(60, 5)">
+      <rect x="-10" y="-8" width="20" height="28" rx="2" fill="#ffffff" stroke="#FF9800" stroke-width="2"/>
+      <!-- Checkmarks -->
+      <g fill="none" stroke="#4CAF50" stroke-width="2" stroke-linecap="round">
+        <polyline points="-7,-2 -5,1 -2,-3"/>
+        <polyline points="-7,4 -5,7 -2,3"/>
+        <polyline points="-7,10 -5,13 -2,9"/>
+      </g>
+    </g>
+  </g>
+  
+  <!-- Speech bubble -->
+  <g transform="translate(100, 150)">
+    <ellipse cx="0" cy="0" rx="70" ry="40" fill="#ffffff" stroke="#FF5722" stroke-width="3"/>
+    <polygon points="35,20 55,40 40,28" fill="#ffffff"/>
+    <polygon points="35,20 55,40 40,28" fill="none" stroke="#FF5722" stroke-width="3"/>
+    <text x="0" y="-10" font-family="Arial" font-size="16" font-weight="bold" fill="#FF5722" text-anchor="middle">
+      Practice makes
+    </text>
+    <text x="0" y="8" font-family="Arial" font-size="16" font-weight="bold" fill="#FF5722" text-anchor="middle">
+      perfect!
+    </text>
+  </g>
+  
+  <!-- Energy stars/sparkles -->
+  <polygon points="320,160 322,168 330,168 324,173 326,181 320,176 314,181 316,173 310,168 318,168" fill="#FFD54F" opacity="0.8"/>
+  <polygon points="340,240 341,244 345,244 342,247 343,251 340,248 337,251 338,247 335,244 339,244" fill="#FF9800" opacity="0.8"/>
+  <polygon points="310,320 311,323 314,323 312,325 313,328 310,326 307,328 308,325 306,323 309,323" fill="#FF5722" opacity="0.7"/>
+  
+  <!-- Trophy icon floating -->
+  <g transform="translate(330, 350)">
+    <ellipse cx="0" cy="5" rx="8" ry="6" fill="#FFD54F"/>
+    <rect x="-6" y="-5" width="12" height="12" rx="1" fill="#FFD54F" stroke="#FF9800" stroke-width="2"/>
+    <polygon points="0,-3 1.5,0 4,0 2,2 2.5,4.5 0,3 -2.5,4.5 -2,2 -4,0 -1.5,0" fill="#FF9800"/>
+  </g>
+  
+  <!-- Name label -->
+  <g transform="translate(200, 460)">
+    <rect x="-80" y="-25" width="160" height="50" rx="8" fill="#FF5722" opacity="0.9"/>
+    <text x="0" y="0" font-family="Arial, sans-serif" font-size="26" font-weight="bold" fill="#ffffff" text-anchor="middle">
+      Practice Pat
+    </text>
+    <text x="0" y="20" font-family="Arial, sans-serif" font-size="14" fill="#ffffff" text-anchor="middle">
+      The Energy Star!
+    </text>
+  </g>
+</svg>

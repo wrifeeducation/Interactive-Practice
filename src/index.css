@@ -1,40 +1,55 @@
 @import "tailwindcss";
 
 :root {
-  /* ── World colours ───────────────────────────────────────────── */
-  --color-world-1: #4CAF50;
-  --color-world-2: #2196F3;
-  --color-world-3: #9C27B0;
-  --color-world-4: #FF9800;
-  --color-world-5: #00BCD4;
-  --color-world-6: #F44336;
+  /* ── World colours — tied to mascot characters ──────────────── */
+  /* World 1: Story Seeds      → Booksy (blue)         #1976D2  */
+  /* World 2: Grammar Toolkit  → Grammar Guru (green)  #4CAF50  */
+  /* World 3: Sentence Builders→ Word Wizard (purple)  #7E57C2  */
+  /* World 4: Writer's Craft   → Creative Kai (violet) #9C27B0  */
+  /* World 5: Flow & Finish    → Practice Pat (orange) #FF5722  */
+  /* World 6: Genre Arena      → Penny Pencil (pink)   #FF6B9D  */
+  --color-world-1: #1976D2;
+  --color-world-2: #4CAF50;
+  --color-world-3: #7E57C2;
+  --color-world-4: #9C27B0;
+  --color-world-5: #FF5722;
+  --color-world-6: #FF6B9D;
 
-  /* ── Gamification ────────────────────────────────────────────── */
-  --color-xp:        #F7C948;
-  --color-lives:     #E53935;
-  --color-streak:    #FF6D00;
+  /* World light backgrounds (for cards, tooltips) */
+  --color-world-1-bg: #E3F2FD;
+  --color-world-2-bg: #E8F5E9;
+  --color-world-3-bg: #EDE7F6;
+  --color-world-4-bg: #F3E5F5;
+  --color-world-5-bg: #FBE9E7;
+  --color-world-6-bg: #FCE4EC;
+
+  /* ── Gamification — from WriFe SVG palette ──────────────────── */
+  --color-xp:        #FFD54F;   /* golden yellow — most-used WriFe accent */
+  --color-lives:     #FF5252;   /* red (Creative Kai palette)             */
+  --color-streak:    #FF9800;   /* orange — Practice Pat energy           */
   --color-bronze:    #CD7F32;
   --color-silver:    #A8A9AD;
-  --color-gold:      #FFD700;
+  --color-gold:      #FFD54F;   /* matches XP gold                        */
 
-  /* ── Brand ───────────────────────────────────────────────────── */
-  --color-brand-primary:   #667EEA;
-  --color-brand-secondary: #764BA2;
+  /* ── WriFe Brand — extracted from feature icons & hero SVG ──── */
+  --color-brand-primary:   #4A90E2;   /* WriFe blue — feature icon bg    */
+  --color-brand-secondary: #FF6B9D;   /* Penny Pencil pink — warmth/CTA  */
+  --color-brand-accent:    #FFD54F;   /* Golden yellow — stars/XP/energy  */
 
   /* ── Surfaces ────────────────────────────────────────────────── */
-  --color-background: #F0F4FF;
+  --color-background: #F5F7FA;   /* WriFe light grey — from feature sheet */
   --color-surface:    #FFFFFF;
-  --color-border:     #E0E7FF;
-  --color-overlay:    rgba(0, 0, 0, 0.5);
+  --color-border:     #E3F2FD;   /* soft blue-tinted border               */
+  --color-overlay:    rgba(44, 62, 80, 0.6);
 
-  /* ── Text ────────────────────────────────────────────────────── */
-  --color-text:         #1A3A5C;
-  --color-text-muted:   #5A7A9C;
+  /* ── Text — #2C3E50 is the dominant colour across ALL WriFe SVGs */
+  --color-text:         #2C3E50;   /* WriFe dark navy — 109 uses in SVGs   */
+  --color-text-muted:   #666666;   /* muted grey — from SVG labels          */
   --color-text-on-dark: #FFFFFF;
 
   /* ── Feedback ────────────────────────────────────────────────── */
   --color-correct:      #4CAF50;
-  --color-incorrect:    #F44336;
+  --color-incorrect:    #FF5252;
   --color-hint:         #FF9800;
   --color-correct-bg:   #E8F5E9;
   --color-incorrect-bg: #FFEBEE;

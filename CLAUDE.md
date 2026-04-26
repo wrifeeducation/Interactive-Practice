@@ -1,6 +1,26 @@
 # CLAUDE.md — WriFe Interactive Practice
 
 > **Read this file at the start of every session before touching any code.**
+> **Also read `docs/brand-mascots.md` before writing any UI component.**
+
+---
+
+## 🎨 Brand & Mascot (MANDATORY)
+
+**Before building any UI, read `docs/brand-mascots.md`.** It contains:
+- The canonical WriFe colour palette (sourced directly from the SVG graphics)
+- The 6 mascot characters and exactly where each one appears in the app
+- World-to-mascot colour mappings (world tokens tied to mascot brand colours)
+- React implementation patterns for mascots
+
+**Critical colour rules (never break these):**
+- Text colour: `#2C3E50` via `var(--color-text)` — the single most-used colour across all WriFe SVG assets
+- XP/stars gold: `#FFD54F` via `var(--color-xp)` / `var(--color-gold)`
+- Page background: `#F5F7FA` via `var(--color-background)`
+- Brand blue: `#4A90E2` via `var(--color-brand-primary)`
+- Each world has its own mascot and colour token `--color-world-N` — always use the token, never the hex
+
+**Mascots live at `public/mascots/`** — 9 SVG files, transparent background, scalable to any size.
 
 ---
 
