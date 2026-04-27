@@ -55,11 +55,11 @@ export default function PupilJoinClass() {
       <div style={pageStyle}>
         <div style={cardStyle}>
           <img
-            src="/mascots/penny-pencil.svg"
+            src="/mascots/pencil-celebrating.png"
             alt=""
             role="presentation"
             width={120}
-            height={150}
+            height={120}
             loading="lazy"
             style={{ marginBottom: '8px' }}
           />

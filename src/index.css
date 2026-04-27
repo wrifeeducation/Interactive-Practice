@@ -80,6 +80,33 @@
   @media (max-width: 1024px) {
     font-size: 16px;
   }
+
+  /* ── Spacing tokens ────────────────────────────────────────── */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  /* ── Border radius ─────────────────────────────────────────── */
+  --radius-sm:   8px;
+  --radius-md:   12px;
+  --radius-lg:   20px;
+  --radius-xl:   32px;
+  --radius-full: 9999px;
+
+  /* ── Shadows ───────────────────────────────────────────────── */
+  --shadow-sm: 0 1px 4px rgba(0,0,0,0.08);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.12);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.16);
+
+  /* ── Transitions ───────────────────────────────────────────── */
+  --transition-fast:   150ms ease;
+  --transition-normal: 250ms ease;
+  --transition-slow:   400ms ease;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -117,37 +144,6 @@
 body {
   margin: 0;
 }
-
-/* ── Spacing tokens ────────────────────────────────────────── */
---space-1: 4px;
---space-2: 8px;
---space-3: 12px;
---space-4: 16px;
---space-5: 24px;
---space-6: 32px;
---space-7: 48px;
---space-8: 64px;
-
-/* ── Border radius ─────────────────────────────────────────── */
---radius-sm:   8px;
---radius-md:   12px;
---radius-lg:   20px;
---radius-xl:   32px;
---radius-full: 9999px;
-
-/* ── Shadows ───────────────────────────────────────────────── */
---shadow-sm: 0 1px 4px rgba(0,0,0,0.08);
---shadow-md: 0 4px 16px rgba(0,0,0,0.12);
---shadow-lg: 0 8px 32px rgba(0,0,0,0.16);
-
-/* ── Transitions ───────────────────────────────────────────── */
---transition-fast:   150ms ease;
---transition-normal: 250ms ease;
---transition-slow:   400ms ease;
-
-/* ── Feedback bg ───────────────────────────────────────────── */
---color-correct-bg:   #E8F5E9;
---color-incorrect-bg: #FFEBEE;
 
 /* ── Confetti burst animation (LessonComplete) ─────────────── */
 @keyframes confettiFall {

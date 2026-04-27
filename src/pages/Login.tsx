@@ -1,11 +1,13 @@
 import { useState, type FormEvent } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { useAuthStore } from '../stores/authStore'
 
 export default function Login() {
   const navigate = useNavigate()
   const fetchProfile = useAuthStore((s) => s.fetchProfile)
+  const [searchParams] = useSearchParams()
+  const notice = searchParams.get('notice')
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -48,11 +50,11 @@ export default function Login() {
     <div style={styles.page}>
       {/* Penny Pencil — right side on desktop, above form on mobile (brand-mascots.md) */}
       <img
-        src="/mascots/penny-pencil.svg"
+        src="/mascots/pencil-waving.png"
         alt=""
         role="presentation"
         width={180}
-        height={225}
+        height={180}
         loading="lazy"
         style={styles.mascot}
         className="login-mascot"
@@ -66,6 +68,25 @@ export default function Login() {
 
         <div style={styles.body}>
           <h2 style={styles.heading}>Welcome back</h2>
+
+          {notice === 'check-email' && (
+            <div
+              role="status"
+              data-tts="check email notice"
+              style={{
+                background: '#E8F5E9',
+                border: '1px solid var(--color-correct)',
+                borderRadius: 'var(--radius-sm)',
+                padding: '12px 14px',
+                fontSize: '14px',
+                color: '#1B5E20',
+                marginBottom: '16px',
+                lineHeight: 1.5,
+              }}
+            >
+              ✅ <strong>Check your email!</strong> We've sent you a confirmation link. Click it to activate your account, then sign in here.
+            </div>
+          )}
 
           <form onSubmit={handleSubmit} noValidate>
             <div style={styles.field}>

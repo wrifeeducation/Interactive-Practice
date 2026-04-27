@@ -138,11 +138,11 @@ export default function PupilLeaderboard() {
     return (
       <div style={{ ...containerStyle, textAlign: 'center', paddingTop: '40px' }}>
         <img
-          src="/mascots/penny-pencil.svg"
+          src="/mascots/pencil-waving.png"
           alt=""
           role="presentation"
           width={120}
-          height={150}
+          height={120}
           loading="lazy"
           style={{ marginBottom: '16px' }}
         />

@@ -99,14 +99,14 @@ export default function Signup() {
         </div>
 
         <div style={styles.body}>
-          {/* Penny Pencil — above form on signup page (brand-mascots.md: 140px) */}
+          {/* Pencil mascot — above form on signup page */}
           <div style={{ textAlign: 'center', marginBottom: '16px' }}>
             <img
-              src="/mascots/penny-pencil.svg"
+              src="/mascots/pencil-waving.png"
               alt=""
               role="presentation"
-              width={140}
-              height={175}
+              width={120}
+              height={120}
               loading="lazy"
             />
           </div>

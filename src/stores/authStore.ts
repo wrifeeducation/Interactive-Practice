@@ -38,7 +38,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       .from('profiles')
       .select('*')
       .eq('id', userId)
-      .single()
+      .maybeSingle()
 
     if (error) {
       console.error('Error fetching profile:', error)
@@ -46,6 +46,6 @@ export const useAuthStore = create<AuthState>((set) => ({
       return
     }
 
-    set({ profile: data as Profile, loading: false })
+    set({ profile: data as Profile | null, loading: false })
   },
 }))
