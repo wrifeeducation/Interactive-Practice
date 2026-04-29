@@ -200,6 +200,30 @@ body {
   }
 }
 
+/* ── Pupil dashboard — Option A sidebar responsive ─────────── */
+@media (max-width: 768px) {
+  .pupil-sidebar-desktop {
+    display: none !important;
+  }
+  .pupil-mobile-nav {
+    display: flex !important;
+  }
+  .pupil-mobile-overlay,
+  .pupil-mobile-sidebar-panel {
+    display: block !important;
+  }
+}
+
+@media (min-width: 769px) {
+  .pupil-mobile-nav {
+    display: none !important;
+  }
+  .pupil-mobile-overlay,
+  .pupil-mobile-sidebar-panel {
+    display: none !important;
+  }
+}
+
 /* ── WriFe app root override ───────────────────────────────── */
 #root.wrift-app {
   width: 100%;
