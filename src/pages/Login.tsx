@@ -38,7 +38,9 @@ export default function Login() {
     if (data.user) {
       await fetchProfile(data.user.id)
       const profile = useAuthStore.getState().profile
-      if (profile?.role === 'teacher') {
+      if (profile?.role === 'admin') {
+        navigate('/admin')
+      } else if (profile?.role === 'teacher') {
         navigate('/teacher')
       } else {
         navigate('/world-map')
