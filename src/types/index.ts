@@ -8,7 +8,7 @@
 
 // ── Enums ────────────────────────────────────────────────────
 
-export type UserRole = 'pupil' | 'teacher'
+export type UserRole = 'pupil' | 'teacher' | 'admin'
 export type ActivityLevel = 'bronze' | 'silver' | 'gold'
 export type ActivityType = 'mc' | 'write' | 'match' | 'fillblank' | 'checklist'
 export type BadgeCategory = 'lesson' | 'world' | 'streak' | 'mastery' | 'speed'
@@ -266,6 +266,42 @@ export interface AuthExtras {
 
 export interface EarnedBadge extends Badge {
   earned_at: string
+}
+
+// ── UI Store State ────────────────────────────────────────────
+
+export interface UIState {
+  /** True when the lesson player is in full-screen play mode */
+  isPlayMode: boolean
+  /** User-controlled sound mute toggle (persisted in localStorage) */
+  soundMuted: boolean
+  /** Sound system ready — false until first user interaction (browser policy) */
+  soundReady: boolean
+  setPlayMode: (active: boolean) => void
+  setSoundMuted: (muted: boolean) => void
+  setSoundReady: (ready: boolean) => void
+  toggleMute: () => void
+}
+
+// ── Admin — Parsed Lesson Preview ────────────────────────────
+
+export interface ParsedActivity {
+  type: ActivityType
+  level: ActivityLevel
+  sort_order: number
+  question_json: MCQuestion | MatchQuestion | FillBlankQuestion | WriteQuestion | ChecklistQuestion
+  answer_json: Record<string, unknown>
+  /** Editable flag — true if user has modified this activity in the preview */
+  isDirty?: boolean
+}
+
+export interface ParsedLesson {
+  lesson_number: number
+  title: string
+  world_id: number
+  activities: ParsedActivity[]
+  /** Set after parsing — the existing DB lesson id if the lesson already exists */
+  existingLessonId?: string
 }
 
 // ── Boss Challenge Result ─────────────────────────────────────

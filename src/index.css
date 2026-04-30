@@ -107,6 +107,49 @@
   --transition-fast:   150ms ease;
   --transition-normal: 250ms ease;
   --transition-slow:   400ms ease;
+
+  /* ── Fluid typography scale ────────────────────────────────── */
+  /* clamp(mobile-floor, fluid-midpoint, desktop-ceiling)         */
+  --font-size-xs:    clamp(11px, 1.2vw,  13px);  /* captions, tag badges   */
+  --font-size-sm:    clamp(12px, 1.4vw,  14px);  /* secondary labels       */
+  --font-size-base:  clamp(15px, 1.8vw,  18px);  /* body / instructions    */
+  --font-size-md:    clamp(16px, 2.0vw,  20px);  /* option buttons, labels */
+  --font-size-lg:    clamp(18px, 2.4vw,  22px);  /* question text          */
+  --font-size-xl:    clamp(20px, 2.8vw,  26px);  /* section headings       */
+  --font-size-2xl:   clamp(22px, 3.2vw,  30px);  /* page titles            */
+  --font-size-3xl:   clamp(26px, 4.0vw,  40px);  /* hero / celebration     */
+
+  /* ── Semantic font-size aliases ────────────────────────────── */
+  --font-size-caption:    var(--font-size-sm);
+  --font-size-body:       var(--font-size-base);
+  --font-size-option:     var(--font-size-md);
+  --font-size-question:   var(--font-size-lg);
+  --font-size-heading:    var(--font-size-xl);
+  --font-size-page-title: var(--font-size-2xl);
+  --font-size-hero:       var(--font-size-3xl);
+
+  /* ── Icon size tokens ──────────────────────────────────────── */
+  --icon-sm:  16px;   /* inline icons next to text              */
+  --icon-md:  24px;   /* standard nav / action icons            */
+  --icon-lg:  32px;   /* world map, badge icons                 */
+  --icon-xl:  48px;   /* celebration / badge unlock             */
+
+  /* ── Touch target (WCAG 2.5.5 AA minimum) ─────────────────── */
+  --touch-target: 44px;
+
+  /* ── World Map node sizes (responsive via breakpoint classes) ─ */
+  --world-node-sm:  60px;   /* mobile   */
+  --world-node-md:  80px;   /* tablet   */
+  --world-node-lg: 110px;   /* desktop  */
+
+  /* ── Z-index layers ────────────────────────────────────────── */
+  --z-base:     0;
+  --z-dropdown: 100;
+  --z-sticky:   200;
+  --z-overlay:  300;
+  --z-modal:    400;
+  --z-toast:    500;
+  --z-playmode: 600;  /* play mode chrome always on top */
 }
 
 @media (prefers-color-scheme: dark) {
@@ -232,6 +275,78 @@ body {
   border-inline: none;
   text-align: left;
   background: var(--color-background);
+}
+
+/* ── Play Mode — full-screen immersive lesson experience ───── */
+/* Applied to <body> via Zustand isPlayMode → AppShell         */
+body.play-mode {
+  overflow: hidden;
+}
+
+body.play-mode .app-shell-nav,
+body.play-mode .app-shell-sidebar,
+body.play-mode .app-shell-bottom-nav {
+  display: none !important;
+}
+
+body.play-mode .app-shell-main {
+  padding: 0 !important;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+/* Play-mode exit button — always floats top-right */
+.play-mode-exit-btn {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  z-index: var(--z-playmode);
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  background: rgba(0, 0, 0, 0.35);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--transition-fast);
+}
+
+.play-mode-exit-btn:hover {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+/* ── Reduced motion — silence decorative animations ─────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .mascot-correct,
+  .mascot-wrong {
+    animation: none !important;
+  }
+}
+
+/* ── Responsive World Map nodes ─────────────────────────────── */
+.world-node {
+  width: var(--world-node-sm);
+  height: var(--world-node-sm);
+}
+@media (min-width: 640px) {
+  .world-node {
+    width: var(--world-node-md);
+    height: var(--world-node-md);
+  }
+}
+@media (min-width: 1024px) {
+  .world-node {
+    width: var(--world-node-lg);
+    height: var(--world-node-lg);
+  }
 }
 
 h1,

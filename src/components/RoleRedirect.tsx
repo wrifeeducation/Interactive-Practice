@@ -42,6 +42,9 @@ export default function RoleRedirect({ children, allowedRole }: Props) {
   if (!session) return <Navigate to="/login" replace />
   if (!profile) return <Navigate to="/signup" replace />
 
+  // Admin can access any protected route — no role redirect needed
+  if (profile.role === 'admin') return <>{children}</>
+
   if (allowedRole === 'teacher' && profile.role !== 'teacher') {
     return <Navigate to="/world-map" replace />
   }

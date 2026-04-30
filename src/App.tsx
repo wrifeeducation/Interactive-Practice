@@ -5,6 +5,8 @@ import { supabase } from './lib/supabase'
 import { useAuthStore } from './stores/authStore'
 import RoleRedirect from './components/RoleRedirect'
 import ErrorBoundary from './components/ErrorBoundary'
+import AppShell from './components/layout/AppShell'
+import AdminGuard from './components/AdminGuard'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
@@ -14,10 +16,11 @@ import WorldMap from './pages/WorldMap'
 import BossChallenge from './pages/BossChallenge'
 import BadgeShelf from './pages/BadgeShelf'
 
-// Lazy-loaded heavy/teacher pages
+// Lazy-loaded heavy/teacher/admin pages
 const TeacherDashboard = lazy(() => import('./pages/teacher/TeacherDashboard'))
-const PupilJoinClass = lazy(() => import('./pages/PupilJoinClass'))
+const PupilJoinClass   = lazy(() => import('./pages/PupilJoinClass'))
 const PupilLeaderboard = lazy(() => import('./pages/PupilLeaderboard'))
+const AdminPage        = lazy(() => import('./pages/admin/AdminPage'))
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { staleTime: 1000 * 60 * 5 } },
@@ -149,6 +152,20 @@ function AppRoutes() {
           }
         />
 
+        {/* Admin-only route — creator content management tool */}
+        <Route
+          path="/admin"
+          element={
+            <AdminGuard>
+              <Suspense fallback={<FullPageSpinner />}>
+                <ErrorBoundary>
+                  <AdminPage />
+                </ErrorBoundary>
+              </Suspense>
+            </AdminGuard>
+          }
+        />
+
         {/* Default redirect */}
         <Route path="/" element={<Navigate to="/world-map" replace />} />
         <Route path="*" element={<Navigate to="/world-map" replace />} />
@@ -161,7 +178,9 @@ export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <AppRoutes />
+        <AppShell>
+          <AppRoutes />
+        </AppShell>
       </BrowserRouter>
     </QueryClientProvider>
   )
