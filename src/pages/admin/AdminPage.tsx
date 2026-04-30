@@ -1,172 +1,141 @@
 /**
- * AdminPage — creator-only content management tool.
- * Route: /admin  (guarded by AdminGuard)
+ * AdminPage — tabbed admin dashboard for WriFe Interactive Practice.
+ * Route: /admin  (guarded by AdminGuard — admin role only)
  *
- * Workflow:
- *  1. Upload  — drop HTML lesson files → parse client-side
- *  2. Preview — review extracted activities, edit inline
- *  3. Publish — upsert lessons + activities to Supabase
+ * Tabs:
+ *  📁 Content    — upload / parse / preview / publish lesson HTML files
+ *  📊 Analytics  — platform stats (pupils, XP, completions, streaks)
+ *  📋 Teachers   — list all teacher accounts + their classes
+ *  🎒 Pupils     — searchable pupil list with streak status
+ *  🔑 Passwords  — send password-reset emails to any user
+ *  👑 Admins     — list and promote admin accounts
+ *  🏫 Schools    — coming soon
  */
-import { useState } from 'react'
-import { supabase } from '../../lib/supabase'
+import { useState, Suspense, lazy } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../../stores/authStore'
-import type { ParsedLesson, ParsedActivity } from '../../types'
-import UploadPanel from './UploadPanel'
-import PreviewPanel from './PreviewPanel'
-import PublishPanel, { type PublishResult } from './PublishPanel'
+import { supabase } from '../../lib/supabase'
 
-type Step = 'upload' | 'preview' | 'publish'
+const ContentTab   = lazy(() => import('./tabs/ContentTab'))
+const AnalyticsTab = lazy(() => import('./tabs/AnalyticsTab'))
+const TeachersTab  = lazy(() => import('./tabs/TeachersTab'))
+const PupilsTab    = lazy(() => import('./tabs/PupilsTab'))
+const PasswordsTab = lazy(() => import('./tabs/PasswordsTab'))
+const AdminsTab    = lazy(() => import('./tabs/AdminsTab'))
 
-// ── Supabase publish logic ───────────────────────────────────────
-async function publishLesson(lesson: ParsedLesson): Promise<{ activitiesWritten: number }> {
-  // 1. Upsert the lesson row
-  const { data: lessonRow, error: lessonErr } = await supabase
-    .from('lessons')
-    .upsert(
-      { lesson_number: lesson.lesson_number, world_id: lesson.world_id, title: lesson.title },
-      { onConflict: 'lesson_number' }
-    )
-    .select('id')
-    .single()
+type Tab = 'content' | 'analytics' | 'teachers' | 'pupils' | 'passwords' | 'admins' | 'schools'
 
-  if (lessonErr || !lessonRow) {
-    throw new Error(lessonErr?.message ?? 'Failed to upsert lesson row')
-  }
+const TABS: Array<{ id: Tab; label: string; icon: string }> = [
+  { id: 'content',   label: 'Content',   icon: '📁' },
+  { id: 'analytics', label: 'Analytics', icon: '📊' },
+  { id: 'teachers',  label: 'Teachers',  icon: '📋' },
+  { id: 'pupils',    label: 'Pupils',    icon: '🎒' },
+  { id: 'passwords', label: 'Passwords', icon: '🔑' },
+  { id: 'admins',    label: 'Admins',    icon: '👑' },
+  { id: 'schools',   label: 'Schools',   icon: '🏫' },
+]
 
-  const lessonId = lessonRow.id as string
-
-  // 2. Delete all existing activities for this lesson (clean replace)
-  const { error: delErr } = await supabase
-    .from('activities')
-    .delete()
-    .eq('lesson_id', lessonId)
-
-  if (delErr) throw new Error(`Failed to clear old activities: ${delErr.message}`)
-
-  // 3. Insert new activities
-  if (lesson.activities.length === 0) return { activitiesWritten: 0 }
-
-  const rows = lesson.activities.map((a: ParsedActivity) => ({
-    lesson_id:     lessonId,
-    level:         a.level,
-    type:          a.type,
-    sort_order:    a.sort_order,
-    question_json: a.question_json,
-    answer_json:   a.answer_json,
-  }))
-
-  const { error: insertErr } = await supabase.from('activities').insert(rows)
-  if (insertErr) throw new Error(`Failed to insert activities: ${insertErr.message}`)
-
-  return { activitiesWritten: rows.length }
-}
-
-// ── Step indicator ───────────────────────────────────────────────
-function StepDot({ label, active, done }: { label: string; active: boolean; done: boolean }) {
+function TabBar({ active, onSelect }: { active: Tab; onSelect: (t: Tab) => void }) {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-      <div style={{
-        width: 28, height: 28, borderRadius: 'var(--radius-full)',
-        background: done ? 'var(--color-correct)' : active ? 'var(--color-brand-primary)' : 'var(--color-border)',
-        color: done || active ? '#fff' : 'var(--color-text-muted)',
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        fontSize: 'var(--font-size-xs)', fontWeight: 700,
-      }}>
-        {done ? '✓' : label[0]}
-      </div>
-      <span style={{ fontSize: 'var(--font-size-sm)', fontWeight: active ? 700 : 400, color: active ? 'var(--color-brand-primary)' : done ? 'var(--color-text-muted)' : 'var(--color-text-muted)' }}>
-        {label}
-      </span>
+    <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap', background: 'var(--color-surface)', borderRadius: 'var(--radius-md)', padding: 6, border: '1px solid var(--color-border)', marginBottom: 24 }}>
+      {TABS.map(t => (
+        <button key={t.id} onClick={() => onSelect(t.id)} data-testid={`admin-tab-${t.id}`}
+          style={{
+            display: 'flex', alignItems: 'center', gap: 6,
+            padding: '8px 16px', borderRadius: 'var(--radius-sm)', border: 'none',
+            background: active === t.id ? 'var(--color-brand-primary)' : 'transparent',
+            color: active === t.id ? '#fff' : 'var(--color-text-muted)',
+            fontWeight: active === t.id ? 700 : 400,
+            fontSize: 'var(--font-size-sm)', cursor: 'pointer',
+            transition: 'background var(--transition-fast)',
+            minHeight: 'var(--touch-target)',
+          }}>
+          <span style={{ fontSize: 16 }}>{t.icon}</span>
+          {t.label}
+        </button>
+      ))}
     </div>
   )
 }
 
-// ── Main component ───────────────────────────────────────────────
+function TabSpinner() {
+  return <p style={{ color: 'var(--color-text-muted)', padding: '24px 0' }}>Loading…</p>
+}
+
+function SchoolsComingSoon() {
+  return (
+    <div style={{ textAlign: 'center', padding: '48px 24px' }}>
+      <div style={{ fontSize: 48, marginBottom: 16 }}>🏫</div>
+      <h2 style={{ fontSize: 'var(--font-size-xl)', fontWeight: 700, color: 'var(--color-text)', marginBottom: 8 }}>Schools — Coming Soon</h2>
+      <p style={{ fontSize: 'var(--font-size-sm)', color: 'var(--color-text-muted)', maxWidth: 380, margin: '0 auto' }}>
+        Organisation-level grouping for multi-school deployments. Teachers and pupils will be able to join a school for shared analytics and admin.
+      </p>
+    </div>
+  )
+}
+
 export default function AdminPage() {
+  const navigate = useNavigate()
   const { profile } = useAuthStore()
-  const [step, setStep]         = useState<Step>('upload')
-  const [lessons, setLessons]   = useState<ParsedLesson[]>([])
-  const [publishing, setPublishing] = useState(false)
-  const [results, setResults]   = useState<PublishResult[]>([])
+  const [activeTab, setActiveTab] = useState<Tab>('content')
 
-  function handleParsed(parsed: ParsedLesson[]) {
-    setLessons(parsed)
-    if (parsed.length > 0) setStep('preview')
-  }
-
-  async function handlePublish() {
-    setPublishing(true)
-    const initialResults: PublishResult[] = lessons.map(l => ({ lesson: l, status: 'pending' }))
-    setResults(initialResults)
-    setStep('publish')
-
-    const final: PublishResult[] = [...initialResults]
-    for (let i = 0; i < lessons.length; i++) {
-      final[i] = { ...final[i], status: 'publishing' }
-      setResults([...final])
-      try {
-        const { activitiesWritten } = await publishLesson(lessons[i])
-        final[i] = { ...final[i], status: 'done', activitiesWritten }
-      } catch (err) {
-        final[i] = { ...final[i], status: 'error', error: String(err) }
-      }
-      setResults([...final])
-    }
-    setPublishing(false)
-  }
-
-  function handleReset() {
-    setStep('upload')
-    setLessons([])
-    setResults([])
-    setPublishing(false)
+  async function handleSignOut() {
+    await supabase.auth.signOut()
+    navigate('/')
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--color-background)', padding: '24px 16px' }}>
-      <div style={{ maxWidth: 900, margin: '0 auto' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--color-background)' }}>
 
-        {/* Header */}
-        <div style={{ marginBottom: 28 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 4 }}>
-            <span style={{ fontSize: 28 }}>🛠️</span>
-            <h1 style={{ fontSize: 'var(--font-size-page-title)', fontWeight: 800, color: 'var(--color-brand-primary)', margin: 0 }}>
-              WriFe Admin
-            </h1>
-          </div>
+      {/* ── Top nav ── */}
+      <nav style={{
+        background: 'var(--color-brand-primary)', height: 56,
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        padding: '0 clamp(16px, 4vw, 40px)', position: 'sticky', top: 0, zIndex: 200,
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <span style={{ color: '#fff', fontSize: 20, fontWeight: 800, letterSpacing: '-0.3px' }}>WriFe</span>
+          <span style={{ color: 'rgba(255,255,255,0.55)', fontSize: 14 }}>Admin</span>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <span style={{ color: 'rgba(255,255,255,0.75)', fontSize: 13 }}>{profile?.name}</span>
+          <button onClick={() => void handleSignOut()} data-testid="admin-signout"
+            style={{ color: 'rgba(255,255,255,0.85)', fontSize: 13, background: 'transparent', border: '1px solid rgba(255,255,255,0.35)', borderRadius: 6, padding: '6px 14px', cursor: 'pointer' }}>
+            Sign out
+          </button>
+        </div>
+      </nav>
+
+      {/* ── Content area ── */}
+      <div style={{ maxWidth: 1100, margin: '0 auto', padding: 'clamp(16px, 3vw, 32px) clamp(16px, 4vw, 40px)' }}>
+
+        {/* Page title */}
+        <div style={{ marginBottom: 24 }}>
+          <h1 style={{ fontSize: 'var(--font-size-page-title)', fontWeight: 800, color: 'var(--color-brand-primary)', margin: '0 0 4px' }}>
+            🛠️ Admin Dashboard
+          </h1>
           <p style={{ fontSize: 'var(--font-size-sm)', color: 'var(--color-text-muted)' }}>
-            Signed in as <strong>{profile?.name ?? 'Admin'}</strong> · Content Management Tool
+            WriFe Interactive Practice · Creator tools
           </p>
         </div>
 
-        {/* Step indicator */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 28, padding: '12px 16px', background: 'var(--color-surface)', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', flexWrap: 'wrap' }}>
-          <StepDot label="Upload"  active={step === 'upload'}  done={step === 'preview' || step === 'publish'} />
-          <div style={{ height: 1, flex: 1, background: 'var(--color-border)', minWidth: 20 }} />
-          <StepDot label="Preview" active={step === 'preview'} done={step === 'publish'} />
-          <div style={{ height: 1, flex: 1, background: 'var(--color-border)', minWidth: 20 }} />
-          <StepDot label="Publish" active={step === 'publish'} done={false} />
-        </div>
+        {/* Tab bar */}
+        <TabBar active={activeTab} onSelect={setActiveTab} />
 
-        {/* Panel */}
-        <div style={{ background: 'var(--color-surface)', borderRadius: 'var(--radius-lg)', border: '1.5px solid var(--color-border)', padding: '28px 24px', boxShadow: 'var(--shadow-md)' }}>
-          {step === 'upload' && (
-            <UploadPanel onParsed={handleParsed} />
-          )}
-          {step === 'preview' && (
-            <PreviewPanel
-              lessons={lessons}
-              onChange={setLessons}
-              onPublish={handlePublish}
-              publishing={publishing}
-            />
-          )}
-          {step === 'publish' && (
-            <PublishPanel results={results} onReset={handleReset} />
-          )}
+        {/* Tab panel */}
+        <div style={{ background: 'var(--color-surface)', borderRadius: 'var(--radius-lg)', border: '1.5px solid var(--color-border)', padding: 'clamp(20px, 3vw, 32px)', boxShadow: 'var(--shadow-md)' }}>
+          <Suspense fallback={<TabSpinner />}>
+            {activeTab === 'content'   && <ContentTab />}
+            {activeTab === 'analytics' && <AnalyticsTab />}
+            {activeTab === 'teachers'  && <TeachersTab />}
+            {activeTab === 'pupils'    && <PupilsTab />}
+            {activeTab === 'passwords' && <PasswordsTab />}
+            {activeTab === 'admins'    && <AdminsTab />}
+            {activeTab === 'schools'   && <SchoolsComingSoon />}
+          </Suspense>
         </div>
-
       </div>
+
     </div>
   )
 }

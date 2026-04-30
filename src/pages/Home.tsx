@@ -31,7 +31,8 @@ export default function Home() {
   const { session, profile, loading } = useAuthStore()
 
   if (!loading && session && profile) {
-    return <Navigate to={profile.role === 'teacher' ? '/teacher' : '/world-map'} replace />
+    const dest = profile.role === 'admin' ? '/admin' : profile.role === 'teacher' ? '/teacher' : '/world-map'
+    return <Navigate to={dest} replace />
   }
 
   return (
