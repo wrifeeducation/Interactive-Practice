@@ -318,6 +318,49 @@ body.play-mode .app-shell-main {
   background: rgba(0, 0, 0, 0.6);
 }
 
+/* ── Home page responsive grids ─────────────────────────────── */
+.home-hero-row {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+.home-hero-row .hero-mascot {
+  flex-shrink: 0;
+}
+@media (max-width: 560px) {
+  .home-hero-row { flex-direction: column-reverse; align-items: flex-start; gap: 16px; }
+  .home-hero-row .hero-mascot { align-self: center; }
+}
+
+.home-cta-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+@media (max-width: 480px) {
+  .home-cta-grid { grid-template-columns: 1fr; }
+}
+
+.home-worlds-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+@media (max-width: 560px) {
+  .home-worlds-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+.home-features-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+@media (max-width: 480px) {
+  .home-features-grid { grid-template-columns: 1fr; }
+}
+
 /* ── Reduced motion — silence decorative animations ─────────── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
