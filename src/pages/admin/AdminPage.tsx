@@ -16,23 +16,25 @@ import { useNavigate, Link } from 'react-router-dom'
 import { useAuthStore } from '../../stores/authStore'
 import { supabase } from '../../lib/supabase'
 
-const ContentTab   = lazy(() => import('./tabs/ContentTab'))
-const AnalyticsTab = lazy(() => import('./tabs/AnalyticsTab'))
-const TeachersTab  = lazy(() => import('./tabs/TeachersTab'))
-const PupilsTab    = lazy(() => import('./tabs/PupilsTab'))
-const PasswordsTab = lazy(() => import('./tabs/PasswordsTab'))
-const AdminsTab    = lazy(() => import('./tabs/AdminsTab'))
+const ContentTab    = lazy(() => import('./tabs/ContentTab'))
+const AnalyticsTab  = lazy(() => import('./tabs/AnalyticsTab'))
+const TeachersTab   = lazy(() => import('./tabs/TeachersTab'))
+const PupilsTab     = lazy(() => import('./tabs/PupilsTab'))
+const PasswordsTab  = lazy(() => import('./tabs/PasswordsTab'))
+const AdminsTab     = lazy(() => import('./tabs/AdminsTab'))
+const CreateUserTab = lazy(() => import('./tabs/CreateUserTab'))
 
-type Tab = 'content' | 'analytics' | 'teachers' | 'pupils' | 'passwords' | 'admins' | 'schools'
+type Tab = 'content' | 'analytics' | 'teachers' | 'pupils' | 'passwords' | 'admins' | 'schools' | 'create-user'
 
 const TABS: Array<{ id: Tab; label: string; icon: string }> = [
-  { id: 'content',   label: 'Content',   icon: '📁' },
-  { id: 'analytics', label: 'Analytics', icon: '📊' },
-  { id: 'teachers',  label: 'Teachers',  icon: '📋' },
-  { id: 'pupils',    label: 'Pupils',    icon: '🎒' },
-  { id: 'passwords', label: 'Passwords', icon: '🔑' },
-  { id: 'admins',    label: 'Admins',    icon: '👑' },
-  { id: 'schools',   label: 'Schools',   icon: '🏫' },
+  { id: 'content',     label: 'Content',     icon: '📁' },
+  { id: 'analytics',  label: 'Analytics',   icon: '📊' },
+  { id: 'teachers',   label: 'Teachers',    icon: '📋' },
+  { id: 'pupils',     label: 'Pupils',      icon: '🎒' },
+  { id: 'passwords',  label: 'Passwords',   icon: '🔑' },
+  { id: 'admins',     label: 'Admins',      icon: '👑' },
+  { id: 'create-user', label: 'Create User', icon: '👤' },
+  { id: 'schools',    label: 'Schools',     icon: '🏫' },
 ]
 
 function TabBar({ active, onSelect }: { active: Tab; onSelect: (t: Tab) => void }) {
@@ -130,8 +132,9 @@ export default function AdminPage() {
             {activeTab === 'teachers'  && <TeachersTab />}
             {activeTab === 'pupils'    && <PupilsTab />}
             {activeTab === 'passwords' && <PasswordsTab />}
-            {activeTab === 'admins'    && <AdminsTab />}
-            {activeTab === 'schools'   && <SchoolsComingSoon />}
+            {activeTab === 'admins'       && <AdminsTab />}
+            {activeTab === 'create-user'  && <CreateUserTab />}
+            {activeTab === 'schools'      && <SchoolsComingSoon />}
           </Suspense>
         </div>
       </div>

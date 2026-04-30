@@ -87,7 +87,12 @@ export default function Signup() {
       return
     }
 
-    navigate(role === 'teacher' ? '/teacher' : '/world-map')
+    // Re-read role from DB in case it was promoted after account creation
+    const { data: profileData } = await supabase.from('profiles').select('role').eq('id', userId).maybeSingle()
+    const finalRole = profileData?.role ?? role
+    if (finalRole === 'admin') navigate('/admin')
+    else if (finalRole === 'teacher') navigate('/teacher')
+    else navigate('/world-map')
   }
 
   return (

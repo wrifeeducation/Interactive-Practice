@@ -34,6 +34,8 @@ export const useAuthStore = create<AuthState>((set) => ({
   },
 
   fetchProfile: async (userId: string) => {
+    // Set loading true so guards wait for the result
+    set({ loading: true })
     const { data, error } = await supabase
       .from('profiles')
       .select('*')
@@ -42,10 +44,16 @@ export const useAuthStore = create<AuthState>((set) => ({
 
     if (error) {
       console.error('Error fetching profile:', error)
-      set({ profile: null, loading: false })
+      set({ loading: false })
       return
     }
 
-    set({ profile: data as Profile | null, loading: false })
+    // Only update profile if data was returned — never wipe an existing profile
+    // with null if a concurrent call already set it
+    if (data) {
+      set({ profile: data as Profile, loading: false })
+    } else {
+      set({ loading: false })
+    }
   },
 }))
