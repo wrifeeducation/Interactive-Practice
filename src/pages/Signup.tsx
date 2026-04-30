@@ -99,6 +99,9 @@ export default function Signup() {
     <div style={styles.page}>
       <div style={styles.card}>
         <div style={styles.header}>
+          <Link to="/" style={styles.homeLink} data-testid="signup-home-link" aria-label="Back to home">
+            ← Home
+          </Link>
           <h1 style={styles.logo} data-tts="WriFe logo">WriFe</h1>
           <p style={styles.tagline} data-tts="Create account tagline">Create your account</p>
         </div>
@@ -245,8 +248,16 @@ const styles: Record<string, React.CSSProperties> = {
   },
   header: {
     background: 'linear-gradient(135deg, var(--color-brand-primary), var(--color-brand-secondary))',
-    padding: '28px 24px',
+    padding: '16px 24px 28px',
     textAlign: 'center',
+  },
+  homeLink: {
+    display: 'inline-block',
+    marginBottom: '12px',
+    fontSize: '13px',
+    fontWeight: 500,
+    color: 'rgba(255,255,255,0.8)',
+    textDecoration: 'none',
   },
   logo: {
     margin: 0,

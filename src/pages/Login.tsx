@@ -64,6 +64,9 @@ export default function Login() {
       <div style={styles.card}>
         {/* Brand gradient header */}
         <div style={styles.header}>
+          <Link to="/" style={styles.homeLink} data-testid="login-home-link" aria-label="Back to home">
+            ← Home
+          </Link>
           <h1 style={styles.logo} data-tts="WriFe logo">WriFe</h1>
           <p style={styles.tagline} data-tts="Interactive Practice tagline">Interactive Practice</p>
         </div>
@@ -169,8 +172,17 @@ const styles: Record<string, React.CSSProperties> = {
   },
   header: {
     background: 'linear-gradient(135deg, var(--color-brand-primary), var(--color-brand-secondary))',
-    padding: '32px 24px',
+    padding: '16px 24px 32px',
     textAlign: 'center',
+    position: 'relative',
+  },
+  homeLink: {
+    display: 'inline-block',
+    marginBottom: '12px',
+    fontSize: '13px',
+    fontWeight: 500,
+    color: 'rgba(255,255,255,0.8)',
+    textDecoration: 'none',
   },
   logo: {
     margin: 0,

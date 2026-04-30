@@ -105,7 +105,30 @@ export default function ActivitySession() {
   if (!activities.length) {
     return (
       <div style={styles.loading}>
-        <p style={{ color: 'var(--color-text-muted)', fontSize: '18px' }}>No activities found for this level.</p>
+        <div style={{ fontSize: '48px', marginBottom: '8px' }}>📭</div>
+        <p style={{ color: 'var(--color-text)', fontSize: '20px', fontWeight: 700, margin: '0 0 8px' }}>
+          Coming Soon
+        </p>
+        <p style={{ color: 'var(--color-text-muted)', fontSize: '15px', maxWidth: '280px', textAlign: 'center', margin: '0 0 24px' }}>
+          Activities for this lesson aren't published yet. Check back soon!
+        </p>
+        <button
+          onClick={() => navigate('/world-map')}
+          data-testid="no-activities-back"
+          style={{
+            padding: '12px 28px',
+            fontSize: '16px',
+            fontWeight: 600,
+            background: 'var(--color-brand-primary)',
+            color: 'var(--color-text-on-dark)',
+            border: 'none',
+            borderRadius: 'var(--radius-md)',
+            cursor: 'pointer',
+            minHeight: '44px',
+          }}
+        >
+          ← Back to World Map
+        </button>
       </div>
     )
   }
