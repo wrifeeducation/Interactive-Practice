@@ -305,11 +305,14 @@ export default function WorldMap() {
         <SidebarLink to="/pupil/join" emoji="🏫" label="Join a Class" testId="sidebar-join" />
       </div>
 
-      {/* WriFe logo at bottom */}
-      <div style={{ marginTop: 'auto', padding: '16px 12px 12px', textAlign: 'center' }}>
-        <span style={{ fontSize: '13px', fontWeight: 700, color: 'rgba(255,255,255,0.4)', letterSpacing: '1px' }}>
-          WRIFE
-        </span>
+      {/* Home link + WriFe logo at bottom */}
+      <div style={{ marginTop: 'auto', padding: '16px 12px 12px' }}>
+        <SidebarLink to="/" emoji="🏠" label="Home" testId="sidebar-home" />
+        <div style={{ textAlign: 'center', marginTop: 8 }}>
+          <span style={{ fontSize: '13px', fontWeight: 700, color: 'rgba(255,255,255,0.4)', letterSpacing: '1px' }}>
+            WRIFE
+          </span>
+        </div>
       </div>
     </aside>
   )

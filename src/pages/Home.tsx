@@ -204,9 +204,15 @@ export default function Home() {
 
       {/* ── FOOTER ───────────────────────────────────────────── */}
       <footer style={{ background: 'var(--color-background)', borderTop: '1px solid var(--color-border)', padding: 'clamp(14px, 2vw, 24px) 0' }}>
-        <div style={{ ...container, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div style={{ ...container, display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 8 }}>
           <span style={{ fontSize: 16, fontWeight: 700, color: 'var(--color-text)' }}>WriFe</span>
-          <span style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>practice.wrife.co.uk</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
+            <span style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>practice.wrife.co.uk</span>
+            <button data-testid="footer-admin-login" onClick={() => navigate('/login')}
+              style={{ fontSize: 12, color: 'var(--color-text-muted)', background: 'transparent', border: 'none', cursor: 'pointer', padding: 0, textDecoration: 'underline' }}>
+              Admin login
+            </button>
+          </div>
         </div>
       </footer>
 

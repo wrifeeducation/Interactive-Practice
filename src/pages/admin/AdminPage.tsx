@@ -12,7 +12,7 @@
  *  🏫 Schools    — coming soon
  */
 import { useState, Suspense, lazy } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { useAuthStore } from '../../stores/authStore'
 import { supabase } from '../../lib/supabase'
 
@@ -94,7 +94,7 @@ export default function AdminPage() {
         padding: '0 clamp(16px, 4vw, 40px)', position: 'sticky', top: 0, zIndex: 200,
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <span style={{ color: '#fff', fontSize: 20, fontWeight: 800, letterSpacing: '-0.3px' }}>WriFe</span>
+          <Link to="/" style={{ color: '#fff', fontSize: 20, fontWeight: 800, letterSpacing: '-0.3px', textDecoration: 'none' }}>WriFe</Link>
           <span style={{ color: 'rgba(255,255,255,0.55)', fontSize: 14 }}>Admin</span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>

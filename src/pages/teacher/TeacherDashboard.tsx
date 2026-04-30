@@ -111,7 +111,11 @@ export default function TeacherDashboard() {
           ))}
         </nav>
 
-        <div style={{ padding: '12px 8px', borderTop: '1px solid var(--color-border)' }}>
+        <div style={{ padding: '12px 8px', borderTop: '1px solid var(--color-border)', display: 'flex', flexDirection: 'column', gap: 6 }}>
+          <NavLink to="/" data-testid="teacher-home-link"
+            style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '10px 12px', borderRadius: 'var(--radius-sm)', textDecoration: 'none', fontSize: '14px', color: 'var(--color-text-muted)', minHeight: '44px' }}>
+            🏠 Home
+          </NavLink>
           <button
             data-testid="teacher-sign-out"
             onClick={handleSignOut}
