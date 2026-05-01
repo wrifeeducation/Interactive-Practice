@@ -175,6 +175,21 @@ export default function WorldMap() {
     enabled: !!session?.user,
   })
 
+  // Fetch streak from DB on load so the sidebar shows the real value
+  const { data: streakRow } = useQuery<{ current_streak: number } | null>({
+    queryKey: ['streak', session?.user?.id],
+    queryFn: async () => {
+      if (!session?.user) return null
+      const { data } = await supabase
+        .from('streaks')
+        .select('current_streak')
+        .eq('pupil_id', session.user.id)
+        .maybeSingle()
+      return (data as { current_streak: number } | null) ?? null
+    },
+    enabled: !!session?.user,
+  })
+
   const { data: earnedBadgeCodes = [] } = useQuery<string[]>({
     queryKey: ['earned-badge-codes', session?.user?.id],
     queryFn: async () => {
@@ -221,6 +236,12 @@ export default function WorldMap() {
       useAuthStore.setState({ xpTotal: total })
     }
   }, [progressRows])
+
+  useEffect(() => {
+    if (streakRow !== undefined && streakRow !== null) {
+      useAuthStore.setState({ streak: streakRow.current_streak })
+    }
+  }, [streakRow])
 
   const handleNodeClick = (lesson: LessonNode) => {
     if (lesson.status === 'boss' || (lesson.status === 'completed' && lesson.lessonNumber < 0)) {

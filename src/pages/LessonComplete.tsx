@@ -263,18 +263,28 @@ export default function LessonComplete() {
             <button
               data-testid="try-silver"
               onClick={() => navigate(`/lesson/${lessonId}/silver`)}
-              style={{ ...styles.levelBtn, color: 'var(--color-silver)', borderColor: 'var(--color-silver)' }}
+              style={{
+                ...styles.levelBtn,
+                background: 'var(--color-silver)',
+                color: 'var(--color-text-on-dark)',
+                borderColor: 'var(--color-silver)',
+              }}
             >
-              Try Silver
+              🥈 Try Silver
             </button>
           )}
           {goldUnlocked && (
             <button
               data-testid="try-gold"
               onClick={() => navigate(`/lesson/${lessonId}/gold`)}
-              style={{ ...styles.levelBtn, color: 'var(--color-gold)', borderColor: 'var(--color-gold)' }}
+              style={{
+                ...styles.levelBtn,
+                background: 'var(--color-gold)',
+                color: 'var(--color-text-on-dark)',
+                borderColor: 'var(--color-gold)',
+              }}
             >
-              Try Gold
+              🥇 Try Gold
             </button>
           )}
         </div>
