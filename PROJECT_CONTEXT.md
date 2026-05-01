@@ -1,5 +1,5 @@
 # WriFe Interactive Practice
-*Last updated: 2026-05-01 · Session 7*
+*Last updated: 2026-05-01 · Session 8*
 
 ## Current state
 The app is fully deployed at practice.wrife.co.uk and the complete pupil game loop is verified working end-to-end: World Map → LessonCard modal (tier selector) → ActivitySession (lives, XP, progress bar) → LessonComplete (stars, badge unlock). The admin dashboard has 8 tabs including a Create User tab backed by a Supabase Edge Function. Login and Signup both have Home navigation links.
@@ -10,13 +10,13 @@ The app is fully deployed at practice.wrife.co.uk and the complete pupil game lo
 - L27a (lesson_number=27, id `47e230f8-3fdb-4d1d-8adc-a7223d348c77`): "What is a Paragraph?" — 20 activities using Black Beauty text
 - L27b (lesson_number=62, id `6ed17895-a18b-4bc6-ae33-f5e7d74cf76b`): "Introduction to the Connect Grid" — 20 activities using The Railway Children opening. Stored as lesson_number=62 (constraint widened to 1–100).
 
-Note: some early lessons (L12, L13, L15–L26, L28–L42) have fewer than 20 activities because the HTML source had limited parseable content. Lessons L43–L61 all have 17–21 activities each.
+**L12, L18, L23 top-up complete (Session 8):** L12 now has 20 activities, L18 has 17, L23 has 20 (previous 4 activities were mis-seeded and replaced). Note: some early lessons (L13, L15–L17, L19–L22, L24–L25, L28–L42) may still have fewer than 20 activities from the original parser run. Lessons L43–L61 all have 17–21 activities each.
 
 ## Next steps
-1. **Replace sound placeholder WAVs** — `public/sounds/*.wav` are silent placeholders; wire in real audio files (WebM preferred). Sound calls in `ActivitySession.tsx` are already wired via `useSoundEffects`.
-2. **Deploy** — push sound wiring + WorldNode click fix + content/title updates to Vercel via `git commit && git push`.
-3. **Teacher dashboard manual smoke-test** — log in at practice.wrife.co.uk with `teacher@wrife.test` / `Teacher123!` to verify Overview table, Heatmap, and Settings tabs render correctly with pupil Alex in class.
-4. **Top-up thin lessons** — L12 (7 acts), L18 (9 acts), L23 (4 acts) are still below 15 activities. Source HTML exists for all three. Consider a top-up seed pass.
+1. **Further content quality pass** — audit remaining early lessons (L13, L15–L17, L19–L22, L24–L25) for thin or mis-seeded activities. All have source HTML in `WriFe Lessons/`.
+2. **Stripe payments** — add subscription tiers (see `wrife-stripe-integration` skill). Currently all content is free.
+3. **Parent dashboard** — post-MVP feature: parents viewing their child's XP/streak/badge progress.
+4. **Git push reminder** — run `rm -f .git/index.lock` before each commit session if needed, then `git commit && git push` to deploy to Vercel.
 
 ## Key decisions
 - **Admin dashboard rebuilt as tabbed page** — 8 tabs: Content, Analytics, Teachers, Pupils, Passwords, Admins, Create User, Schools (coming soon)
@@ -36,9 +36,8 @@ Note: some early lessons (L12, L13, L15–L26, L28–L42) have fewer than 20 act
 - `supabase/functions/create-user/` — Deno Edge Function for admin user creation (deployed)
 
 ## Open questions
-- Real sound effects: what format/source? (Placeholder WAVs still in `public/sounds/`)
 - Should admin Content tab show a diff before republishing a lesson?
-- git `index.lock` keeps appearing — user needs to run `rm -f .git/index.lock` before each commit session
+- git `index.lock` keeps appearing — run `rm -f .git/index.lock` before each commit session
 
 ---
 
@@ -46,6 +45,7 @@ Note: some early lessons (L12, L13, L15–L26, L28–L42) have fewer than 20 act
 
 | # | Date | Summary |
 |---|------|---------|
+| 8 | 2026-05-01 | Top-up seed pass: L12 (Adjectives) 7→20 acts, L18 (Statements and Questions) 9→17 acts, L23 (What is a Sentence?) replaced 4 mis-seeded acts with full 20 proper ones (7 bronze/8 silver/5 gold mc). Updated total_activities in lessons table. |
 | 7 | 2026-05-01 | Wired play('correct')/play('incorrect') in ActivitySession.tsx. Fixed WorldNode click bug (whole row now clickable). Created teacher account (teacher@wrife.test / Teacher123!, class "Year 5 Test Class", invite code WRIFE01, pupil Alex enrolled). Rebuilt L26 (Active and Passive Voice) — replaced 5 broken parser artefact activities with 20 proper ones (7 bronze mc, 6 silver mc+fillblank, 6 gold write). Fixed generic titles on L12, L13, L14, L15, L19, L22–L26. |
 | 6 | 2026-04-30 | Seeded L27a (20 activities, paragraph structure, Black Beauty text) and L27b (20 activities, Connect Grid, Railway Children text). L27b stored as lesson_number=62; constraint widened to 1–100. All 62 lessons now seeded. |
 | 5 | 2026-04-30 | Bulk-seeded L45–L61 (20 activities each) — all 60 lessons now have activities in DB. Total ~1108 activities across 60 lessons. L27 remains empty (no source HTML). |

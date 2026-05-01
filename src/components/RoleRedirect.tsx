@@ -39,7 +39,8 @@ export default function RoleRedirect({ children, allowedRole }: Props) {
   const { session, profile, loading } = useAuthStore()
 
   if (loading) return <FullPageSpinner />
-  if (!session) return <Navigate to="/login" replace />
+  // Pupils land on /pupil-login; teachers/admins land on /login
+  if (!session) return <Navigate to="/pupil-login" replace />
   if (!profile) return <Navigate to="/signup" replace />
 
   // Admin can access any protected route — no role redirect needed

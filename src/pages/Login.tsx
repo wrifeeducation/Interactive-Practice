@@ -142,6 +142,12 @@ export default function Login() {
             Don&apos;t have an account?{' '}
             <Link to="/signup" style={styles.link}>Sign up</Link>
           </p>
+          <p style={{ ...styles.switchLink, marginTop: 8 }}>
+            Are you a pupil?{' '}
+            <Link to="/pupil-login" style={{ ...styles.link, color: 'var(--color-brand-secondary)' }}>
+              Use Pupil Sign In →
+            </Link>
+          </p>
         </div>
       </div>
     </div>

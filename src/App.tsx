@@ -10,6 +10,7 @@ import AdminGuard from './components/AdminGuard'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
+import PupilLogin from './pages/PupilLogin'
 import ActivitySession from './pages/ActivitySession'
 import LessonComplete from './pages/LessonComplete'
 import WorldMap from './pages/WorldMap'
@@ -61,6 +62,7 @@ function AppRoutes() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/pupil-login" element={<PupilLogin />} />
 
         {/* Pupil-only routes */}
         <Route
