@@ -4,7 +4,7 @@ import type { Activity, MCQuestion } from '../../types'
 
 interface Props {
   activity: Activity
-  onAnswer: (isCorrect: boolean, xp: number) => void
+  onAnswer: (isCorrect: boolean, xp: number, selectedAnswer?: string) => void
 }
 
 type OptionState = 'default' | 'selected' | 'correct' | 'incorrect'
@@ -76,7 +76,7 @@ export default function MCActivity({ activity, onAnswer }: Props) {
     }
 
     setTimeout(() => {
-      onAnswer(isCorrect, xp)
+      onAnswer(isCorrect, xp, selected ?? undefined)
     }, 1200)
   }
 

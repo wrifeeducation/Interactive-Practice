@@ -51,7 +51,7 @@ export default function ActivitySession() {
     enabled: !!lessonId,
   })
 
-  const handleAnswer = useCallback(async (isCorrect: boolean, xp: number) => {
+  const handleAnswer = useCallback(async (isCorrect: boolean, xp: number, selectedAnswer?: string) => {
     const currentActivity = activities[store.currentIndex]
     if (!currentActivity) return
 
@@ -72,12 +72,13 @@ export default function ActivitySession() {
     setXpDelta(actualXp)
     setXpDeltaKey((k) => k + 1)
 
-    // Save response to Supabase
+    // Save response to Supabase (include selected answer when available)
     if (session?.user) {
+      const responseJson: Record<string, unknown> = selectedAnswer ? { selected: selectedAnswer } : {}
       await supabase.from('pupil_responses').insert({
         pupil_id: session.user.id,
         activity_id: currentActivity.id,
-        response_json: {},
+        response_json: responseJson,
         is_correct: isCorrect,
         attempt_number: 1,
         xp_awarded: actualXp,

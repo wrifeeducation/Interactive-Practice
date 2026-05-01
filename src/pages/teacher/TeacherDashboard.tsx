@@ -9,12 +9,14 @@ import type { ClassRow } from '../../types'
 
 const TeacherOverview = lazy(() => import('./TeacherOverview'))
 const TeacherHeatmap = lazy(() => import('./TeacherHeatmap'))
+const TeacherReport = lazy(() => import('./TeacherReport'))
 const TeacherSettings = lazy(() => import('./TeacherSettings'))
 const PupilProfile = lazy(() => import('./PupilProfile'))
 
 const NAV_ITEMS = [
   { path: 'overview', label: 'Overview', icon: '📊', testId: 'teacher-nav-overview' },
   { path: 'heatmap', label: 'Heatmap', icon: '🗺️', testId: 'teacher-nav-heatmap' },
+  { path: 'report', label: 'Report', icon: '📋', testId: 'teacher-nav-report' },
   { path: 'pupils', label: 'Pupils', icon: '🏅', testId: 'teacher-nav-pupils' },
   { path: 'settings', label: 'Class Settings', icon: '⚙️', testId: 'teacher-nav-settings' },
 ]
@@ -216,6 +218,7 @@ export default function TeacherDashboard() {
               <Route index element={<TeacherOverview />} />
               <Route path="overview" element={<TeacherOverview />} />
               <Route path="heatmap" element={<TeacherHeatmap />} />
+              <Route path="report" element={<TeacherReport />} />
               <Route path="pupils" element={<TeacherOverview />} />
               <Route path="settings" element={<TeacherSettings />} />
               <Route path="pupil/:pupilId" element={<PupilProfile />} />
