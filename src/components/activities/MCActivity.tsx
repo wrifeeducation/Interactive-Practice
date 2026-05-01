@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import type { Activity, MCQuestion } from '../../types'
 
@@ -10,8 +10,22 @@ interface Props {
 type OptionState = 'default' | 'selected' | 'correct' | 'incorrect'
 type CardState = 'idle' | 'correct' | 'wrong'
 
+// Fisher-Yates shuffle — stable per activity id so options don't re-shuffle mid-answer
+function shuffleArray<T>(arr: T[]): T[] {
+  const out = [...arr]
+  for (let i = out.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[out[i], out[j]] = [out[j], out[i]]
+  }
+  return out
+}
+
 export default function MCActivity({ activity, onAnswer }: Props) {
   const q = activity.question_json as MCQuestion
+
+  // Shuffle once per activity so the correct answer isn't always in the same position
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const shuffledOptions = useMemo(() => shuffleArray(q.options), [activity.id])
 
   const [selected, setSelected] = useState<string | null>(null)
   const [checked, setChecked] = useState(false)
@@ -107,7 +121,7 @@ export default function MCActivity({ activity, onAnswer }: Props) {
 
       {/* Options */}
       <div style={styles.options}>
-        {q.options.map((option, i) => (
+        {shuffledOptions.map((option, i) => (
           <button
             key={option}
             data-testid={`option-button-${i}`}
