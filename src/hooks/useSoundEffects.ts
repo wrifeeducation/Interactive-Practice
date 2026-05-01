@@ -35,7 +35,7 @@ let bgMusic: Howl | null = null
 function getHowl(name: SoundName): Howl {
   if (!howls[name]) {
     howls[name] = new Howl({
-      src: [SOUND_PATHS[name]],
+      src: SOUND_PATHS[name],   // already an array: [webm, wav]
       volume: SOUND_VOLUMES[name],
       preload: true,
     })

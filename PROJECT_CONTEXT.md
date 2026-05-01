@@ -1,45 +1,44 @@
 # WriFe Interactive Practice
-*Last updated: 2026-04-30 · Session 1*
+*Last updated: 2026-05-01 · Session 7*
 
 ## Current state
-The app has a solid working codebase (React 18, Vite, TypeScript strict, Supabase, Vercel). This session delivered the full architecture layer: fluid CSS tokens, play-mode infrastructure, a sound effects system, and a creator-only admin content management tool. All TypeScript checks pass (exit 0). The Supabase project is active (rxmitjrbrsqjeymsycoj). Michael's profile has been promoted to `role: 'admin'` and the `user_role` enum extended to include `admin`.
+The app is fully deployed at practice.wrife.co.uk and the complete pupil game loop is verified working end-to-end: World Map → LessonCard modal (tier selector) → ActivitySession (lives, XP, progress bar) → LessonComplete (stars, badge unlock). The admin dashboard has 8 tabs including a Create User tab backed by a Supabase Edge Function. Login and Signup both have Home navigation links.
+
+**All 62 lesson records are now seeded with activities in the Supabase `activities` table.** Total: ~1128 activities across 62 lessons. All lessons are playable. Activities include mc, match, fillblank, write, and checklist types across bronze/silver/gold tiers.
+
+**L27 special case:** Lesson 27 has two sub-lessons:
+- L27a (lesson_number=27, id `47e230f8-3fdb-4d1d-8adc-a7223d348c77`): "What is a Paragraph?" — 20 activities using Black Beauty text
+- L27b (lesson_number=62, id `6ed17895-a18b-4bc6-ae33-f5e7d74cf76b`): "Introduction to the Connect Grid" — 20 activities using The Railway Children opening. Stored as lesson_number=62 (constraint widened to 1–100).
+
+Note: some early lessons (L12, L13, L15–L26, L28–L42) have fewer than 20 activities because the HTML source had limited parseable content. Lessons L43–L61 all have 17–21 activities each.
 
 ## Next steps
-1. **Deploy** — push all changes to GitHub `main` so Vercel auto-deploys and the admin tool is live at `/admin`
-2. **Real sound assets** — replace the silent placeholder `.wav` files in `public/sounds/` with real audio (correct chime, wrong buzz, badge fanfare, background loop). Use WebM format for smallest size.
-3. **Wire `useSoundEffects`** into activity components — call `play('correct')` / `play('incorrect')` inside `ActivitySession.tsx` on answer submission; `play('click')` on nav buttons
-4. **Wire `PlayModeButton`** into `ActivitySession.tsx` so pupils can enter full-screen play mode from the lesson player
-5. **Test admin tool** — log in as Michael at `/admin`, upload rebuilt L1–L20 HTML files, verify parse, publish to Supabase
+1. **Replace sound placeholder WAVs** — `public/sounds/*.wav` are silent placeholders; wire in real audio files (WebM preferred). Sound calls in `ActivitySession.tsx` are already wired via `useSoundEffects`.
+2. **Deploy** — push sound wiring + WorldNode click fix + content/title updates to Vercel via `git commit && git push`.
+3. **Teacher dashboard manual smoke-test** — log in at practice.wrife.co.uk with `teacher@wrife.test` / `Teacher123!` to verify Overview table, Heatmap, and Settings tabs render correctly with pupil Alex in class.
+4. **Top-up thin lessons** — L12 (7 acts), L18 (9 acts), L23 (4 acts) are still below 15 activities. Source HTML exists for all three. Consider a top-up seed pass.
 
 ## Key decisions
-- **AppShell is a thin infrastructure layer** — manages `play-mode` body class and mute toggle float only; page-level nav stays inside each page (WorldMap already has its own sidebar)
-- **Admin route is creator-only** — `AdminGuard` checks `profile.role === 'admin'`; non-admins are silently redirected with no error page revealing the route exists
-- **Sound system uses Howler.js** — module-level singletons, respects `prefers-reduced-motion`, mute persisted in `localStorage`, sounds only activate after first user gesture
-- **`user_role` enum extended** — migration `add_admin_to_user_role_enum` added `'admin'`; migration `promote_creator_to_admin` set Michael's profile
-- **Admin publish = clean replace** — publishing deletes all existing activities for a lesson then re-inserts; prevents duplicates on re-upload
+- **Admin dashboard rebuilt as tabbed page** — 8 tabs: Content, Analytics, Teachers, Pupils, Passwords, Admins, Create User, Schools (coming soon)
+- **Create User uses Edge Function** — `create-user` Deno function holds service-role key server-side; admin creates any role (pupil/teacher/admin) without email confirmation
+- **RLS infinite recursion fixed** — `SECURITY DEFINER` function `is_class_member()` breaks the `profiles → class_members → classes → class_members` cycle
+- **GoTrue NULL token fix** — accounts created via raw SQL needed `confirmation_token` and related fields set to `''` (not NULL) via UPDATE
+- **ActivitySession empty state** — shows "Coming Soon" + Back to World Map button instead of a blank page when a lesson has no activities
+- **`authStore.fetchProfile` race condition fixed** — sets `loading: true` immediately; never overwrites a valid profile with null
 
 ## Files & locations
-- `src/index.css` — fluid CSS tokens added: `--font-size-*` clamp scale, `--icon-*`, `--touch-target`, `--world-node-*`, `--z-*`, play-mode body class styles
-- `src/stores/uiStore.ts` — NEW: isPlayMode, soundMuted, soundReady state
-- `src/hooks/useFullscreen.ts` — NEW: Web Fullscreen API hook, syncs with uiStore
-- `src/hooks/useSoundEffects.ts` — NEW: Howler.js sound hook
-- `src/lib/sounds.ts` — NEW: sound name catalogue and volume defaults
-- `src/lib/lessonParser.ts` — NEW: browser-compatible port of parse-lessons.cjs
-- `src/components/layout/AppShell.tsx` — NEW: global infrastructure wrapper
-- `src/components/ui/PlayModeButton.tsx` — NEW: reusable full-screen toggle button
-- `src/components/AdminGuard.tsx` — NEW: admin-only route guard
-- `src/pages/admin/AdminPage.tsx` — NEW: 3-step admin wizard container
-- `src/pages/admin/UploadPanel.tsx` — NEW: drag-drop HTML upload + parse
-- `src/pages/admin/PreviewPanel.tsx` — NEW: activity preview + inline edit
-- `src/pages/admin/PublishPanel.tsx` — NEW: per-lesson publish status display
-- `src/App.tsx` — updated: AppShell wrapper, AdminGuard route, lazy AdminPage
-- `src/types/index.ts` — updated: `UserRole` includes `'admin'`; `UIState`, `ParsedActivity`, `ParsedLesson` types added
-- `public/sounds/` — NEW: 10 silent placeholder WAV files (replace with real assets)
+- `src/pages/ActivitySession.tsx` — lesson player; fixed empty state (no activities → "Coming Soon" + back button)
+- `src/pages/admin/AdminPage.tsx` — 8-tab admin dashboard
+- `src/pages/admin/tabs/CreateUserTab.tsx` — NEW: admin user creation form via Edge Function
+- `src/pages/Login.tsx` — added ← Home link in header
+- `src/pages/Signup.tsx` — added ← Home link in header; fixed post-signup routing for admin role
+- `src/stores/authStore.ts` — fixed race condition in `fetchProfile`
+- `supabase/functions/create-user/` — Deno Edge Function for admin user creation (deployed)
 
 ## Open questions
-- What format/source will the real sound effects come from? (Need to decide before wiring into activity components)
-- Should the admin tool show a diff vs current DB content before publishing? (Currently does a clean replace without a preview of what's changing in the DB)
-- Michael is regenerating L1–L20 HTML files — once ready, use admin tool to upload and publish them
+- Real sound effects: what format/source? (Placeholder WAVs still in `public/sounds/`)
+- Should admin Content tab show a diff before republishing a lesson?
+- git `index.lock` keeps appearing — user needs to run `rm -f .git/index.lock` before each commit session
 
 ---
 
@@ -47,4 +46,10 @@ The app has a solid working codebase (React 18, Vite, TypeScript strict, Supabas
 
 | # | Date | Summary |
 |---|------|---------|
+| 7 | 2026-05-01 | Wired play('correct')/play('incorrect') in ActivitySession.tsx. Fixed WorldNode click bug (whole row now clickable). Created teacher account (teacher@wrife.test / Teacher123!, class "Year 5 Test Class", invite code WRIFE01, pupil Alex enrolled). Rebuilt L26 (Active and Passive Voice) — replaced 5 broken parser artefact activities with 20 proper ones (7 bronze mc, 6 silver mc+fillblank, 6 gold write). Fixed generic titles on L12, L13, L14, L15, L19, L22–L26. |
+| 6 | 2026-04-30 | Seeded L27a (20 activities, paragraph structure, Black Beauty text) and L27b (20 activities, Connect Grid, Railway Children text). L27b stored as lesson_number=62; constraint widened to 1–100. All 62 lessons now seeded. |
+| 5 | 2026-04-30 | Bulk-seeded L45–L61 (20 activities each) — all 60 lessons now have activities in DB. Total ~1108 activities across 60 lessons. L27 remains empty (no source HTML). |
+| 4 | 2026-04-30 | Bulk-seeded L01–L44 from per-lesson SQL files generated by the parser; 908 activities across 56 lessons inserted. |
+| 3 | 2026-04-30 | Fixed admin login (NULL token + RLS recursion), added tabbed admin + Create User tab, added Home nav to Login/Signup, tested full pupil game loop end-to-end, fixed empty-state UX |
+| 2 | 2026-04-30 | Deployed create-user Edge Function, built CreateUserTab, fixed auth race condition, fixed admin redirect |
 | 1 | 2026-04-30 | Full architecture session: fluid CSS tokens, AppShell, useFullscreen, sound system (Howler.js), admin content tool (upload/parse/preview/edit/publish), `admin` role added to DB |

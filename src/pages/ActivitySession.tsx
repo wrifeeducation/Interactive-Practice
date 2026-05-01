@@ -12,6 +12,7 @@ import MatchActivity from '../components/activities/MatchActivity'
 import FillBlankActivity from '../components/activities/FillBlankActivity'
 import WriteActivity from '../components/activities/WriteActivity'
 import ChecklistActivity from '../components/activities/ChecklistActivity'
+import { useSoundEffects } from '../hooks/useSoundEffects'
 import type { Activity, ActivityLevel, ActivityType } from '../types'
 
 type LevelParam = ActivityLevel
@@ -22,6 +23,7 @@ export default function ActivitySession() {
   const session = useAuthStore((s) => s.session)
   const store = useSessionStore()
 
+  const { play } = useSoundEffects()
   const [showRest, setShowRest] = useState(false)
   const [restDismissed, setRestDismissed] = useState(false)
   const [xpDelta, setXpDelta] = useState(0)
@@ -53,7 +55,10 @@ export default function ActivitySession() {
     const currentActivity = activities[store.currentIndex]
     if (!currentActivity) return
 
-    if (!isCorrect) {
+    if (isCorrect) {
+      play('correct')
+    } else {
+      play('incorrect')
       store.loseLife()
       if (store.livesRemaining - 1 <= 0 && !restDismissed) {
         setShowRest(true)
@@ -91,7 +96,7 @@ export default function ActivitySession() {
       store.nextActivity()
       setActivityKey((k) => k + 1)
     }
-  }, [activities, store, session, lessonId, safeLevel, restDismissed, navigate])
+  }, [activities, store, session, lessonId, safeLevel, restDismissed, navigate, play])
 
   if (isLoading) {
     return (

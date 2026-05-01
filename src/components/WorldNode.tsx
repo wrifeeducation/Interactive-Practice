@@ -66,21 +66,24 @@ export default function WorldNode({ lesson, onClick, worldColor }: WorldNodeProp
   }
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '6px 0' }}>
+    <div
+      style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '6px 0', cursor: isClickable || isBoss ? 'pointer' : 'default' }}
+      onClick={handleClick}
+      onKeyDown={handleKeyDown}
+      role={isClickable || isBoss ? 'button' : undefined}
+      tabIndex={isClickable || isBoss ? 0 : undefined}
+      aria-label={isClickable || isBoss ? `Lesson ${lessonNumber}: ${title}` : undefined}
+    >
       <motion.div
         data-testid={`world-node-${lessonNumber}`}
-        role={isClickable || isBoss ? 'button' : 'img'}
-        tabIndex={isClickable || isBoss ? 0 : -1}
-        aria-label={`Lesson ${lessonNumber}: ${title} — ${status}`}
+        aria-hidden="true"
         style={nodeStyle}
-        onClick={handleClick}
-        onKeyDown={handleKeyDown}
         animate={status === 'available' ? { scale: [1, 1.06, 1] } : {}}
         transition={status === 'available' ? { repeat: Infinity, duration: 2, ease: 'easeInOut' } : {}}
         whileHover={isClickable || isBoss ? { scale: 1.1 } : {}}
         whileTap={isClickable || isBoss ? { scale: 0.95 } : {}}
       >
-        <span style={contentStyle} aria-hidden="true">
+        <span style={contentStyle}>
           {isLocked && status === 'locked' ? '🔒' : null}
           {status === 'coming_soon' ? '🔒' : null}
           {status === 'available' ? lessonNumber : null}

@@ -24,17 +24,21 @@ export type SoundName =
   | 'streak-milestone'// Streak day milestone (3/7/14/30/60)
   | 'boss-complete'   // World Boss challenge passed
 
-/** Path to each sound's primary asset */
-export const SOUND_PATHS: Record<SoundName, string> = {
-  'click':            '/sounds/click.wav',
-  'correct':          '/sounds/correct.wav',
-  'incorrect':        '/sounds/incorrect.wav',
-  'xp-gain':          '/sounds/xp-gain.wav',
-  'star-earned':      '/sounds/star-earned.wav',
-  'badge-unlock':     '/sounds/badge-unlock.wav',
-  'level-up':         '/sounds/level-up.wav',
-  'streak-milestone': '/sounds/streak-milestone.wav',
-  'boss-complete':    '/sounds/boss-complete.wav',
+/**
+ * Primary source is WebM/Opus (smaller, better quality at low bitrate).
+ * WAV is listed as fallback for browsers without Opus support (rare in 2025).
+ * Howler accepts an array — it picks the first format the browser can play.
+ */
+export const SOUND_PATHS: Record<SoundName, string[]> = {
+  'click':            ['/sounds/click.webm',            '/sounds/click.wav'],
+  'correct':          ['/sounds/correct.webm',          '/sounds/correct.wav'],
+  'incorrect':        ['/sounds/incorrect.webm',        '/sounds/incorrect.wav'],
+  'xp-gain':          ['/sounds/xp-gain.webm',          '/sounds/xp-gain.wav'],
+  'star-earned':      ['/sounds/star-earned.webm',      '/sounds/star-earned.wav'],
+  'badge-unlock':     ['/sounds/badge-unlock.webm',     '/sounds/badge-unlock.wav'],
+  'level-up':         ['/sounds/level-up.webm',         '/sounds/level-up.wav'],
+  'streak-milestone': ['/sounds/streak-milestone.webm', '/sounds/streak-milestone.wav'],
+  'boss-complete':    ['/sounds/boss-complete.webm',    '/sounds/boss-complete.wav'],
 }
 
 /** Background music asset path */
