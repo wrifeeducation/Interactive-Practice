@@ -120,7 +120,7 @@ export default function BossChallenge() {
   const { data: worldLessons = [] } = useQuery<Lesson[]>({
     queryKey: ['world-lessons', worldIdNum],
     queryFn: async () => {
-      const { data } = await supabase.from('lessons').select('*').eq('world_id', worldIdNum)
+      const { data } = await supabase.from('practice_lessons').select('*').eq('world_id', worldIdNum)
       return (data ?? []) as Lesson[]
     },
   })

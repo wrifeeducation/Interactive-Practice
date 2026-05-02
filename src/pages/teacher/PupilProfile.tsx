@@ -66,7 +66,7 @@ export default function PupilProfile() {
   const { data: lessons = [] } = useQuery<LessonMeta[]>({
     queryKey: ['lessons-meta'],
     queryFn: async () => {
-      const { data } = await supabase.from('lessons').select('id, lesson_number, title, world_id').order('lesson_number')
+      const { data } = await supabase.from('practice_lessons').select('id, lesson_number, title, world_id').order('lesson_number')
       return (data ?? []) as LessonMeta[]
     },
   })

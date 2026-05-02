@@ -1,11 +1,9 @@
 import { useState, type FormEvent } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
-import { useAuthStore } from '../stores/authStore'
 
 export default function Login() {
   const navigate = useNavigate()
-  const fetchProfile = useAuthStore((s) => s.fetchProfile)
   const [searchParams] = useSearchParams()
   const notice = searchParams.get('notice')
 
@@ -28,19 +26,28 @@ export default function Login() {
 
     setLoading(true)
     const { data, error: authError } = await supabase.auth.signInWithPassword({ email, password })
-    setLoading(false)
 
     if (authError) {
+      setLoading(false)
       setError(authError.message)
       return
     }
 
     if (data.user) {
-      await fetchProfile(data.user.id)
-      const profile = useAuthStore.getState().profile
-      if (profile?.role === 'admin') {
-        navigate('/admin')
-      } else if (profile?.role === 'teacher') {
+      // Fetch role directly — avoids race condition with the onAuthStateChange
+      // fetchProfile call in App.tsx that runs concurrently after signIn.
+      const { data: profileData } = await supabase
+        .from('profiles')
+        .select('role')
+        .eq('id', data.user.id)
+        .maybeSingle()
+
+      setLoading(false)
+
+      if (profileData?.role === 'admin') {
+        // Full page reload for admin so AdminGuard reads a clean auth state.
+        window.location.href = '/admin'
+      } else if (profileData?.role === 'teacher') {
         navigate('/teacher')
       } else {
         navigate('/world-map')

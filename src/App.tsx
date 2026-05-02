@@ -168,9 +168,8 @@ function AppRoutes() {
           }
         />
 
-        {/* Default redirect */}
-        <Route path="/" element={<Navigate to="/world-map" replace />} />
-        <Route path="*" element={<Navigate to="/world-map" replace />} />
+        {/* Fallback — unknown routes go to home, which handles role-based redirect */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </ErrorBoundary>
   )

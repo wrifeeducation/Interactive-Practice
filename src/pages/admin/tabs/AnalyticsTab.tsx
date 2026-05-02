@@ -44,7 +44,7 @@ export default function AnalyticsTab() {
         ] = await Promise.all([
           supabase.from('profiles').select('id', { count: 'exact', head: true }).eq('role', 'pupil'),
           supabase.from('profiles').select('id', { count: 'exact', head: true }).eq('role', 'teacher'),
-          supabase.from('lessons').select('id', { count: 'exact', head: true }),
+          supabase.from('practice_lessons').select('id', { count: 'exact', head: true }),
           supabase.from('activities').select('id', { count: 'exact', head: true }),
           supabase.from('pupil_progress').select('id', { count: 'exact', head: true }).not('completed_at', 'is', null),
           supabase.from('streaks').select('id', { count: 'exact', head: true }).gt('current_streak', 0),

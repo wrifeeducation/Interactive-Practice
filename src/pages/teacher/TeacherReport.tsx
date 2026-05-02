@@ -131,7 +131,7 @@ export default function TeacherReport() {
       // Members, lessons, streaks in parallel
       const [membersRes, lessonsRes] = await Promise.all([
         supabase.from('class_members').select('pupil_id').eq('class_id', classData.id),
-        supabase.from('lessons').select('id, lesson_number, title, world_id').order('lesson_number'),
+        supabase.from('practice_lessons').select('id, lesson_number, title, world_id').order('lesson_number'),
       ])
 
       const members = (membersRes.data ?? []) as RawMember[]

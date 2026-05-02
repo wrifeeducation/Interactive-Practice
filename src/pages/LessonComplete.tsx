@@ -140,7 +140,7 @@ export default function LessonComplete() {
   const { data: allLessons = [] } = useQuery<Lesson[]>({
     queryKey: ['lessons'],
     queryFn: async () => {
-      const { data } = await supabase.from('lessons').select('*').order('lesson_number')
+      const { data } = await supabase.from('practice_lessons').select('*').order('lesson_number')
       return (data ?? []) as Lesson[]
     },
   })

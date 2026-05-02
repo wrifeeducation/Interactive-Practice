@@ -70,7 +70,7 @@ export default function TeacherHeatmap() {
           .select('pupil_id, profiles(id, name)')
           .eq('class_id', classData.id),
         supabase
-          .from('lessons')
+          .from('practice_lessons')
           .select('id, lesson_number, title')
           .order('lesson_number'),
       ])

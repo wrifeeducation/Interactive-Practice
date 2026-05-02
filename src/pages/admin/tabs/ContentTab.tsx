@@ -13,7 +13,7 @@ type Step = 'upload' | 'preview' | 'publish'
 
 async function publishLesson(lesson: ParsedLesson): Promise<{ activitiesWritten: number }> {
   const { data: lessonRow, error: lessonErr } = await supabase
-    .from('lessons')
+    .from('practice_lessons')
     .upsert(
       { lesson_number: lesson.lesson_number, world_id: lesson.world_id, title: lesson.title },
       { onConflict: 'lesson_number' }
