@@ -100,7 +100,7 @@ export default function AdminPage() {
           <span style={{ color: 'rgba(255,255,255,0.55)', fontSize: 14 }}>Admin</span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <span style={{ color: 'rgba(255,255,255,0.75)', fontSize: 13 }}>{profile?.name}</span>
+          <span style={{ color: 'rgba(255,255,255,0.75)', fontSize: 13 }}>{profile?.display_name}</span>
           <button onClick={() => void handleSignOut()} data-testid="admin-signout"
             style={{ color: 'rgba(255,255,255,0.85)', fontSize: 13, background: 'transparent', border: '1px solid rgba(255,255,255,0.35)', borderRadius: 6, padding: '6px 14px', cursor: 'pointer' }}>
             Sign out

@@ -116,7 +116,7 @@ export default function PupilProfile() {
   const lastActiveDates = progress.filter((p) => p.completed_at).map((p) => p.completed_at as string)
   const lastActive = lastActiveDates.length > 0 ? lastActiveDates.sort().at(-1) ?? null : null
 
-  const nameParts = profile.name.trim().split(' ')
+  const nameParts = (profile.display_name ?? '').trim().split(' ')
   const initial = nameParts[0]?.[0]?.toUpperCase() ?? '?'
 
   return (
@@ -129,7 +129,7 @@ export default function PupilProfile() {
         <Link to="/teacher/overview" style={{ color: 'var(--color-brand-primary)', textDecoration: 'none', fontWeight: 500 }}>
           ← Back to Overview
         </Link>
-        {' '}/ {profile.name}
+        {' '}/ {profile.display_name ?? 'Unknown'}
       </div>
 
       {/* Summary bar */}
@@ -148,13 +148,13 @@ export default function PupilProfile() {
             color: 'var(--color-text-on-dark)',
             flexShrink: 0,
           }}
-          aria-label={`Avatar for ${profile.name}`}
+          aria-label={`Avatar for ${profile.display_name ?? 'pupil'}`}
         >
           {initial}
         </div>
         <div style={{ flex: 1, minWidth: 0 }}>
-          <h2 style={{ margin: '0 0 2px', fontSize: '20px', fontWeight: 700, color: 'var(--color-text)' }} data-tts={`pupil name: ${profile.name}`}>
-            {profile.name}
+          <h2 style={{ margin: '0 0 2px', fontSize: '20px', fontWeight: 700, color: 'var(--color-text)' }} data-tts={`pupil name: ${profile.display_name ?? 'Unknown'}`}>
+            {profile.display_name ?? 'Unknown'}
           </h2>
           <p style={{ margin: 0, fontSize: '13px', color: 'var(--color-text-muted)' }}>
             Last active: {timeAgo(lastActive)}

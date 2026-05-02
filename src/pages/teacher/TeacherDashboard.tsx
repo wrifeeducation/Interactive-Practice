@@ -181,7 +181,7 @@ export default function TeacherDashboard() {
 
           <div style={{ flex: 1, minWidth: 0 }}>
             <div style={{ fontWeight: 600, fontSize: '15px', color: 'var(--color-text)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-              {profile?.name ?? 'Teacher'}
+              {profile?.display_name ?? 'Teacher'}
             </div>
             {classRow && (
               <div style={{ fontSize: '12px', color: 'var(--color-text-muted)' }}>

@@ -20,7 +20,7 @@ export type StarRating = 0 | 1 | 2 | 3
 export interface Profile {
   id: string
   role: UserRole
-  name: string
+  display_name: string | null
   created_at: string
 }
 

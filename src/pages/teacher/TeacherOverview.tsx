@@ -56,7 +56,7 @@ export default function TeacherOverview() {
       // Get class members with profiles
       const { data: members } = await supabase
         .from('class_members')
-        .select('pupil_id, profiles(id, name)')
+        .select('pupil_id, profiles(id, display_name)')
         .eq('class_id', classData.id)
 
       if (!members || members.length === 0) return []
@@ -105,7 +105,7 @@ export default function TeacherOverview() {
       }
 
       return members.map((m): PupilSummary => {
-        const raw = m as unknown as { pupil_id: string; profiles: { id: string; name: string; role: string; created_at: string } | null }
+        const raw = m as unknown as { pupil_id: string; profiles: { id: string; display_name: string | null; role: string; created_at: string } | null }
         const id = raw.pupil_id
         const streakInfo = streakByPupil.get(id)
         const lastActive = lastActiveByPupil.get(id) ?? streakInfo?.lastDate ?? null
@@ -121,7 +121,7 @@ export default function TeacherOverview() {
         return {
           profile: {
             id,
-            name: raw.profiles?.name ?? 'Unknown',
+            display_name: raw.profiles?.display_name ?? 'Unknown',
             role: 'pupil',
             created_at: raw.profiles ? '' : '',
           },
@@ -147,7 +147,7 @@ export default function TeacherOverview() {
 
   const sorted = [...pupils].sort((a, b) => {
     let cmp = 0
-    if (sortKey === 'name') cmp = a.profile.name.localeCompare(b.profile.name)
+    if (sortKey === 'name') cmp = (a.profile.display_name ?? '').localeCompare(b.profile.display_name ?? '')
     else if (sortKey === 'xpTotal') cmp = a.xpTotal - b.xpTotal
     else if (sortKey === 'streak') cmp = a.currentStreak - b.currentStreak
     else if (sortKey === 'health') cmp = healthSort(a.health) - healthSort(b.health)
@@ -246,8 +246,8 @@ export default function TeacherOverview() {
                 onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = 'var(--color-background)' }}
                 onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = '' }}
               >
-                <td style={tdStyle} data-tts={`pupil name: ${pupil.profile.name}`}>
-                  <strong>{pupil.profile.name}</strong>
+                <td style={tdStyle} data-tts={`pupil name: ${pupil.profile.display_name ?? 'Unknown'}`}>
+                  <strong>{pupil.profile.display_name ?? 'Unknown'}</strong>
                 </td>
                 <td style={tdStyle} data-tts={`last active: ${pupil.lastActive ?? 'never'}`}>
                   {timeAgo(pupil.lastActive)}

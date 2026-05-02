@@ -24,7 +24,7 @@ export default function AdminsTab() {
     setLoading(true)
     const { data } = await supabase
       .from('profiles')
-      .select('id, name, role, created_at')
+      .select('id, display_name, role, created_at')
       .eq('role', 'admin')
       .order('created_at', { ascending: true })
     setAdmins(
@@ -45,8 +45,8 @@ export default function AdminsTab() {
     // We search by name as a proxy (admin should know the exact name).
     const { data: found, error: findErr } = await supabase
       .from('profiles')
-      .select('id, name, role')
-      .ilike('name', promoteEmail.trim())
+      .select('id, display_name, role')
+      .ilike('display_name', promoteEmail.trim())
       .single()
 
     if (findErr || !found) {
@@ -56,7 +56,7 @@ export default function AdminsTab() {
     }
 
     if (found.role === 'admin') {
-      setPromoteMsg({ text: `${found.name} is already an admin.`, ok: false })
+      setPromoteMsg({ text: `${found.display_name} is already an admin.`, ok: false })
       setPromoting(false)
       return
     }
@@ -69,7 +69,7 @@ export default function AdminsTab() {
     if (updateErr) {
       setPromoteMsg({ text: `Failed: ${updateErr.message}`, ok: false })
     } else {
-      setPromoteMsg({ text: `✓ ${found.name} promoted to admin.`, ok: true })
+      setPromoteMsg({ text: `✓ ${found.display_name} promoted to admin.`, ok: true })
       setPromoteEmail('')
       void loadAdmins()
     }
@@ -95,7 +95,7 @@ export default function AdminsTab() {
           <div key={a.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 16px', background: a.is_current_user ? 'var(--color-world-1-bg)' : 'var(--color-surface)', border: `1px solid ${a.is_current_user ? 'var(--color-brand-primary)' : 'var(--color-border)'}`, borderRadius: 'var(--radius-md)', marginBottom: 8 }}>
             <div>
               <p style={{ fontWeight: 700, fontSize: 'var(--font-size-sm)', color: 'var(--color-text)', margin: '0 0 2px' }}>
-                👑 {a.name} {a.is_current_user && <span style={{ fontSize: 'var(--font-size-xs)', color: 'var(--color-brand-primary)', marginLeft: 6 }}>(you)</span>}
+                👑 {a.display_name ?? 'Admin'} {a.is_current_user && <span style={{ fontSize: 'var(--font-size-xs)', color: 'var(--color-brand-primary)', marginLeft: 6 }}>(you)</span>}
               </p>
               <p style={{ fontSize: 'var(--font-size-xs)', color: 'var(--color-text-muted)', margin: 0 }}>Promoted {fmt(a.created_at)}</p>
             </div>

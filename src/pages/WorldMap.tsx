@@ -266,8 +266,8 @@ export default function WorldMap() {
 
   // Avatar colour from profile
   const avatarColor = (profile as unknown as { avatar_colour?: string })?.avatar_colour ?? 'var(--color-brand-primary)'
-  const initials = profile?.name
-    ? profile.name.trim().split(' ').map((p) => p[0]).join('').slice(0, 2).toUpperCase()
+  const initials = profile?.display_name
+    ? profile.display_name.trim().split(' ').map((p) => p[0]).join('').slice(0, 2).toUpperCase()
     : '??'
 
   const sidebar = (
@@ -284,8 +284,8 @@ export default function WorldMap() {
         </div>
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ fontWeight: 700, fontSize: '16px', color: '#fff', lineHeight: 1.2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-            {profile?.name ?? 'Pupil'}
-          </div>
+            {profile?.display_name ?? 'Pupil'}
+</div>
           <div style={{ fontSize: '13px', color: 'rgba(255,255,255,0.7)', marginTop: '2px' }}>
             Level {level}
           </div>
@@ -395,7 +395,7 @@ export default function WorldMap() {
             ☰
           </button>
           <span style={{ fontWeight: 700, fontSize: '16px', color: 'var(--color-text)' }}>
-            {profile?.name ?? 'World Map'}
+            {profile?.display_name ?? 'World Map'}
           </span>
           <div style={{ display: 'flex', gap: '8px', marginLeft: 'auto' }}>
             <span style={{ color: 'var(--color-streak)', fontWeight: 700, fontSize: '15px' }}>🔥 {streak}</span>
