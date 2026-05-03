@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import type { UserRole } from '../types'
+import { WrifeMascot } from '../components/ui/WrifeMascot'
 
 export default function Signup() {
   const navigate = useNavigate()
@@ -109,14 +110,7 @@ export default function Signup() {
         <div style={styles.body}>
           {/* Pencil mascot — above form on signup page */}
           <div style={{ textAlign: 'center', marginBottom: '16px' }}>
-            <img
-              src="/mascots/pencil-waving.png"
-              alt=""
-              role="presentation"
-              width={120}
-              height={120}
-              loading="lazy"
-            />
+            <WrifeMascot pose="waving" size="md" decorative />
           </div>
           <form onSubmit={handleSubmit} noValidate>
             <div style={styles.field}>

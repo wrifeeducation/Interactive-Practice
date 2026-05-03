@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
+import { WrifeMascot } from '../components/ui/WrifeMascot'
 
 export default function Login() {
   const navigate = useNavigate()
@@ -57,17 +58,8 @@ export default function Login() {
 
   return (
     <div style={styles.page}>
-      {/* Penny Pencil — right side on desktop, above form on mobile (brand-mascots.md) */}
-      <img
-        src="/mascots/pencil-waving.png"
-        alt=""
-        role="presentation"
-        width={180}
-        height={180}
-        loading="lazy"
-        style={styles.mascot}
-        className="login-mascot"
-      />
+      {/* WriFe mascot — right side on desktop, above form on mobile */}
+      <WrifeMascot pose="waving" size="lg" decorative style={styles.mascot} className="login-mascot" />
       <div style={styles.card}>
         {/* Brand gradient header */}
         <div style={styles.header}>

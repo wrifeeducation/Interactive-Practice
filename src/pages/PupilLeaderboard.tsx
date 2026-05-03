@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query'
 import { supabase } from '../lib/supabase'
 import { useAuthStore } from '../stores/authStore'
 import LoadingSkeleton from '../components/LoadingSkeleton'
+import { WrifeMascot } from '../components/ui/WrifeMascot'
 
 interface LeaderboardEntry {
   pupilId: string
@@ -137,15 +138,7 @@ export default function PupilLeaderboard() {
   if (!data.enabled) {
     return (
       <div style={{ ...containerStyle, textAlign: 'center', paddingTop: '40px' }}>
-        <img
-          src="/mascots/pencil-waving.png"
-          alt=""
-          role="presentation"
-          width={120}
-          height={120}
-          loading="lazy"
-          style={{ marginBottom: '16px' }}
-        />
+        <WrifeMascot pose="waving" size="md" decorative style={{ marginBottom: '16px' }} />
         <h1 style={titleStyle}>Class Leaderboard</h1>
         <p style={{ color: 'var(--color-text-muted)', fontSize: '16px', marginBottom: '24px' }} data-tts="leaderboard disabled message">
           Your teacher hasn&apos;t turned on the leaderboard yet

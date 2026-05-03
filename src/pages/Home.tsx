@@ -1,5 +1,6 @@
 import { useNavigate, Navigate } from 'react-router-dom'
 import { useAuthStore } from '../stores/authStore'
+import { WrifeMascot } from '../components/ui/WrifeMascot'
 
 const WORLDS = [
   { id: 1, emoji: '📖', name: 'Story Seeds',       lessons: 9,  color: 'var(--color-world-1)' },
@@ -125,8 +126,7 @@ export default function Home() {
             {/* Mascot */}
             <div className="hero-mascot" style={{ position: 'relative' }}>
               <div style={{ width: 'clamp(140px, 18vw, 220px)', height: 'clamp(140px, 18vw, 220px)', background: 'var(--color-world-1-bg)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
-                <img src="/mascots/pencil-waving.png" alt="" role="presentation"
-                  style={{ width: '90%', height: '90%', objectFit: 'contain' }} loading="eager" />
+                <WrifeMascot pose="waving" size="xl" decorative />
               </div>
               <div style={{ position: 'absolute', bottom: 8, right: 8, background: 'var(--color-brand-accent)', borderRadius: '50%', width: 36, height: 36, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, border: '2px solid var(--color-background)' }}>
                 ⭐

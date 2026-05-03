@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { useMutation } from '@tanstack/react-query'
 import { supabase } from '../lib/supabase'
 import { useAuthStore } from '../stores/authStore'
+import { WrifeMascot } from '../components/ui/WrifeMascot'
 
 interface JoinResult {
   className: string
@@ -54,15 +55,7 @@ export default function PupilJoinClass() {
     return (
       <div style={pageStyle}>
         <div style={cardStyle}>
-          <img
-            src="/mascots/pencil-celebrating.png"
-            alt=""
-            role="presentation"
-            width={120}
-            height={120}
-            loading="lazy"
-            style={{ marginBottom: '8px' }}
-          />
+          <WrifeMascot pose="celebrating" size="md" decorative style={{ marginBottom: '8px' }} />
           <h1 style={headingStyle} data-tts={`joined class: ${joined.className}`}>
             You joined {joined.className}! 🎉
           </h1>
