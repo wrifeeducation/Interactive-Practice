@@ -10,9 +10,9 @@ export async function awardBadgeIfNew(
   pupilId: string,
   badgeCode: string,
 ): Promise<Badge | null> {
-  // Look up the badge by code
+  // Look up the badge by code in practice_badges
   const { data: badge, error: badgeErr } = await supabase
-    .from('badges')
+    .from('practice_badges')
     .select('*')
     .eq('code', badgeCode)
     .maybeSingle()
@@ -23,7 +23,7 @@ export async function awardBadgeIfNew(
 
   // Check if already earned
   const { data: existing } = await supabase
-    .from('pupil_badges')
+    .from('practice_pupil_badges')
     .select('id')
     .eq('pupil_id', pupilId)
     .eq('badge_id', typedBadge.id)
@@ -32,7 +32,7 @@ export async function awardBadgeIfNew(
   if (existing) return null
 
   // Award the badge
-  const { error: insertErr } = await supabase.from('pupil_badges').insert({
+  const { error: insertErr } = await supabase.from('practice_pupil_badges').insert({
     pupil_id: pupilId,
     badge_id: typedBadge.id,
     earned_at: new Date().toISOString(),

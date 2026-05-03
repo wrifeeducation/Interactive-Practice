@@ -195,15 +195,15 @@ export default function WorldMap() {
     queryFn: async () => {
       if (!session?.user) return []
       const { data } = await supabase
-        .from('pupil_badges')
-        .select('badges(code)')
+        .from('practice_pupil_badges')
+        .select('practice_badges(code)')
         .eq('pupil_id', session.user.id)
       if (!data) return []
-      return (data as unknown as Array<{ badges: { code: string } | { code: string }[] | null }>)
+      return (data as unknown as Array<{ practice_badges: { code: string } | { code: string }[] | null }>)
         .map((row) => {
-          if (!row.badges) return ''
-          if (Array.isArray(row.badges)) return row.badges[0]?.code ?? ''
-          return (row.badges as { code: string }).code ?? ''
+          if (!row.practice_badges) return ''
+          if (Array.isArray(row.practice_badges)) return row.practice_badges[0]?.code ?? ''
+          return (row.practice_badges as { code: string }).code ?? ''
         })
         .filter(Boolean)
     },
@@ -322,6 +322,7 @@ export default function WorldMap() {
       {/* Navigation */}
       <div style={{ padding: '0 12px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
         <SidebarLink to="/pupil/badges" emoji="🏅" label="My Badges" testId="sidebar-badges" />
+        <SidebarLink to="/connect-grid" emoji="📋" label="Connect Grid" testId="sidebar-connect-grid" />
         <SidebarLink to="/pupil/leaderboard" emoji="🏆" label="Leaderboard" testId="sidebar-leaderboard" />
         <SidebarLink to="/pupil/join" emoji="🏫" label="Join a Class" testId="sidebar-join" />
       </div>

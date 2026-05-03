@@ -53,7 +53,7 @@ export default function BadgeShelf() {
   const { data: allBadges = [] } = useQuery<Badge[]>({
     queryKey: ['badges-all'],
     queryFn: async () => {
-      const { data } = await supabase.from('badges').select('*').order('category').order('code')
+      const { data } = await supabase.from('practice_badges').select('*').order('category').order('code')
       return (data ?? []) as Badge[]
     },
   })
@@ -63,14 +63,14 @@ export default function BadgeShelf() {
     queryFn: async () => {
       if (!session?.user) return []
       const { data } = await supabase
-        .from('pupil_badges')
-        .select('earned_at, badges(*)')
+        .from('practice_pupil_badges')
+        .select('earned_at, practice_badges(*)')
         .eq('pupil_id', session.user.id)
       if (!data) return []
-      return (data as unknown as Array<{ earned_at: string; badges: Badge | Badge[] | null }>)
-        .filter((row) => row.badges)
+      return (data as unknown as Array<{ earned_at: string; practice_badges: Badge | Badge[] | null }>)
+        .filter((row) => row.practice_badges)
         .map((row) => {
-          const badge = Array.isArray(row.badges) ? row.badges[0] : row.badges
+          const badge = Array.isArray(row.practice_badges) ? row.practice_badges[0] : row.practice_badges
           if (!badge) return null
           return { ...badge, earned_at: row.earned_at }
         })

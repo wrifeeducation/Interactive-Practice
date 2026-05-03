@@ -16,6 +16,7 @@ import LessonComplete from './pages/LessonComplete'
 import WorldMap from './pages/WorldMap'
 import BossChallenge from './pages/BossChallenge'
 import BadgeShelf from './pages/BadgeShelf'
+import ConnectGrid from './pages/ConnectGrid'
 
 // Lazy-loaded heavy/teacher/admin pages
 const TeacherDashboard = lazy(() => import('./pages/teacher/TeacherDashboard'))
@@ -136,6 +137,17 @@ function AppRoutes() {
                   <PupilLeaderboard />
                 </ErrorBoundary>
               </Suspense>
+            </RoleRedirect>
+          }
+        />
+
+        <Route
+          path="/connect-grid"
+          element={
+            <RoleRedirect allowedRole="pupil">
+              <ErrorBoundary>
+                <ConnectGrid />
+              </ErrorBoundary>
             </RoleRedirect>
           }
         />
