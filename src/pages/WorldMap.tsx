@@ -421,63 +421,98 @@ export default function WorldMap() {
             const color = WORLD_COLORS[wd.world.id] ?? 'var(--color-brand-primary)'
             const isOpen = expandedWorldId === wd.world.id
             return (
-              <div key={wd.world.id} style={{ marginBottom: '12px' }}>
+              <div
+                key={wd.world.id}
+                style={{
+                  marginBottom: '12px',
+                  borderRadius: 'var(--radius-lg)',
+                  overflow: 'hidden',
+                  boxShadow: isOpen
+                    ? `0 4px 20px ${color}30, 0 1px 4px rgba(0,0,0,0.08)`
+                    : 'var(--shadow-sm)',
+                  transition: 'box-shadow 0.2s ease',
+                }}
+              >
+                {/* World header — full-bleed coloured gradient */}
                 <button
                   data-testid={`world-card-${wd.world.id}`}
                   onClick={() => setExpandedWorldId(isOpen ? null : wd.world.id)}
                   aria-expanded={isOpen}
                   style={{
                     width: '100%',
-                    background: 'var(--color-surface)',
-                    border: `2px solid ${isOpen ? color : 'var(--color-border)'}`,
-                    borderRadius: isOpen ? 'var(--radius-lg) var(--radius-lg) 0 0' : 'var(--radius-lg)',
-                    padding: '16px',
+                    background: isOpen
+                      ? `linear-gradient(135deg, ${color}EE 0%, ${color}CC 100%)`
+                      : `linear-gradient(135deg, ${color}CC 0%, ${color}99 100%)`,
+                    border: 'none',
+                    borderRadius: isOpen ? '0' : 'var(--radius-lg)',
+                    padding: '14px 16px',
                     cursor: 'pointer',
                     display: 'flex',
                     alignItems: 'center',
                     gap: '12px',
-                    minHeight: '44px',
+                    minHeight: '56px',
                     textAlign: 'left',
-                    boxShadow: 'var(--shadow-sm)',
                   }}
                 >
-                  <span style={{ fontSize: '32px', flexShrink: 0 }}>{wd.world.emoji}</span>
+                  {/* World emoji */}
+                  <span style={{ fontSize: '30px', flexShrink: 0, filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.2))' }}>
+                    {wd.world.emoji}
+                  </span>
+
+                  {/* World name + number */}
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ fontWeight: 700, fontSize: '16px', color: 'var(--color-text)' }} data-tts={`world ${wd.world.id}: ${wd.world.name}`}>
-                      {wd.world.name}
-                    </div>
-                    <div style={{ fontSize: '13px', color, fontWeight: 600 }}>
+                    <div
+                      style={{ fontSize: '11px', fontWeight: 700, color: 'rgba(255,255,255,0.75)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '1px' }}
+                    >
                       World {wd.world.id}
                     </div>
+                    <div
+                      data-tts={`world ${wd.world.id}: ${wd.world.name}`}
+                      style={{ fontWeight: 700, fontSize: '16px', color: '#fff', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
+                    >
+                      {wd.world.name}
+                    </div>
                   </div>
-                  {/* Mini progress bar */}
-                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '4px', flexShrink: 0 }}>
+
+                  {/* Progress badge + bar */}
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '5px', flexShrink: 0 }}>
                     <span
                       data-tts={`${wdWithCounts.completedCount} of ${wdWithCounts.totalLessons} lessons`}
                       style={{
-                        padding: '4px 10px',
-                        background: color,
-                        color: 'var(--color-text-on-dark)',
+                        padding: '3px 10px',
+                        background: 'rgba(255,255,255,0.25)',
+                        color: '#fff',
                         borderRadius: 'var(--radius-full)',
-                        fontSize: '13px',
+                        fontSize: '12px',
                         fontWeight: 700,
+                        border: '1px solid rgba(255,255,255,0.4)',
                       }}
                     >
                       {wdWithCounts.completedCount} / {wdWithCounts.totalLessons}
                     </span>
-                    <div style={{ width: '80px', height: '4px', background: 'var(--color-border)', borderRadius: 'var(--radius-full)', overflow: 'hidden' }}>
+                    <div style={{ width: '72px', height: '5px', background: 'rgba(255,255,255,0.25)', borderRadius: 'var(--radius-full)', overflow: 'hidden' }}>
                       <div style={{
                         width: wdWithCounts.totalLessons > 0
                           ? `${(wdWithCounts.completedCount / wdWithCounts.totalLessons) * 100}%`
                           : '0%',
                         height: '100%',
-                        background: color,
+                        background: '#fff',
                         borderRadius: 'var(--radius-full)',
                         transition: 'width 0.5s ease',
+                        opacity: 0.9,
                       }} />
                     </div>
                   </div>
-                  <span style={{ fontSize: '18px', color: 'var(--color-text-muted)', flexShrink: 0 }}>
+
+                  {/* Boss crown indicator */}
+                  {wd.bossCompleted && (
+                    <span title="Boss defeated!" style={{ fontSize: '20px', flexShrink: 0 }}>👑</span>
+                  )}
+                  {wd.bossAvailable && !wd.bossCompleted && (
+                    <span title="Boss available!" style={{ fontSize: '20px', flexShrink: 0, animation: 'pulse 1.5s ease-in-out infinite' }}>⚔️</span>
+                  )}
+
+                  <span style={{ fontSize: '16px', color: 'rgba(255,255,255,0.8)', flexShrink: 0 }}>
                     {isOpen ? '▲' : '▼'}
                   </span>
                 </button>
@@ -488,12 +523,13 @@ export default function WorldMap() {
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: 'auto', opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.25 }}
+                      transition={{ duration: 0.22 }}
                       style={{
                         overflow: 'hidden',
                         background: 'var(--color-surface)',
-                        border: `2px solid ${color}`,
-                        borderTop: 'none',
+                        borderLeft: `3px solid ${color}`,
+                        borderRight: `3px solid ${color}`,
+                        borderBottom: `3px solid ${color}`,
                         borderRadius: '0 0 var(--radius-lg) var(--radius-lg)',
                       }}
                     >

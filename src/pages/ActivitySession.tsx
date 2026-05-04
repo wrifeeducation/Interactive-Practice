@@ -17,6 +17,115 @@ import type { Activity, ActivityLevel, ActivityType } from '../types'
 
 type LevelParam = ActivityLevel
 
+// ── Lesson nav bar ───────────────────────────────────────────────
+const LEVEL_COLOURS: Record<string, string> = {
+  bronze: '#CD7F32',
+  silver: '#A8A9AD',
+  gold:   '#F5C500',
+}
+
+function LessonNavBar({
+  lessonNumber,
+  lessonTitle,
+  level,
+  onBack,
+}: {
+  lessonNumber: number | null
+  lessonTitle: string | null
+  level: string
+  onBack: () => void
+}) {
+  const tierColour = LEVEL_COLOURS[level] ?? 'var(--color-brand-primary)'
+
+  return (
+    <div
+      data-testid="lesson-nav-bar"
+      style={{
+        position: 'sticky',
+        top: 0,
+        zIndex: 30,
+        background: 'linear-gradient(135deg, #7C6FF7 0%, var(--color-brand-primary) 100%)',
+        boxShadow: '0 2px 12px rgba(108,92,231,0.35)',
+        padding: '10px 16px',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '10px',
+        maxWidth: '100%',
+      }}
+    >
+      {/* Back to world map */}
+      <button
+        data-testid="lesson-nav-back"
+        onClick={onBack}
+        aria-label="Back to World Map"
+        style={{
+          background: 'rgba(255,255,255,0.18)',
+          border: '1.5px solid rgba(255,255,255,0.35)',
+          borderRadius: 'var(--radius-md)',
+          color: '#fff',
+          fontSize: '14px',
+          fontWeight: 600,
+          padding: '6px 12px',
+          cursor: 'pointer',
+          minHeight: '36px',
+          whiteSpace: 'nowrap',
+          flexShrink: 0,
+          display: 'flex',
+          alignItems: 'center',
+          gap: '4px',
+        }}
+      >
+        ← Map
+      </button>
+
+      {/* Lesson title — truncates if too long */}
+      <div style={{ flex: 1, minWidth: 0, textAlign: 'center' }}>
+        {lessonNumber !== null && (
+          <div style={{ fontSize: '11px', color: 'rgba(255,255,255,0.65)', fontWeight: 600, letterSpacing: '0.4px', textTransform: 'uppercase' }}>
+            Lesson {lessonNumber}
+          </div>
+        )}
+        {lessonTitle && (
+          <div
+            data-tts={`lesson: ${lessonTitle}`}
+            style={{
+              fontSize: '15px',
+              fontWeight: 700,
+              color: '#fff',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+              lineHeight: 1.2,
+            }}
+          >
+            {lessonTitle}
+          </div>
+        )}
+      </div>
+
+      {/* Tier badge */}
+      <span
+        data-testid="lesson-nav-tier"
+        data-tts={`tier: ${level}`}
+        style={{
+          background: tierColour,
+          color: '#fff',
+          fontSize: '12px',
+          fontWeight: 700,
+          padding: '5px 10px',
+          borderRadius: 'var(--radius-full)',
+          letterSpacing: '0.5px',
+          textTransform: 'uppercase',
+          flexShrink: 0,
+          boxShadow: `0 0 8px ${tierColour}80`,
+        }}
+      >
+        {level}
+      </span>
+    </div>
+  )
+}
+
 export default function ActivitySession() {
   const { lessonId, level } = useParams<{ lessonId: string; level: string }>()
   const navigate = useNavigate()
@@ -35,6 +144,20 @@ export default function ActivitySession() {
   useEffect(() => {
     store.resetSession()
   }, [lessonId, level]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Fetch lesson metadata for the nav bar
+  const { data: lessonMeta } = useQuery({
+    queryKey: ['lesson-meta', lessonId],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from('practice_lessons')
+        .select('lesson_number, title')
+        .eq('id', lessonId)
+        .maybeSingle()
+      return data as { lesson_number: number; title: string } | null
+    },
+    enabled: !!lessonId,
+  })
 
   const { data: activities = [], isLoading } = useQuery({
     queryKey: ['activities', lessonId, safeLevel],
@@ -144,6 +267,13 @@ export default function ActivitySession() {
 
   return (
     <div style={styles.page}>
+      <LessonNavBar
+        lessonNumber={lessonMeta?.lesson_number ?? null}
+        lessonTitle={lessonMeta?.title ?? null}
+        level={safeLevel}
+        onBack={() => navigate('/world-map')}
+      />
+      <div style={styles.inner}>
       <SessionHeader
         level={safeLevel}
         livesRemaining={store.livesRemaining}
@@ -163,6 +293,7 @@ export default function ActivitySession() {
       {showRest && !restDismissed && (
         <RestOverlay onContinue={() => { setShowRest(false); setRestDismissed(true) }} />
       )}
+      </div>
     </div>
   )
 }
@@ -180,11 +311,13 @@ function ActivityRenderer({ activity, onAnswer }: { activity: Activity; onAnswer
 
 const styles: Record<string, React.CSSProperties> = {
   page: {
+    minHeight: '100vh',
+    background: 'var(--color-background)',
+  },
+  inner: {
     maxWidth: '720px',
     margin: '0 auto',
     padding: '16px',
-    minHeight: '100vh',
-    background: 'var(--color-background)',
   },
   loading: {
     display: 'flex',
