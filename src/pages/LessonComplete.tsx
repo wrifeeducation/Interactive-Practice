@@ -8,6 +8,7 @@ import { useSessionStore } from '../stores/sessionStore'
 import { useAuthStore } from '../stores/authStore'
 import { updateStreak, streakBonusXP } from '../lib/streak'
 import { checkLessonBadge } from '../lib/badges'
+import { autoSubmitAssignment } from '../lib/progress'
 import BadgeCelebration from '../components/BadgeCelebration'
 import type { PupilProgress, StarRating, Badge, Lesson } from '../types'
 
@@ -179,6 +180,11 @@ export default function LessonComplete() {
     if (result.milestoneReached) {
       setStreakMilestone(result.milestoneReached)
       setStreakBonus(streakBonusXP(result.milestoneReached))
+    }
+
+    // Auto-submit against any active class assignment for this lesson
+    if (lessonNumber > 0) {
+      await autoSubmitAssignment(session.user.id, lessonNumber)
     }
   }, [effectsRan, session?.user, lessonId, allLessons])
 
