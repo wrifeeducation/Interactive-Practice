@@ -1,5 +1,12 @@
 # CLAUDE.md — WriFe Interactive Practice
 
+> **CROSS-APP CONTEXT — READ FIRST**
+> Read `PLATFORM_STATUS.md` in this repo root before writing any code.
+> It contains the feature status matrix, shared DB schema, Edge Function map,
+> cross-app conventions, known gotchas, and the recommended workflow for
+> working across all three WriFe apps. It is mirrored in all three repos
+> and is the single source of truth for any Claude on any app.
+
 > **Read this file at the start of every session before touching any code.**
 > **Also read `docs/brand-mascots.md` before writing any UI component.**
 
