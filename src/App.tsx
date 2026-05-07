@@ -21,6 +21,9 @@ import ConnectGrid from './pages/ConnectGrid'
 // Route C — parent home sign-up (lazy: standalone flow, not part of core bundle)
 const HomeSignupPage = lazy(() => import('./pages/HomeSignupPage'))
 
+// Route D — independent teacher sign-up
+const TeacherSignupPage = lazy(() => import('./pages/TeacherSignupPage'))
+
 // Lazy-loaded heavy/teacher/admin pages
 const TeacherDashboard = lazy(() => import('./pages/teacher/TeacherDashboard'))
 const PupilJoinClass   = lazy(() => import('./pages/PupilJoinClass'))
@@ -70,6 +73,11 @@ function AppRoutes() {
         <Route path="/home-signup" element={
           <Suspense fallback={<FullPageSpinner />}>
             <HomeSignupPage />
+          </Suspense>
+        } />
+        <Route path="/teacher-signup" element={
+          <Suspense fallback={<FullPageSpinner />}>
+            <TeacherSignupPage />
           </Suspense>
         } />
 
