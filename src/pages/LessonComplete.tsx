@@ -8,7 +8,7 @@ import { useSessionStore } from '../stores/sessionStore'
 import { useAuthStore } from '../stores/authStore'
 import { updateStreak, streakBonusXP } from '../lib/streak'
 import { checkLessonBadge } from '../lib/badges'
-import { autoSubmitAssignment } from '../lib/progress'
+import { autoSubmitAssignment, insertLearningEvent } from '../lib/progress'
 import BadgeCelebration from '../components/BadgeCelebration'
 import type { PupilProgress, StarRating, Badge, Lesson } from '../types'
 
@@ -186,7 +186,14 @@ export default function LessonComplete() {
     if (lessonNumber > 0) {
       await autoSubmitAssignment(session.user.id, lessonNumber)
     }
-  }, [effectsRan, session?.user, lessonId, allLessons])
+
+    // Report progress to wrife.co.uk teacher dashboard via learning_events
+    await insertLearningEvent(session.user.id, 'lesson_completed', {
+      lesson_id: lessonNumber,
+      stars: earnedStars,
+      xp_earned: xpThisSession,
+    })
+  }, [effectsRan, session?.user, lessonId, allLessons, earnedStars, xpThisSession])
 
   useEffect(() => {
     if (allLessons.length > 0) {

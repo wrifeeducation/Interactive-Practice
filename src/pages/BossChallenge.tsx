@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query'
 import { supabase } from '../lib/supabase'
 import { useAuthStore } from '../stores/authStore'
 import { checkWorldBadge } from '../lib/badges'
+import { insertLearningEvent } from '../lib/progress'
 import BadgeCelebration from '../components/BadgeCelebration'
 import WorldUnlock from '../components/WorldUnlock'
 import type { Activity, World, Lesson, PupilProgress, Badge } from '../types'
@@ -167,7 +168,7 @@ export default function BossChallenge() {
       // Completed boss challenge
       setCorrectCount(nextCorrect)
       setDone(true)
-      // Award world badge
+      // Award world badge + report to learning_events
       if (session?.user) {
         void (async () => {
           const badge = await checkWorldBadge(
@@ -177,6 +178,12 @@ export default function BossChallenge() {
             progressRows,
           )
           setWorldBadge(badge)
+
+          // Report world completion to wrife.co.uk teacher dashboard
+          await insertLearningEvent(session.user.id, 'world_completed', {
+            world_id: worldIdNum,
+            badge_earned: badge?.name ?? null,
+          })
         })()
       }
     } else {

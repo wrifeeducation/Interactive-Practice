@@ -61,6 +61,42 @@ export async function autoSubmitAssignment(
   }
 }
 
+/**
+ * Inserts a learning_events row so wrife.co.uk teacher dashboard can display
+ * real-time cross-app progress. Safe to call on failure — errors are caught.
+ * class_id is resolved automatically; null for home learners with no class.
+ */
+export async function insertLearningEvent(
+  pupilId: string,
+  eventType: string,
+  eventData: Record<string, unknown>,
+): Promise<void> {
+  try {
+    // Resolve class_id — null for home learners
+    const { data: membership } = await supabase
+      .from('class_members')
+      .select('class_id')
+      .eq('pupil_id', pupilId)
+      .maybeSingle()
+
+    const classId: string | null = membership?.class_id ?? null
+
+    const { error } = await supabase.from('learning_events').insert({
+      pupil_id: pupilId,
+      app: 'ip',
+      event_type: eventType,
+      event_data: eventData,
+      class_id: classId,
+    })
+
+    if (error) {
+      console.error('insertLearningEvent: insert failed', error)
+    }
+  } catch (err) {
+    console.error('insertLearningEvent: unexpected error', err)
+  }
+}
+
 function calcStars(accuracy: number): StarRating {
   if (accuracy >= 0.9) return 3
   if (accuracy >= 0.6) return 2
