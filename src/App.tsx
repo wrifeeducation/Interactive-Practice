@@ -18,6 +18,9 @@ import BossChallenge from './pages/BossChallenge'
 import BadgeShelf from './pages/BadgeShelf'
 import ConnectGrid from './pages/ConnectGrid'
 
+// Route C — parent home sign-up (lazy: standalone flow, not part of core bundle)
+const HomeSignupPage = lazy(() => import('./pages/HomeSignupPage'))
+
 // Lazy-loaded heavy/teacher/admin pages
 const TeacherDashboard = lazy(() => import('./pages/teacher/TeacherDashboard'))
 const PupilJoinClass   = lazy(() => import('./pages/PupilJoinClass'))
@@ -64,6 +67,11 @@ function AppRoutes() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/pupil-login" element={<PupilLogin />} />
+        <Route path="/home-signup" element={
+          <Suspense fallback={<FullPageSpinner />}>
+            <HomeSignupPage />
+          </Suspense>
+        } />
 
         {/* Pupil-only routes */}
         <Route

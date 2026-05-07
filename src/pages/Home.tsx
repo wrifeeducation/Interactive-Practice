@@ -202,6 +202,28 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ── HOME LEARNING STRIP ──────────────────────────────── */}
+      <section style={{ background: '#00897B', padding: 'clamp(20px, 3vw, 32px) 0' }}>
+        <div style={{ ...container, display: 'flex', alignItems: 'center', gap: 24, flexWrap: 'wrap' }}>
+          <div style={{ flex: 1, minWidth: 220 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+              <span style={{ fontSize: 20 }}>🏠</span>
+              <span style={{ fontSize: 10, fontWeight: 800, letterSpacing: '0.06em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.75)' }}>Home learning</span>
+            </div>
+            <h2 style={{ fontSize: 'clamp(15px, 2vw, 18px)', fontWeight: 700, color: '#fff', marginBottom: 6 }}>
+              Use WriFe at home with your child
+            </h2>
+            <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.65)', lineHeight: 1.6, margin: 0 }}>
+              Sign up as a parent, add your child's details and choose a plan. Free access to 10 levels — full access from £2.50/month.
+            </p>
+          </div>
+          <button data-testid="home-learning-cta" onClick={() => navigate('/home-signup')}
+            style={{ background: '#fff', color: '#00897B', border: 'none', borderRadius: 8, padding: '13px 22px', fontSize: 14, fontWeight: 800, cursor: 'pointer', whiteSpace: 'nowrap', flexShrink: 0, minHeight: 'var(--touch-target)' }}>
+            Get started →
+          </button>
+        </div>
+      </section>
+
       {/* ── FOOTER ───────────────────────────────────────────── */}
       <footer style={{ background: 'var(--color-background)', borderTop: '1px solid var(--color-border)', padding: 'clamp(14px, 2vw, 24px) 0' }}>
         <div style={{ ...container, display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 8 }}>
