@@ -12,16 +12,17 @@ export async function autoSubmitAssignment(
 ): Promise<void> {
   try {
     // 1. Get the pupil's class
-    const { data: membership } = await supabase
+    const { data: membership, error: membershipErr } = await supabase
       .from('class_members')
       .select('class_id')
       .eq('pupil_id', pupilId)
       .maybeSingle()
 
+    if (membershipErr) { console.error('autoSubmitAssignment: class_members query failed', membershipErr); return }
     if (!membership?.class_id) return
 
     // 2. Find an active assignment for this lesson in that class
-    const { data: assignment } = await supabase
+    const { data: assignment, error: assignmentErr } = await supabase
       .from('assignments')
       .select('id')
       .eq('class_id', membership.class_id)
@@ -29,16 +30,18 @@ export async function autoSubmitAssignment(
       .eq('status', 'active')
       .maybeSingle()
 
+    if (assignmentErr) { console.error('autoSubmitAssignment: assignments query failed', assignmentErr); return }
     if (!assignment) return
 
     // 3. Guard against duplicates
-    const { data: existing } = await supabase
+    const { data: existing, error: existingErr } = await supabase
       .from('submissions')
       .select('id')
       .eq('assignment_id', assignment.id)
       .eq('pupil_id', pupilId)
       .maybeSingle()
 
+    if (existingErr) { console.error('autoSubmitAssignment: submissions check failed', existingErr); return }
     if (existing) return
 
     // 4. Create the submission
