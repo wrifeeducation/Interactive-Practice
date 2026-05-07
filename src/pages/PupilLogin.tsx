@@ -59,7 +59,7 @@ export default function PupilLogin() {
     setError('')
 
     if (!classCode.trim()) { setError('Please enter your class code.'); return }
-    if (!username.trim())  { setError('Please enter your name.'); return }
+    if (!username.trim())  { setError('Please enter your username.'); return }
     if (pin.length !== 4)  { setError('Please enter your 4-digit PIN.'); return }
 
     setLoading(true)
@@ -130,7 +130,7 @@ export default function PupilLogin() {
             <span style={styles.logoText}>WriFe</span>
           </div>
           <h1 style={styles.heading}>Pupil Sign In</h1>
-          <p style={styles.subheading}>Enter your class code, name, and PIN to start learning!</p>
+          <p style={styles.subheading}>Enter your class code, username, and PIN to start learning!</p>
         </div>
 
         <div style={styles.card}>
@@ -162,14 +162,14 @@ export default function PupilLogin() {
 
             {/* Username / first name */}
             <div style={styles.field}>
-              <label htmlFor="pl-username" style={styles.label}>Your First Name</label>
+              <label htmlFor="pl-username" style={styles.label}>Your Username</label>
               <input
                 id="pl-username"
                 data-testid="pupil-login-username"
                 type="text"
                 value={username}
                 onChange={e => setUsername(e.target.value)}
-                placeholder="e.g. Alex"
+                placeholder="e.g. amab04"
                 disabled={loading}
                 autoComplete="given-name"
                 style={{ ...styles.input, fontSize: 18 }}

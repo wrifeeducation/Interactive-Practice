@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { supabase } from '../lib/supabase'
 import { useSessionStore } from '../stores/sessionStore'
 import { useAuthStore } from '../stores/authStore'
@@ -131,6 +131,7 @@ export default function ActivitySession() {
   const navigate = useNavigate()
   const session = useAuthStore((s) => s.session)
   const store = useSessionStore()
+  const queryClient = useQueryClient()
 
   const { play } = useSoundEffects()
   const [showRest, setShowRest] = useState(false)
@@ -214,13 +215,25 @@ export default function ActivitySession() {
       if (session?.user) {
         const allAnswers = [...store.answersGiven, { activityId: currentActivity.id, isCorrect, xpAwarded: actualXp }]
         await upsertProgress(session.user.id, lessonId!, safeLevel, allAnswers)
+
+        // Invalidate all progress-related caches so WorldMap shows fresh data
+        // immediately on return (bypasses the 5-minute global staleTime).
+        void queryClient.invalidateQueries({ queryKey: ['pupil-progress-all', session.user.id] })
+        void queryClient.invalidateQueries({ queryKey: ['pupil-progress', session.user.id, lessonId] })
+        void queryClient.invalidateQueries({ queryKey: ['total-xp', session.user.id] })
+        void queryClient.invalidateQueries({ queryKey: ['streak', session.user.id] })
+
+        // Also eagerly update xpTotal in authStore so sidebar shows the new
+        // value instantly without waiting for the WorldMap refetch to complete.
+        const xpEarned = allAnswers.reduce((s, a) => s + a.xpAwarded, 0)
+        useAuthStore.setState((prev) => ({ xpTotal: prev.xpTotal + xpEarned }))
       }
       navigate(`/lesson/${lessonId}/complete`)
     } else {
       store.nextActivity()
       setActivityKey((k) => k + 1)
     }
-  }, [activities, store, session, lessonId, safeLevel, restDismissed, navigate, play])
+  }, [activities, store, session, lessonId, safeLevel, restDismissed, navigate, play, queryClient])
 
   if (isLoading) {
     return (
