@@ -1,5 +1,5 @@
 // TICKET-030: World Boss Challenge
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { supabase } from '../lib/supabase'
@@ -8,6 +8,7 @@ import { checkWorldBadge } from '../lib/badges'
 import { insertLearningEvent } from '../lib/progress'
 import BadgeCelebration from '../components/BadgeCelebration'
 import WorldUnlock from '../components/WorldUnlock'
+import { useTTS } from '../hooks/useTTS'
 import type { Activity, World, Lesson, PupilProgress, Badge } from '../types'
 
 // Lazy-import activity renderers
@@ -51,6 +52,18 @@ function BossResultScreen({
 }) {
   const [showUnlock, setShowUnlock] = useState(false)
   const [badgeDismissed, setBadgeDismissed] = useState(false)
+  const { speak } = useTTS()
+
+  // Amelia announces the result — key chosen based on accuracy tier
+  useEffect(() => {
+    const ratio = correct / total
+    const key =
+      ratio >= 12 / 15 ? 'boss-complete--great'
+      : ratio >= 9 / 15 ? 'boss-complete--good'
+      : 'boss-complete--ok'
+    const t = setTimeout(() => speak(key), 400)
+    return () => clearTimeout(t)
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   if (worldBadge && !badgeDismissed) {
     return (
@@ -103,6 +116,7 @@ export default function BossChallenge() {
   const { worldId } = useParams<{ worldId: string }>()
   const navigate = useNavigate()
   const { session } = useAuthStore()
+  const { speak } = useTTS()
   const worldIdNum = parseInt(worldId ?? '1', 10)
 
   const [currentIdx, setCurrentIdx] = useState(0)
@@ -161,6 +175,13 @@ export default function BossChallenge() {
   const currentWorld = worlds.find((w) => w.id === worldIdNum) ?? null
   const nextWorld = worlds.find((w) => w.id === worldIdNum + 1) ?? null
   const xpAwarded = calcXpAward(correctCount, BOSS_QUESTION_COUNT)
+
+  // Alistair fires the boss intro once activities have loaded
+  useEffect(() => {
+    if (!selectedActivities.length) return
+    const t = setTimeout(() => speak('boss-intro'), 300)
+    return () => clearTimeout(t)
+  }, [selectedActivities.length]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleAnswer = (isCorrect: boolean, _xp?: number) => {
     const nextCorrect = correctCount + (isCorrect ? 1 : 0)

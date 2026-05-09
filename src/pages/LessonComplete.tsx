@@ -10,6 +10,7 @@ import { updateStreak, streakBonusXP } from '../lib/streak'
 import { checkLessonBadge } from '../lib/badges'
 import { autoSubmitAssignment, insertLearningEvent } from '../lib/progress'
 import BadgeCelebration from '../components/BadgeCelebration'
+import { useTTS } from '../hooks/useTTS'
 import type { PupilProgress, StarRating, Badge, Lesson } from '../types'
 
 function calcStarsFromAnswers(answers: { isCorrect: boolean }[]): StarRating {
@@ -97,6 +98,7 @@ export default function LessonComplete() {
   const navigate = useNavigate()
   const session = useAuthStore((s) => s.session)
   const { xpThisSession, answersGiven } = useSessionStore()
+  const { speak } = useTTS()
 
   const earnedStars: StarRating = calcStarsFromAnswers(answersGiven)
   const [visibleStars, setVisibleStars] = useState(0)
@@ -105,6 +107,18 @@ export default function LessonComplete() {
   const [streakMilestone, setStreakMilestone] = useState<number | null>(null)
   const [streakBonus, setStreakBonus] = useState(0)
   const [effectsRan, setEffectsRan] = useState(false)
+
+  // Amelia announces the result once stars have been revealed (or immediately if 0)
+  useEffect(() => {
+    if (!badgesDismissed && newBadges.length > 0) return
+    const starKey =
+      earnedStars === 3 ? 'lesson-complete--3stars'
+      : earnedStars === 2 ? 'lesson-complete--2stars'
+      : 'lesson-complete--1star'
+    // Delay slightly so the star animation has begun before voice fires
+    const t = setTimeout(() => speak(starKey), 600)
+    return () => clearTimeout(t)
+  }, [earnedStars, badgesDismissed, newBadges.length]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // Animate stars after badge celebration
   useEffect(() => {

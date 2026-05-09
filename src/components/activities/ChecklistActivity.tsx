@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import type { Activity, ChecklistQuestion } from '../../types'
+import { useTTS } from '../../hooks/useTTS'
 
 interface Props {
   activity: Activity
@@ -8,6 +9,7 @@ interface Props {
 
 export default function ChecklistActivity({ activity, onAnswer }: Props) {
   const q = activity.question_json as ChecklistQuestion
+  const { speak } = useTTS()
 
   const [checked, setChecked] = useState<Set<string>>(new Set())
   const [submitted, setSubmitted] = useState(false)
@@ -28,6 +30,8 @@ export default function ChecklistActivity({ activity, onAnswer }: Props) {
   function handleSubmit() {
     if (submitted) return
     setSubmitted(true)
+    // Celebrate completing the self-assessment checklist
+    speak('feedback--correct')
     const xp = checked.size * 2
     setTimeout(() => {
       onAnswer(true, xp)

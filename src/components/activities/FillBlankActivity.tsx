@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react'
 import { motion } from 'framer-motion'
 import type { Activity, FillBlankQuestion } from '../../types'
+import { useTTS } from '../../hooks/useTTS'
 
 interface Props {
   activity: Activity
@@ -11,6 +12,7 @@ type InputState = 'default' | 'correct' | 'incorrect'
 
 export default function FillBlankActivity({ activity, onAnswer }: Props) {
   const q = activity.question_json as FillBlankQuestion
+  const { speak } = useTTS()
   const parts = q.template.split('___')
   const blankCount = parts.length - 1
 
@@ -37,6 +39,10 @@ export default function FillBlankActivity({ activity, onAnswer }: Props) {
     setInputStates(states)
     setChecked(true)
     const allCorrect = states.every((s) => s === 'correct')
+
+    // Speak feedback immediately while result is visible
+    speak(allCorrect ? 'feedback--correct' : 'feedback--try-again')
+
     setTimeout(() => {
       onAnswer(allCorrect, allCorrect ? 10 : 0)
     }, 1200)

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import type { Activity, WriteQuestion } from '../../types'
+import { useTTS } from '../../hooks/useTTS'
 
 interface Props {
   activity: Activity
@@ -9,6 +10,7 @@ interface Props {
 
 export default function WriteActivity({ activity, onAnswer }: Props) {
   const q = activity.question_json as WriteQuestion
+  const { speak } = useTTS()
 
   const [response, setResponse] = useState('')
   const [revealed, setRevealed] = useState(false)
@@ -16,10 +18,14 @@ export default function WriteActivity({ activity, onAnswer }: Props) {
 
   function handleReveal() {
     setRevealed(true)
+    // Alistair cues the pupil to compare their answer to the model
+    speak('write-reveal')
   }
 
   function handleStar(stars: 1 | 2 | 3) {
     setRating(stars)
+    // Positive reinforcement regardless of star count — pupil is self-assessing
+    speak('feedback--correct')
     const xp = stars * 5
     setTimeout(() => {
       onAnswer(true, xp)

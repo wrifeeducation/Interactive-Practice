@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import type { Activity, MatchQuestion } from '../../types'
+import { useTTS } from '../../hooks/useTTS'
 
 interface Props {
   activity: Activity
@@ -17,6 +18,7 @@ interface PairStatus {
 
 export default function MatchActivity({ activity, onAnswer }: Props) {
   const q = activity.question_json as MatchQuestion
+  const { speak } = useTTS()
 
   const [selectedLeft, setSelectedLeft] = useState<string | null>(null)
   const [matched, setMatched] = useState<Map<string, string>>(new Map())
@@ -69,6 +71,7 @@ export default function MatchActivity({ activity, onAnswer }: Props) {
 
       if (newMatched.size === allPairs.length) {
         setDone(true)
+        speak('match-complete')
       }
     } else {
       // Wrong pair — flash red briefly

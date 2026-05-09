@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import type { Activity, MCQuestion } from '../../types'
+import { useTTS } from '../../hooks/useTTS'
 
 interface Props {
   activity: Activity
@@ -22,6 +23,7 @@ function shuffleArray<T>(arr: T[]): T[] {
 
 export default function MCActivity({ activity, onAnswer }: Props) {
   const q = activity.question_json as MCQuestion
+  const { speak } = useTTS()
 
   // Shuffle once per activity so the correct answer isn't always in the same position
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -67,6 +69,9 @@ export default function MCActivity({ activity, onAnswer }: Props) {
 
     setChecked(true)
     setCardState(isCorrect ? 'correct' : 'wrong')
+
+    // Speak feedback immediately so the voice fires while the result is visible
+    speak(isCorrect ? 'feedback--correct' : 'feedback--try-again')
 
     const xp = isCorrect ? 10 : 0
     if (isCorrect) {
