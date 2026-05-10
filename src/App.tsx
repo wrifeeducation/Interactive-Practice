@@ -11,6 +11,7 @@ import Home from './pages/Home'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
 import PupilLogin from './pages/PupilLogin'
+import WelcomePage from './pages/WelcomePage'
 import ActivitySession from './pages/ActivitySession'
 import LessonComplete from './pages/LessonComplete'
 import WorldMap from './pages/WorldMap'
@@ -80,6 +81,16 @@ function AppRoutes() {
             <TeacherSignupPage />
           </Suspense>
         } />
+
+        {/* Pupil welcome screen — shown immediately after login */}
+        <Route
+          path="/welcome"
+          element={
+            <RoleRedirect allowedRole="pupil">
+              <WelcomePage />
+            </RoleRedirect>
+          }
+        />
 
         {/* Pupil-only routes */}
         <Route

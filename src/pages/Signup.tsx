@@ -93,7 +93,7 @@ export default function Signup() {
     const finalRole = profileData?.role ?? role
     if (finalRole === 'admin') navigate('/admin')
     else if (finalRole === 'teacher') navigate('/teacher')
-    else navigate('/world-map')
+    else navigate('/welcome')
   }
 
   return (

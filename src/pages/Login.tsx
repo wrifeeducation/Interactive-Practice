@@ -51,7 +51,7 @@ export default function Login() {
       } else if (profileData?.role === 'teacher') {
         navigate('/teacher')
       } else {
-        navigate('/world-map')
+        navigate('/welcome')
       }
     }
   }

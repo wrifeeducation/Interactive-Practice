@@ -111,7 +111,7 @@ export default function PupilLogin() {
         loggedInAt: new Date().toISOString(),
       })
 
-      navigate('/world-map', { replace: true })
+      navigate('/welcome', { replace: true })
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.')
     } finally {
