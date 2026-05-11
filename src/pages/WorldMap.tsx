@@ -266,9 +266,13 @@ export default function WorldMap() {
 
   // Avatar colour from profile
   const avatarColor = (profile as unknown as { avatar_colour?: string })?.avatar_colour ?? 'var(--color-brand-primary)'
-  const initials = profile?.display_name
-    ? profile.display_name.trim().split(' ').map((p) => p[0]).join('').slice(0, 2).toUpperCase()
+  // display_name is set by teachers; first_name is set by wrife.co.uk pupil login
+  const resolvedName = profile?.display_name ?? profile?.first_name ?? null
+  const initials = resolvedName
+    ? resolvedName.trim().split(' ').map((p) => p[0]).join('').slice(0, 2).toUpperCase()
     : '??'
+  // Show ← WriFe button only when the pupil arrived via Route A (hub SSO)
+  const cameFromHub = sessionStorage.getItem('entryViaHub') === '1'
 
   const sidebar = (
     <aside style={sidebarStyle}>
@@ -284,8 +288,8 @@ export default function WorldMap() {
         </div>
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ fontWeight: 700, fontSize: '16px', color: '#fff', lineHeight: 1.2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-            {profile?.display_name ?? 'Pupil'}
-</div>
+            {resolvedName ?? 'Pupil'}
+          </div>
           <div style={{ fontSize: '13px', color: 'rgba(255,255,255,0.7)', marginTop: '2px' }}>
             Level {level}
           </div>
@@ -330,6 +334,33 @@ export default function WorldMap() {
       {/* Home link + WriFe logo at bottom */}
       <div style={{ marginTop: 'auto', padding: '16px 12px 12px' }}>
         <SidebarLink to="/" emoji="🏠" label="Home" testId="sidebar-home" />
+        {/* Route A: show ← WriFe back button when pupil arrived via hub SSO */}
+        {cameFromHub && (
+          <a
+            href="https://wrife.co.uk/pupil/dashboard"
+            data-testid="sidebar-back-to-hub"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+              padding: '10px 12px',
+              marginTop: '4px',
+              borderRadius: 'var(--radius-md)',
+              textDecoration: 'none',
+              color: 'rgba(255,255,255,0.85)',
+              fontSize: '15px',
+              fontWeight: 600,
+              background: 'rgba(255,255,255,0.10)',
+              border: '1px solid rgba(255,255,255,0.15)',
+              transition: 'background var(--transition-fast)',
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(255,255,255,0.18)')}
+            onMouseLeave={(e) => (e.currentTarget.style.background = 'rgba(255,255,255,0.10)')}
+          >
+            <span style={{ fontSize: '16px' }}>←</span>
+            WriFe Hub
+          </a>
+        )}
         <div style={{ textAlign: 'center', marginTop: 8 }}>
           <span style={{ fontSize: '13px', fontWeight: 700, color: 'rgba(255,255,255,0.4)', letterSpacing: '1px' }}>
             WRIFE
@@ -396,7 +427,7 @@ export default function WorldMap() {
             ☰
           </button>
           <span style={{ fontWeight: 700, fontSize: '16px', color: 'var(--color-text)' }}>
-            {profile?.display_name ?? 'World Map'}
+            {resolvedName ?? 'World Map'}
           </span>
           <div style={{ display: 'flex', gap: '8px', marginLeft: 'auto' }}>
             <span style={{ color: 'var(--color-streak)', fontWeight: 700, fontSize: '15px' }}>🔥 {streak}</span>

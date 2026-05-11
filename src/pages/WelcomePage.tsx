@@ -173,7 +173,8 @@ export default function WelcomePage() {
   const navigate = useNavigate()
   const { session, profile } = useAuthStore()
   const pupilId = session?.user?.id
-  const displayName = profile?.display_name ?? 'Adventurer'
+  // display_name is teacher-set; first_name is set by wrife.co.uk pupil login
+  const displayName = profile?.display_name ?? profile?.first_name ?? 'Adventurer'
 
   const greeting = useRef(GREETINGS[Math.floor(Math.random() * GREETINGS.length)]).current
 

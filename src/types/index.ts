@@ -21,6 +21,8 @@ export interface Profile {
   id: string
   role: UserRole
   display_name: string | null
+  /** Pupil first name — set by wrife.co.uk login; use as fallback when display_name is null */
+  first_name: string | null
   created_at: string
 }
 

@@ -122,6 +122,7 @@ export default function TeacherOverview() {
           profile: {
             id,
             display_name: raw.profiles?.display_name ?? 'Unknown',
+            first_name: null,
             role: 'pupil',
             created_at: raw.profiles ? '' : '',
           },
