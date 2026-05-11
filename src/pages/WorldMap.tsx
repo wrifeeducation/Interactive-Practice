@@ -276,6 +276,32 @@ export default function WorldMap() {
 
   const sidebar = (
     <aside style={sidebarStyle}>
+      {/* Route A: ← WriFe Hub — shown at TOP so it's always visible */}
+      {cameFromHub && (
+        <a
+          href="https://wrife.co.uk/pupil/dashboard"
+          data-testid="sidebar-back-to-hub"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            padding: '10px 16px',
+            textDecoration: 'none',
+            color: 'rgba(255,255,255,0.9)',
+            fontSize: '14px',
+            fontWeight: 600,
+            background: 'rgba(255,255,255,0.12)',
+            borderBottom: '1px solid rgba(255,255,255,0.12)',
+            transition: 'background var(--transition-fast)',
+          }}
+          onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(255,255,255,0.20)')}
+          onMouseLeave={(e) => (e.currentTarget.style.background = 'rgba(255,255,255,0.12)')}
+        >
+          <span style={{ fontSize: '16px' }}>←</span>
+          WriFe Hub
+        </a>
+      )}
+
       {/* Pupil identity */}
       <div style={identityStyle}>
         <div style={{
@@ -334,33 +360,6 @@ export default function WorldMap() {
       {/* Home link + WriFe logo at bottom */}
       <div style={{ marginTop: 'auto', padding: '16px 12px 12px' }}>
         <SidebarLink to="/" emoji="🏠" label="Home" testId="sidebar-home" />
-        {/* Route A: show ← WriFe back button when pupil arrived via hub SSO */}
-        {cameFromHub && (
-          <a
-            href="https://wrife.co.uk/pupil/dashboard"
-            data-testid="sidebar-back-to-hub"
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '10px',
-              padding: '10px 12px',
-              marginTop: '4px',
-              borderRadius: 'var(--radius-md)',
-              textDecoration: 'none',
-              color: 'rgba(255,255,255,0.85)',
-              fontSize: '15px',
-              fontWeight: 600,
-              background: 'rgba(255,255,255,0.10)',
-              border: '1px solid rgba(255,255,255,0.15)',
-              transition: 'background var(--transition-fast)',
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(255,255,255,0.18)')}
-            onMouseLeave={(e) => (e.currentTarget.style.background = 'rgba(255,255,255,0.10)')}
-          >
-            <span style={{ fontSize: '16px' }}>←</span>
-            WriFe Hub
-          </a>
-        )}
         <div style={{ textAlign: 'center', marginTop: 8 }}>
           <span style={{ fontSize: '13px', fontWeight: 700, color: 'rgba(255,255,255,0.4)', letterSpacing: '1px' }}>
             WRIFE

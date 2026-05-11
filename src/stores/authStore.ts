@@ -48,12 +48,36 @@ export const useAuthStore = create<AuthState>((set) => ({
       return
     }
 
-    // Only update profile if data was returned — never wipe an existing profile
-    // with null if a concurrent call already set it
     if (data) {
+      // If the profiles row exists but has no first_name (school pupils are
+      // provisioned via wrife.co.uk which stores the name in user_metadata),
+      // backfill first_name from the JWT user_metadata.
+      if (!data.first_name) {
+        const { data: { user } } = await supabase.auth.getUser()
+        const meta = user?.user_metadata ?? {}
+        if (meta.first_name) data.first_name = meta.first_name as string
+        if (!data.display_name && meta.display_name) data.display_name = meta.display_name as string
+      }
       set({ profile: data as Profile, loading: false })
     } else {
-      set({ loading: false })
+      // No profiles row at all — school pupils may only exist in user_metadata.
+      // Build a minimal Profile from the JWT so the name displays correctly.
+      const { data: { user } } = await supabase.auth.getUser()
+      const meta = user?.user_metadata ?? {}
+      if (meta.first_name || meta.display_name) {
+        set({
+          profile: {
+            id: userId,
+            role: 'pupil',
+            display_name: (meta.display_name as string | undefined) ?? null,
+            first_name: (meta.first_name as string | undefined) ?? null,
+            created_at: '',
+          } as Profile,
+          loading: false,
+        })
+      } else {
+        set({ loading: false })
+      }
     }
   },
 }))
