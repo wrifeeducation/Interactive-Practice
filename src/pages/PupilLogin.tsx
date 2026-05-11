@@ -74,6 +74,13 @@ export default function PupilLogin() {
       })
 
       if (fnErr) throw new Error(fnErr.message)
+
+      // Sprint 3: school pupils must use wrife.co.uk (Route A)
+      if (data?.error === 'SCHOOL_PUPIL_USE_HUB') {
+        window.location.replace('https://wrife.co.uk/pupil/login')
+        return
+      }
+
       if (data?.error) throw new Error(data.error)
 
       const { access_token, refresh_token, pupil } = data as {
