@@ -5,7 +5,7 @@ import { useTTS } from '../../hooks/useTTS'
 
 interface Props {
   activity: Activity
-  onAnswer: (isCorrect: boolean, xp: number) => void
+  onAnswer: (isCorrect: boolean, xp: number, writtenText?: string) => void
 }
 
 export default function WriteActivity({ activity, onAnswer }: Props) {
@@ -27,8 +27,11 @@ export default function WriteActivity({ activity, onAnswer }: Props) {
     // Positive reinforcement regardless of star count — pupil is self-assessing
     speak('feedback--correct')
     const xp = stars * 5
+    // Pass the pupil's written response as the third arg so ActivitySession can
+    // save it to the portfolio table if the text is substantial (≥10 chars).
+    const writtenText = response.trim()
     setTimeout(() => {
-      onAnswer(true, xp)
+      onAnswer(true, xp, writtenText || undefined)
     }, 600)
   }
 

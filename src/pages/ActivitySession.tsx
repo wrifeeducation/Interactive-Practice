@@ -207,6 +207,45 @@ export default function ActivitySession() {
         attempt_number: 1,
         xp_awarded: actualXp,
       })
+
+      // S5-6: save write-activity text to portfolio (only meaningful text, ≥10 chars)
+      if (
+        currentActivity.type === 'write' &&
+        selectedAnswer &&
+        selectedAnswer.length >= 10 &&
+        lessonId &&
+        lessonMeta?.lesson_number
+      ) {
+        // Query-then-upsert: only overwrite if new entry or higher star rating
+        try {
+          const lessonKey = String(lessonMeta.lesson_number)
+          const { data: existing } = await supabase
+            .from('portfolio')
+            .select('ai_score')
+            .eq('pupil_id', session.user.id)
+            .eq('app', 'ip')
+            .eq('level_or_lesson', lessonKey)
+            .maybeSingle()
+
+          // ai_score stores the XP proxy (actualXp); higher = better attempt
+          const existingScore = existing?.ai_score ?? -1
+          if (actualXp >= existingScore) {
+            await supabase.from('portfolio').upsert(
+              {
+                pupil_id: session.user.id,
+                app: 'ip',
+                level_or_lesson: lessonKey,
+                content: selectedAnswer,
+                ai_score: actualXp,
+                updated_at: new Date().toISOString(),
+              },
+              { onConflict: 'pupil_id,app,level_or_lesson' }
+            )
+          }
+        } catch {
+          // Non-critical — don't surface portfolio errors to pupil
+        }
+      }
     }
 
     // Advance or finish
