@@ -5,11 +5,13 @@
  * No email or password required.
  *
  * Flow:
- *   1. POST to pupil-login Edge Function with classCode / username / pin
- *   2. Edge Function verifies credentials and returns Supabase session tokens
+ *   1. POST to pupil-login Edge Function (gzmgjkbtsvezfclmreru) with
+ *      class_code / username / pin
+ *   2. Edge Function verifies credentials and returns:
+ *      { session: { access_token, refresh_token }, pupil: { ...snake_case } }
  *   3. We call supabase.auth.setSession() so all existing RLS queries work
  *   4. Store human-readable metadata in pupilStore (localStorage)
- *   5. Navigate to /world-map
+ *   5. Navigate to /welcome
  */
 import { useState, type FormEvent, useRef, useCallback } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
@@ -102,31 +104,31 @@ export default function PupilLogin() {
         throw new Error(friendlyMessage)
       }
 
-      // Sprint 3: school pupils must use wrife.co.uk (Route A)
-      if (data?.error === 'SCHOOL_PUPIL_USE_HUB') {
-        window.location.replace('https://wrife.co.uk/pupil/login')
-        return
-      }
+      if (data?.error) throw new Error(data.message ?? data.error)
 
-      if (data?.error) throw new Error(data.error)
-
-      const { access_token, refresh_token, pupil } = data as {
-        access_token:  string
-        refresh_token: string
+      // Production Edge Function (gzmgjkbtsvezfclmreru) returns tokens
+      // nested under `session` and pupil fields in snake_case.
+      const { session: tokenData, pupil } = data as {
+        session: {
+          access_token:  string
+          refresh_token: string
+        }
         pupil: {
-          id:        string
-          name:      string
-          username:  string
-          classId:   string
-          className: string
-          classCode: string
+          id:           string
+          display_name: string
+          username:     string
+          class_id:     string
+          class_name:   string
+          class_code:   string
         }
       }
 
+      if (!tokenData?.access_token) throw new Error('No session returned. Please try again.')
+
       // Set the Supabase session so all existing queries / RLS work
       const { data: sessionData, error: sessionErr } = await supabase.auth.setSession({
-        access_token,
-        refresh_token,
+        access_token:  tokenData.access_token,
+        refresh_token: tokenData.refresh_token,
       })
       if (sessionErr) throw new Error(sessionErr.message)
       if (!sessionData.session) throw new Error('Failed to establish session.')
@@ -137,11 +139,11 @@ export default function PupilLogin() {
       // Store display metadata for UI components
       setPupilSession({
         pupilId:    pupil.id,
-        name:       pupil.name,
+        name:       pupil.display_name,
         username:   pupil.username,
-        classId:    pupil.classId,
-        className:  pupil.className,
-        classCode:  pupil.classCode,
+        classId:    pupil.class_id,
+        className:  pupil.class_name,
+        classCode:  pupil.class_code,
         loggedInAt: new Date().toISOString(),
       })
 
