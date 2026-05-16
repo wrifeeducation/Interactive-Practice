@@ -71,9 +71,9 @@ export default function PupilLogin() {
     try {
       const { data, error: fnErr } = await supabase.functions.invoke('pupil-login', {
         body: {
-          classCode: classCode.trim().toUpperCase(),
-          username:  username.trim(),
-          pin:       pin.trim(),
+          class_code: classCode.trim().toUpperCase(),
+          username:   username.trim(),
+          pin:        pin.trim(),
         },
       })
 
@@ -85,13 +85,13 @@ export default function PupilLogin() {
           const body = await (fnErr as { context?: Response }).context?.json() as
             | { error?: string; message?: string }
             | undefined
-          if (body?.error === 'INVALID_CREDENTIALS' || body?.error === 'WRONG_PIN') {
+          if (body?.error === 'invalid_credentials' || body?.error === 'INVALID_CREDENTIALS' || body?.error === 'WRONG_PIN') {
             friendlyMessage = 'Wrong username or PIN — check and try again! 🔢'
-          } else if (body?.error === 'CLASS_NOT_FOUND') {
+          } else if (body?.error === 'class_not_found' || body?.error === 'CLASS_NOT_FOUND') {
             friendlyMessage = 'Class code not found. Ask your teacher to check! 🏫'
-          } else if (body?.error === 'PUPIL_NOT_FOUND') {
+          } else if (body?.error === 'pupil_not_found' || body?.error === 'PUPIL_NOT_FOUND') {
             friendlyMessage = "Username not found. Check the spelling and try again! ✏️"
-          } else if (body?.error === 'ACCOUNT_LOCKED') {
+          } else if (body?.error === 'account_locked' || body?.error === 'ACCOUNT_LOCKED') {
             friendlyMessage = 'Too many wrong tries. Ask your teacher to unlock your account.'
           } else if (body?.message) {
             friendlyMessage = body.message
