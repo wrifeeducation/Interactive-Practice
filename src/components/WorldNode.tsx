@@ -97,7 +97,7 @@ export default function WorldNode({ lesson, onClick, worldColor }: WorldNodeProp
         <p
           style={{
             margin: 0,
-            fontSize: '14px',
+            fontSize: '16px',
             fontWeight: status === 'available' ? 700 : 500,
             color: isLocked ? 'var(--color-text-muted)' : 'var(--color-text)',
             whiteSpace: 'nowrap',
@@ -112,13 +112,13 @@ export default function WorldNode({ lesson, onClick, worldColor }: WorldNodeProp
           <StarDisplay count={bronzeStars} />
         )}
         {status === 'in_progress' && (
-          <span style={{ fontSize: '12px', color: 'var(--color-text-muted)' }}>In progress</span>
+          <span style={{ fontSize: '14px', color: 'var(--color-text-muted)' }}>In progress</span>
         )}
         {status === 'coming_soon' && (
-          <span style={{ fontSize: '12px', color: 'var(--color-text-muted)' }}>Soon</span>
+          <span style={{ fontSize: '14px', color: 'var(--color-text-muted)' }}>Soon</span>
         )}
         {status === 'available' && (
-          <span style={{ fontSize: '12px', color: worldColor, fontWeight: 600 }}>Play →</span>
+          <span style={{ fontSize: '16px', color: worldColor, fontWeight: 600 }}>Play →</span>
         )}
       </div>
     </div>

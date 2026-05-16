@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import type { Activity, ChecklistQuestion } from '../../types'
 import { useTTS } from '../../hooks/useTTS'
+import CTAButton from '../ui/CTAButton'
 
 interface Props {
   activity: Activity
@@ -87,15 +88,15 @@ export default function ChecklistActivity({ activity, onAnswer }: Props) {
         </p>
       )}
 
-      <div style={{ textAlign: 'right', marginTop: '20px' }}>
-        <button
+      <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '20px' }}>
+        <CTAButton
           data-testid="checklist-submit"
           onClick={handleSubmit}
           disabled={submitted}
-          style={{ ...styles.submitBtn, opacity: submitted ? 0.6 : 1 }}
+          variant="brand"
         >
           Submit Checklist
-        </button>
+        </CTAButton>
       </div>
     </div>
   )

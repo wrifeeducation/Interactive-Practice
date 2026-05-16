@@ -36,6 +36,7 @@ function LessonNavBar({
   onBack: () => void
 }) {
   const tierColour = LEVEL_COLOURS[level] ?? 'var(--color-brand-primary)'
+  const entryViaHub = typeof window !== 'undefined' && sessionStorage.getItem('entryViaHub') === '1'
 
   return (
     <div
@@ -53,6 +54,34 @@ function LessonNavBar({
         maxWidth: '100%',
       }}
     >
+      {/* ← WriFe Hub link — only visible for Route A (school hub SSO) pupils */}
+      {entryViaHub && (
+        <a
+          data-testid="lesson-nav-hub-link"
+          href="https://wrife.co.uk/pupil"
+          aria-label="Back to WriFe Hub"
+          style={{
+            background: 'rgba(255,255,255,0.18)',
+            border: '1.5px solid rgba(255,255,255,0.35)',
+            borderRadius: 'var(--radius-md)',
+            color: '#fff',
+            fontSize: '14px',
+            fontWeight: 600,
+            padding: '6px 10px',
+            cursor: 'pointer',
+            minHeight: '44px',
+            whiteSpace: 'nowrap',
+            flexShrink: 0,
+            display: 'flex',
+            alignItems: 'center',
+            gap: '4px',
+            textDecoration: 'none',
+          }}
+        >
+          🏠 Hub
+        </a>
+      )}
+
       {/* Back to world map */}
       <button
         data-testid="lesson-nav-back"
@@ -63,11 +92,11 @@ function LessonNavBar({
           border: '1.5px solid rgba(255,255,255,0.35)',
           borderRadius: 'var(--radius-md)',
           color: '#fff',
-          fontSize: '14px',
+          fontSize: '16px',
           fontWeight: 600,
-          padding: '6px 12px',
+          padding: '8px 14px',
           cursor: 'pointer',
-          minHeight: '36px',
+          minHeight: '44px',
           whiteSpace: 'nowrap',
           flexShrink: 0,
           display: 'flex',

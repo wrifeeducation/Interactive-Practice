@@ -2,6 +2,8 @@ import { useState, useRef } from 'react'
 import { motion } from 'framer-motion'
 import type { Activity, FillBlankQuestion } from '../../types'
 import { useTTS } from '../../hooks/useTTS'
+import CTAButton from '../ui/CTAButton'
+import FeedbackPanel from './FeedbackPanel'
 
 interface Props {
   activity: Activity
@@ -20,6 +22,7 @@ export default function FillBlankActivity({ activity, onAnswer }: Props) {
   const [checked, setChecked] = useState(false)
   const [inputStates, setInputStates] = useState<InputState[]>(Array(blankCount).fill('default'))
   const inputRefs = useRef<(HTMLInputElement | null)[]>([])
+  const [pendingResult, setPendingResult] = useState<{ isCorrect: boolean; xp: number } | null>(null)
 
   function handleChange(index: number, value: string) {
     if (checked) return
@@ -40,12 +43,15 @@ export default function FillBlankActivity({ activity, onAnswer }: Props) {
     setChecked(true)
     const allCorrect = states.every((s) => s === 'correct')
 
-    // Speak feedback immediately while result is visible
+    // Speak feedback immediately while panel slides up
     speak(allCorrect ? 'feedback--correct' : 'feedback--try-again')
 
-    setTimeout(() => {
-      onAnswer(allCorrect, allCorrect ? 10 : 0)
-    }, 1200)
+    setPendingResult({ isCorrect: allCorrect, xp: allCorrect ? 10 : 0 })
+  }
+
+  function handleNext() {
+    if (!pendingResult) return
+    onAnswer(pendingResult.isCorrect, pendingResult.xp)
   }
 
   function inputStyle(state: InputState): React.CSSProperties {
@@ -61,7 +67,7 @@ export default function FillBlankActivity({ activity, onAnswer }: Props) {
       background: 'var(--color-surface)',
       verticalAlign: 'middle',
       outline: 'none',
-      minHeight: '36px',
+      minHeight: '44px',
     }
     if (state === 'correct') return { ...base, borderColor: 'var(--color-correct)', background: 'var(--color-correct-bg)', color: 'var(--color-correct)' }
     if (state === 'incorrect') return { ...base, borderColor: 'var(--color-incorrect)', background: 'var(--color-incorrect-bg)', color: 'var(--color-incorrect)' }
@@ -126,16 +132,27 @@ export default function FillBlankActivity({ activity, onAnswer }: Props) {
         </motion.div>
       )}
 
-      <div style={{ textAlign: 'right', marginTop: '16px' }}>
-        <button
+      <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '16px' }}>
+        <CTAButton
           data-testid="fillblank-check"
           onClick={handleCheck}
           disabled={!allFilled || checked}
-          style={{ ...styles.checkBtn, opacity: (!allFilled || checked) ? 0.5 : 1 }}
+          variant="brand"
         >
           Check Answer
-        </button>
+        </CTAButton>
       </div>
+
+      <FeedbackPanel
+        visible={!!pendingResult}
+        isCorrect={pendingResult?.isCorrect ?? false}
+        message={
+          pendingResult?.isCorrect
+            ? (q.feedback ?? '✅ Well done!')
+            : `The answer is: ${q.blanks.map((b) => b.answer).join(', ')}`
+        }
+        onNext={handleNext}
+      />
     </div>
   )
 }
@@ -187,16 +204,5 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: '16px',
     color: 'var(--color-text-muted)',
     marginTop: '8px',
-  },
-  checkBtn: {
-    padding: '12px 28px',
-    fontSize: '18px',
-    fontWeight: 600,
-    color: 'var(--color-text-on-dark)',
-    background: 'var(--color-brand-primary)',
-    border: 'none',
-    borderRadius: 'var(--radius-md)',
-    cursor: 'pointer',
-    minHeight: '44px',
   },
 }

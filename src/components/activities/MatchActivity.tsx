@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import type { Activity, MatchQuestion } from '../../types'
 import { useTTS } from '../../hooks/useTTS'
+import CTAButton from '../ui/CTAButton'
 
 interface Props {
   activity: Activity
@@ -163,14 +164,14 @@ export default function MatchActivity({ activity, onAnswer }: Props) {
       </p>
 
       {done && (
-        <div style={{ textAlign: 'right' }}>
-          <button
+        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <CTAButton
             data-testid="match-submit"
             onClick={handleSubmit}
-            style={styles.submitBtn}
+            variant="brand"
           >
             Continue ({hadRetry ? '5' : '10'} XP)
-          </button>
+          </CTAButton>
         </div>
       )}
 

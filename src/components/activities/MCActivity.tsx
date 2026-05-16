@@ -2,6 +2,8 @@ import { useState, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import type { Activity, MCQuestion } from '../../types'
 import { useTTS } from '../../hooks/useTTS'
+import CTAButton from '../ui/CTAButton'
+import FeedbackPanel from './FeedbackPanel'
 
 interface Props {
   activity: Activity
@@ -34,6 +36,7 @@ export default function MCActivity({ activity, onAnswer }: Props) {
   const [cardState, setCardState] = useState<CardState>('idle')
   const [xpPopKey, setXpPopKey] = useState(0)
   const [showXp, setShowXp] = useState(false)
+  const [pendingResult, setPendingResult] = useState<{ isCorrect: boolean; xp: number; answer: string } | null>(null)
 
   function getOptionState(option: string): OptionState {
     if (!checked) return selected === option ? 'selected' : 'default'
@@ -70,7 +73,7 @@ export default function MCActivity({ activity, onAnswer }: Props) {
     setChecked(true)
     setCardState(isCorrect ? 'correct' : 'wrong')
 
-    // Speak feedback immediately so the voice fires while the result is visible
+    // Speak feedback immediately so the voice fires while the panel slides up
     speak(isCorrect ? 'feedback--correct' : 'feedback--try-again')
 
     const xp = isCorrect ? 10 : 0
@@ -80,9 +83,13 @@ export default function MCActivity({ activity, onAnswer }: Props) {
       setTimeout(() => setShowXp(false), 1000)
     }
 
-    setTimeout(() => {
-      onAnswer(isCorrect, xp, selected ?? undefined)
-    }, 1200)
+    // Store result — panel will call onAnswer when pupil taps Next
+    setPendingResult({ isCorrect, xp, answer: selected })
+  }
+
+  function handleNext() {
+    if (!pendingResult) return
+    onAnswer(pendingResult.isCorrect, pendingResult.xp, pendingResult.answer)
   }
 
   const cardVariants = {
@@ -141,25 +148,23 @@ export default function MCActivity({ activity, onAnswer }: Props) {
         ))}
       </div>
 
-      {/* Feedback */}
-      {checked && (
-        <p
-          style={cardState === 'correct' ? styles.feedbackCorrect : styles.feedbackWrong}
-          data-tts="answer feedback"
-          role="alert"
+      <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '4px' }}>
+        <CTAButton
+          data-testid="check-answer"
+          onClick={handleCheck}
+          disabled={!selected || checked}
+          variant="brand"
         >
-          {cardState === 'correct' ? q.feedback.correct : q.feedback.wrong}
-        </p>
-      )}
+          Check Answer
+        </CTAButton>
+      </div>
 
-      <button
-        data-testid="check-answer"
-        onClick={handleCheck}
-        disabled={!selected || checked}
-        style={{ ...styles.checkBtn, opacity: (!selected || checked) ? 0.5 : 1 }}
-      >
-        Check Answer
-      </button>
+      <FeedbackPanel
+        visible={!!pendingResult}
+        isCorrect={pendingResult?.isCorrect ?? false}
+        message={pendingResult?.isCorrect ? q.feedback.correct : q.feedback.wrong}
+        onNext={handleNext}
+      />
     </motion.div>
   )
 }
@@ -184,36 +189,6 @@ const styles: Record<string, React.CSSProperties> = {
     flexDirection: 'column',
     gap: '10px',
     marginBottom: '20px',
-  },
-  feedbackCorrect: {
-    color: 'var(--color-correct)',
-    fontSize: '18px',
-    fontWeight: 500,
-    marginBottom: '16px',
-    padding: '10px 14px',
-    background: 'var(--color-correct-bg)',
-    borderRadius: 'var(--radius-sm)',
-  },
-  feedbackWrong: {
-    color: 'var(--color-incorrect)',
-    fontSize: '18px',
-    fontWeight: 500,
-    marginBottom: '16px',
-    padding: '10px 14px',
-    background: 'var(--color-incorrect-bg)',
-    borderRadius: 'var(--radius-sm)',
-  },
-  checkBtn: {
-    padding: '12px 28px',
-    fontSize: '18px',
-    fontWeight: 600,
-    color: 'var(--color-text-on-dark)',
-    background: 'var(--color-brand-primary)',
-    border: 'none',
-    borderRadius: 'var(--radius-md)',
-    cursor: 'pointer',
-    minHeight: '44px',
-    float: 'right',
   },
   xpPop: {
     position: 'absolute',

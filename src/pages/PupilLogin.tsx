@@ -11,7 +11,7 @@
  *   4. Store human-readable metadata in pupilStore (localStorage)
  *   5. Navigate to /world-map
  */
-import { useState, type FormEvent, useRef } from 'react'
+import { useState, type FormEvent, useRef, useCallback } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import { usePupilStore } from '../stores/pupilStore'
@@ -27,6 +27,10 @@ export default function PupilLogin() {
   const [pin,       setPin]       = useState('')
   const [loading,   setLoading]   = useState(false)
   const [error,     setError]     = useState('')
+  const [btnPressed, setBtnPressed] = useState(false)
+
+  const handleBtnPress   = useCallback(() => setBtnPressed(true), [])
+  const handleBtnRelease = useCallback(() => setBtnPressed(false), [])
 
   // PIN digit refs for auto-advance UX
   const pinRefs = [
@@ -73,7 +77,30 @@ export default function PupilLogin() {
         },
       })
 
-      if (fnErr) throw new Error(fnErr.message)
+      if (fnErr) {
+        // Parse the Edge Function response body for a structured error code,
+        // then map it to a child-friendly message instead of showing the raw SDK error.
+        let friendlyMessage = 'Something went wrong. Please try again! 🔄'
+        try {
+          const body = await (fnErr as { context?: Response }).context?.json() as
+            | { error?: string; message?: string }
+            | undefined
+          if (body?.error === 'INVALID_CREDENTIALS' || body?.error === 'WRONG_PIN') {
+            friendlyMessage = 'Wrong username or PIN — check and try again! 🔢'
+          } else if (body?.error === 'CLASS_NOT_FOUND') {
+            friendlyMessage = 'Class code not found. Ask your teacher to check! 🏫'
+          } else if (body?.error === 'PUPIL_NOT_FOUND') {
+            friendlyMessage = "Username not found. Check the spelling and try again! ✏️"
+          } else if (body?.error === 'ACCOUNT_LOCKED') {
+            friendlyMessage = 'Too many wrong tries. Ask your teacher to unlock your account.'
+          } else if (body?.message) {
+            friendlyMessage = body.message
+          }
+        } catch {
+          // body parse failed — keep fallback message
+        }
+        throw new Error(friendlyMessage)
+      }
 
       // Sprint 3: school pupils must use wrife.co.uk (Route A)
       if (data?.error === 'SCHOOL_PUPIL_USE_HUB') {
@@ -223,7 +250,18 @@ export default function PupilLogin() {
               type="submit"
               data-testid="pupil-login-submit"
               disabled={loading}
-              style={styles.submitBtn}
+              onMouseDown={handleBtnPress}
+              onMouseUp={handleBtnRelease}
+              onMouseLeave={handleBtnRelease}
+              onTouchStart={handleBtnPress}
+              onTouchEnd={handleBtnRelease}
+              style={{
+                ...styles.submitBtn,
+                borderBottom: btnPressed || loading
+                  ? '2px solid #C97D10'
+                  : '5px solid #C97D10',
+                transform: btnPressed || loading ? 'translateY(3px)' : 'translateY(0)',
+              }}
             >
               {loading ? '⏳ Signing in…' : '🚀 Start Learning!'}
             </button>
@@ -254,7 +292,7 @@ export default function PupilLogin() {
 const styles: Record<string, React.CSSProperties> = {
   page: {
     minHeight: '100vh',
-    background: 'var(--color-background)',
+    background: 'var(--color-background-auth)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -370,6 +408,6 @@ const styles: Record<string, React.CSSProperties> = {
     cursor: 'pointer',
     minHeight: 52,
     boxShadow: 'var(--shadow-sm)',
-    transition: 'opacity 150ms',
+    transition: 'transform 80ms ease, border-bottom 80ms ease, opacity 150ms',
   },
 }

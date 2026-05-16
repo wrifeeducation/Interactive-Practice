@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query'
 import { motion, AnimatePresence } from 'framer-motion'
 import { supabase } from '../lib/supabase'
 import { useAuthStore } from '../stores/authStore'
-import WorldNode from '../components/WorldNode'
+import WorldPath from '../components/WorldPath'
 import LessonCard from '../components/LessonCard'
 import { computeLessonStatus } from '../lib/unlocks'
 import type { World, Lesson, PupilProgress, LessonNode, WorldMapData } from '../types'
@@ -370,7 +370,7 @@ export default function WorldMap() {
   )
 
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--color-background)', display: 'flex' }}>
+    <div style={{ minHeight: '100vh', background: '#f5f3ff', display: 'flex' }}>
 
       {/* Desktop sidebar */}
       <div className="pupil-sidebar-desktop" style={desktopSidebarWrapperStyle}>
@@ -563,15 +563,12 @@ export default function WorldMap() {
                         borderRadius: '0 0 var(--radius-lg) var(--radius-lg)',
                       }}
                     >
-                      <div style={{ padding: '12px 16px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                        {wd.lessons.map((lessonNode) => (
-                          <WorldNode
-                            key={lessonNode.lessonNumber}
-                            lesson={lessonNode}
-                            onClick={handleNodeClick}
-                            worldColor={color}
-                          />
-                        ))}
+                      <div style={{ padding: '8px 12px 8px' }}>
+                        <WorldPath
+                          lessons={wd.lessons}
+                          worldColor={color}
+                          onNodeClick={handleNodeClick}
+                        />
                       </div>
                     </motion.div>
                   )}
