@@ -98,7 +98,7 @@ export default function Home() {
                 Where would you like to start?
               </p>
               <div className="home-cta-grid" style={{ maxWidth: 520 }}>
-                <button data-testid="cta-pupil" onClick={() => navigate('/signup')}
+                <button data-testid="cta-pupil" onClick={() => navigate('/pupil-login')}
                   style={{ background: 'var(--color-brand-secondary)', borderRadius: 12, padding: '16px 18px', cursor: 'pointer', border: 'none', textAlign: 'left', minHeight: 110, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                     <span style={{ fontSize: 22 }}>🎒</span>
