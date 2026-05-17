@@ -84,12 +84,13 @@ npm install -D vite-plugin-pwa workbox-window
 
 ## Supabase Connection
 
-- **Project ID:** `rxmitjrbrsqjeymsycoj`
-- **Project URL:** `https://rxmitjrbrsqjeymsycoj.supabase.co`
+- **Project ID:** `gzmgjkbtsvezfclmreru` (WriFe Platform — shared by all three apps)
+- **Project URL:** `https://gzmgjkbtsvezfclmreru.supabase.co`
+- ⚠️ `rxmitjrbrsqjeymsycoj` is the LEGACY IP-only project — **do not use** for any new work
 - All Supabase queries must go through `src/lib/supabase.ts` — never import `@supabase/supabase-js` directly in components or stores.
 - Environment variables (never commit `.env`):
   ```
-  VITE_SUPABASE_URL=https://rxmitjrbrsqjeymsycoj.supabase.co
+  VITE_SUPABASE_URL=https://gzmgjkbtsvezfclmreru.supabase.co
   VITE_SUPABASE_ANON_KEY=<anon key>
   ```
 
