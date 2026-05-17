@@ -7,8 +7,8 @@
  * Flow:
  *   1. POST to pupil-login Edge Function (gzmgjkbtsvezfclmreru) with
  *      class_code / username / pin
- *   2. Edge Function verifies credentials and returns:
- *      { session: { access_token, refresh_token }, pupil: { ...snake_case } }
+ *   2. Edge Function verifies credentials for ALL pupil types (school, home, independent)
+ *      and returns: { session: { access_token, refresh_token }, pupil: { ...snake_case } }
  *   3. We call supabase.auth.setSession() so all existing RLS queries work
  *   4. Store human-readable metadata in pupilStore (localStorage)
  *   5. Navigate to /welcome
@@ -102,12 +102,6 @@ export default function PupilLogin() {
           // body parse failed — keep fallback message
         }
         throw new Error(friendlyMessage)
-      }
-
-      // School pupils must use wrife.co.uk Route A — redirect to hub login
-      if (data?.error === 'SCHOOL_PUPIL_USE_HUB') {
-        window.location.replace('https://wrife.co.uk/pupil/login')
-        return
       }
 
       if (data?.error) throw new Error(data.message ?? data.error)
