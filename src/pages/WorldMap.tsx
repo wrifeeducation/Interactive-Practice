@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query'
 import { motion, AnimatePresence } from 'framer-motion'
 import { supabase } from '../lib/supabase'
 import { useAuthStore } from '../stores/authStore'
+import { usePupilStore } from '../stores/pupilStore'
 import WorldPath from '../components/WorldPath'
 import LessonCard from '../components/LessonCard'
 import { computeLessonStatus } from '../lib/unlocks'
@@ -139,7 +140,8 @@ function SidebarLink({ to, emoji, label, testId }: { to: string; emoji: string; 
 
 // ── Main component ───────────────────────────────────────────────
 export default function WorldMap() {
-  const { session, profile, xpTotal, streak } = useAuthStore()
+  const { session, profile, xpTotal, streak, clearAuth } = useAuthStore()
+  const clearPupilSession = usePupilStore((s) => s.clearPupilSession)
   const navigate = useNavigate()
   const [expandedWorldId, setExpandedWorldId] = useState<number | null>(null)
   const [selectedLesson, setSelectedLesson] = useState<LessonNode | null>(null)
@@ -357,10 +359,32 @@ export default function WorldMap() {
         <SidebarLink to="/pupil/join" emoji="🏫" label="Join a Class" testId="sidebar-join" />
       </div>
 
-      {/* Home link + WriFe logo at bottom */}
-      <div style={{ marginTop: 'auto', padding: '16px 12px 12px' }}>
+      {/* Bottom: Home + Sign out */}
+      <div style={{ marginTop: 'auto', padding: '16px 12px 12px', display: 'flex', flexDirection: 'column', gap: 4 }}>
         <SidebarLink to="/" emoji="🏠" label="Home" testId="sidebar-home" />
-        <div style={{ textAlign: 'center', marginTop: 8 }}>
+        <button
+          data-testid="sidebar-sign-out"
+          onClick={async () => {
+            await supabase.auth.signOut()
+            clearAuth()
+            clearPupilSession()
+            navigate('/pupil/login', { replace: true })
+          }}
+          style={{
+            display: 'flex', alignItems: 'center', gap: '10px',
+            padding: '10px 12px', borderRadius: 'var(--radius-md)',
+            background: 'rgba(255,255,255,0.08)', border: 'none',
+            color: 'rgba(255,255,255,0.75)', fontSize: '14px',
+            fontWeight: 600, cursor: 'pointer', width: '100%',
+            transition: 'background var(--transition-fast)',
+          }}
+          onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(255,80,80,0.25)')}
+          onMouseLeave={(e) => (e.currentTarget.style.background = 'rgba(255,255,255,0.08)')}
+        >
+          <span aria-hidden="true">🚪</span>
+          <span>Sign out</span>
+        </button>
+        <div style={{ textAlign: 'center', marginTop: 4 }}>
           <span style={{ fontSize: '13px', fontWeight: 700, color: 'rgba(255,255,255,0.4)', letterSpacing: '1px' }}>
             WRIFE
           </span>

@@ -20,6 +20,7 @@ import { useQuery } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
 import { supabase } from '../lib/supabase'
 import { useAuthStore } from '../stores/authStore'
+import { usePupilStore } from '../stores/pupilStore'
 import { WrifeMascot } from '../components/ui/WrifeMascot'
 import type { Badge } from '../types'
 
@@ -171,7 +172,8 @@ function BadgeTile({ badge, delay = 0 }: BadgeTileProps) {
 
 export default function WelcomePage() {
   const navigate = useNavigate()
-  const { session, profile } = useAuthStore()
+  const { session, profile, clearAuth } = useAuthStore()
+  const clearPupilSession = usePupilStore((s) => s.clearPupilSession)
   const pupilId = session?.user?.id
   // display_name is teacher-set; first_name is set by wrife.co.uk pupil login
   const displayName = profile?.display_name ?? profile?.first_name ?? 'Adventurer'
@@ -513,6 +515,27 @@ export default function WelcomePage() {
             }}
           >
             🏅 My Badges
+          </motion.button>
+
+          {/* Sign out — small, unobtrusive, always accessible */}
+          <motion.button
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.3 }}
+            onClick={async () => {
+              await supabase.auth.signOut()
+              clearAuth()
+              clearPupilSession()
+              navigate('/pupil/login', { replace: true })
+            }}
+            data-testid="welcome-sign-out-btn"
+            data-tts="Sign out"
+            style={{
+              background: 'none', border: 'none', cursor: 'pointer',
+              fontSize: 13, color: 'var(--color-text-muted)', padding: '8px 0',
+            }}
+          >
+            🚪 Sign out
           </motion.button>
         </div>
 
