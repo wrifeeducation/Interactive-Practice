@@ -104,6 +104,12 @@ export default function PupilLogin() {
         throw new Error(friendlyMessage)
       }
 
+      // School pupils must use wrife.co.uk Route A — redirect to hub login
+      if (data?.error === 'SCHOOL_PUPIL_USE_HUB') {
+        window.location.replace('https://wrife.co.uk/pupil/login')
+        return
+      }
+
       if (data?.error) throw new Error(data.message ?? data.error)
 
       // Production Edge Function (gzmgjkbtsvezfclmreru) returns tokens
